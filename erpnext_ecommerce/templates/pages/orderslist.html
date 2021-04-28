@@ -1,0 +1,208 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+{% if customer_id %}
+<input type="hidden" name="hdnCustomer" id="hdnCustomer" value="{{customer_id}}" />
+{% elif supplier_id %}
+<input type="hidden" name="hdnSupplier" id="hdnSupplier" value="{{supplier_id}}" />
+{% endif %}
+<section id="page_header">
+    <div class="page_title" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="title">Events</h2>
+                    <p class="text-r"><a href="homepage">Home</a> / Events</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dashboard pad-8 pad-0">
+
+        <div class="row" >
+            <div class="col-md-3 col-xs-12 col-sm-3 pad-right-5">
+                {% include "templates/layout/sidebar.html" %}
+            </div>
+            <div class="col-md-9 col-xs-12 col-sm-9 content-data pad-left-5 pad-0">
+                   <div class="inner-card"> 
+                <div>
+                <h3>My Orders</h3>                
+                
+                </div>
+                <hr  class="mobile-hide" style="margin-bottom: 5px">                
+                <div class="profile-detail-area margin-0" id="order_list" style="background: #fff;margin-bottom: 25px;">                                      
+                    {% if orders %}
+                    {% for item in orders %}
+                    <div class="list-box mobile-hide">
+                        <div class="row box-style">
+                            <!-- <div class="col-md-5 col-sm-5 col-xs-12"> -->
+                            <div class="col-md-5 col-sm-5 col-xs-6">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 35%;">Order #:</td>
+                                        <td>{{item.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order Date:</td>
+                                        <td>{{item.transaction_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order Status:</td>
+                                        <td>{{item.status}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="col-md-5 col-sm-5 col-xs-12"> -->
+                            <div class="col-md-5 col-sm-5 col-xs-6">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 35%;">Order Total:</td>
+                                        <td>{% if Currency %}{{Currency}}{% else %}${% endif %}{{"%.3f" % item.grand_total | float}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order Type:</td>
+                                        <td>{% if item.order_type=="Sales" %}Deal{% else %}Online Shopping{% endif %}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12 last-child">
+                                <div>
+                                    <a href="/order-detail?id={{item.name}}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-box web-hide">
+                        <a href="/order-detail?id={{item.name}}">
+                        <div class="row box-style">
+                            <!-- <div class="col-md-5 col-sm-5 col-xs-12"> -->
+                            <div class="col-md-5 col-sm-5 col-xs-6 pad-0">
+                                <table class="table">
+                                    <tr>
+                                        <!-- <td style="width: 35%;">Order #:</td> -->
+                                        <td>#{{item.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <!-- <td>Order Date:</td> -->
+                                        <td style="color: #969696;">{{item.transaction_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #969696;">item(s): {{item.no_of_items}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="col-md-5 col-sm-5 col-xs-12"> -->
+                            <div class="col-md-5 col-sm-5 col-xs-6 pad-0">
+                                <table class="table">
+                                    <tr>
+                                        <!-- <td style="width: 30%;">Total:</td> -->
+                                        <td style="float: right;">{% if Currency %}{{Currency}}{% else %}${% endif %}{{"%.2f" % item.grand_total | float}}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <!-- <td style="width: 30%">Type:</td> -->
+                                        <td style="float: right;color: #969696;">{% if item.order_type=="Sales" %}Deal{% else %}Online Shopping{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <!-- <td>Status:</td> -->
+                                        {% if item.status=="Draft" or item.status=="To Deliver and Bill" or item.status=="To Bill" or item.status=="To Deliver" %}
+                                        <td style="float: right;"><div class="btn-info" style="width: 100%;text-align: center;border-radius: 5px;padding: 2px 5px;">{% if item.status=="Draft" %}Placed{% else %}{{item.status}}{% endif %}</div></td>
+                                        {% endif %}
+                                        {% if item.status=="Completed" or item.status=="Closed" %}
+                                        <td style="float: right;"><div class="btn-success" style=" text-align: center;border-radius: 5px;padding: 2px 5px;width: 100%;">{{item.status}}</div></td>
+                                        {% endif %}
+                                        {% if item.status=="Cancelled"%}
+                                        <td style="float: right;"><div class="btn-danger" style="padding: 2px 5px;width: 100%;text-align: center;border-radius: 5px;">{{item.status}}</div></td>
+                                        {% endif %}
+                                    </tr>
+                                   <!--  <tr>
+                                        <a href="/order-detail?id={{item.name}}" class="btn btn-primary">View Details</a>
+                                    </tr> -->
+                                </table>
+                            </div>
+                            <!-- <div class="col-md-2 col-sm-2 col-xs-12" style="padding: 0px 10px;">
+                                <div>
+                                    <a href="/order-detail?id={{item.name}}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div> -->
+                        </div>
+                    </a>
+                    </div>
+                    {% endfor %}
+                    {% elif deals %}
+                    {% for item in deals %}
+                    <div class="list-box">
+                        <div class="row box-style">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 35%;">Order #:</td>
+                                        <td>{{item.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order Date:</td>
+                                        <td>{{item.transaction_date}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 35%;">Deal Id:</td>
+                                        <td>{{item.deal_id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Deal Item:</td>
+                                        <td>{{item.item_name}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 45%;">Requested Price:</td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.total_price | float}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Extra Charges:</td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.extra_charges | float}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total:</td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.total | float}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div>No records found.</div>
+                    {% endif %}
+                </div>
+            </div>
+             </div>
+              </div>
+   
+</section>
+<style type="text/css">
+@media screen and (min-width: 992px){
+    .page-section {
+        margin: 0px auto;
+        max-width: 1366px;
+        padding: 14px 64px 14px !important;
+    }
+}
+.dashboard .profile-menu{margin-top:11px}.pad-left-5{padding-left:5px}.pad-right-5{padding-right:5px}.inner-card h3{padding:10px 25px;font-weight:600;margin-bottom:-15px;padding-top:0}.profile-detail-area{padding:0 10px}.dashboard{padding-bottom:25px}.inner-card{display:block;background:#fff;padding:0;padding-bottom:0;border:1px solid #dedfe3!important;border-radius:2px;box-shadow:0 2px 4px 0 rgba(0,0,0,.08)}.mar-8{margin:8px}.list-contain-a{font-size:18px!important}.table tbody tr td{border-top:0}.list-box{padding:10px}.box-style{margin-right:0;margin-left:0;border:1px solid #ddd;background:#f9f9f9}.btn{margin-top:30px}.table{margin-top:10px}@media screen and (max-width:767px) and (min-width:320px){.container-fluid{padding-left:0;padding-right:0}.inner-card{margin:0!important;background:#f1f3f6}.btn{margin-top:0;margin-bottom:10px;float:right}.pad-8{padding:8px;margin-top:-34px}.margin-0{margin:0!important}.row{margin:0!important}.pad-0{padding:0!important}.dashboard{margin-top:0}.inner-card hr{display:none}.float-right{float:none}.mobile-hide{display:none!important}.table tbody tr td{padding:5px}.list-box{padding:0 5px!important;margin:5px 0!important}.profile-detail-area{padding:0 0;background-color:#f1f3f6!important}.box-style{background:#fff}table{margin:0!important}}@media screen and (min-width:767px){.web-hide{display:none!important}}@media screen and (max-width:992px) and (min-width:768px){.box-style .btn-primary{padding:5px 10px;font-size:11px}.box-style .last-child{padding-left:0;padding-right:0}}.filter{margin-left:10px}@media screen and (max-width:992px){.inner-card h3{margin-top: 0px;padding-top: 10px;background: #fff;margin-bottom: 5px; border-bottom: 1px solid #eee;}}
+   
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+   var _0x5078=['c2Nyb2xs','I2hkblN1cHBsaWVy','dmFs','Y2FsbA==','ZXJwbmV4dF9lY29tbWVyY2UudGVtcGxhdGVzLnBhZ2VzLm9yZGVyc2xpc3QuZ2V0X29yZGVyX2xpc3Q=','em9jUlI=','d2lkdGg=','REZzTWc=','Zm9QdHk=','U0VMT2E=','PHRkIHN0eWxlPSJmbG9hdDogcmlnaHQ7Ij48ZGl2IGNsYXNzPSJidG4tZGFuZ2VyIiBzdHlsZT0id2lkdGg6IDkwcHg7dGV4dC1hbGlnbjogY2VudGVyO2JvcmRlci1yYWRpdXM6IDVweDsiPg==','PC9kaXY+PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PC9kaXY+PC9hPjwvZGl2Pg==','bWVzc2FnZQ==','ZWFjaA==','b3JkZXJfdHlwZQ==','U2FsZXM=','RGVhbA==','U2hvcHBpbmcgQ2FydA==','T25saW5lIFNob3BwaW5n','PGRpdiBjbGFzcz0ibGlzdC1ib3giPjxkaXYgY2xhc3M9InJvdyBib3gtc3R5bGUiPjxkaXYgY2xhc3M9ImNvbC1tZC01IGNvbC1zbS01IGNvbC14cy0xMiI+PHRhYmxlIGNsYXNzPSJ0YWJsZSI+PHRyPjx0ZCBzdHlsZT0id2lkdGg6IDM1JTsiPk9yZGVyICM6PC90ZD48dGQ+','PC90ZD48L3RyPjx0cj48dGQ+T3JkZXIgRGF0ZTo8L3RkPjx0ZD4=','dHJhbnNhY3Rpb25fZGF0ZQ==','PC90ZD48L3RyPjx0cj48dGQ+T3JkZXIgU3RhdHVzOjwvdGQ+PHRkPg==','c3RhdHVz','PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PGRpdiBjbGFzcz0iY29sLW1kLTUgY29sLXNtLTUgY29sLXhzLTEyIj48dGFibGUgY2xhc3M9InRhYmxlIj48dHI+PHRkIHN0eWxlPSJ3aWR0aDogMzUlOyI+T3JkZXIgVG90YWw6PC90ZD48dGQ+','PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PGRpdiBjbGFzcz0iY29sLW1kLTIgY29sLXNtLTIgY29sLXhzLTEyIGxhc3QtY2hpbGQiPjxkaXY+PGEgaHJlZj0iL29yZGVyLWRldGFpbD9pZD0=','bmFtZQ==','IiBjbGFzcz0iYnRuIGJ0bi1wcmltYXJ5Ij5WaWV3IERldGFpbHM8L2E+PC9kaXY+PC9kaXY+PC9kaXY+PC9kaXY+','PGRpdiBjbGFzcz0ibGlzdC1ib3giPjxkaXYgY2xhc3M9InJvdyBib3gtc3R5bGUiPjxkaXYgY2xhc3M9ImNvbC1tZC00IGNvbC1zbS00IGNvbC14cy0xMiI+PHRhYmxlIGNsYXNzPSJ0YWJsZSI+PHRyPjx0ZCBzdHlsZT0id2lkdGg6IDM1JTsiPk9yZGVyICM6PC90ZD48dGQ+','PC90ZD48L3RyPjx0cj48dGQgc3R5bGU9IndpZHRoOiAzNSU7Ij5EZWFsIEl0ZW06PC90ZD48dGQ+','PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PGRpdiBjbGFzcz0iY29sLW1kLTQgY29sLXNtLTQgY29sLXhzLTEyIj48dGFibGUgY2xhc3M9InRhYmxlIj48dHI+PHRkIHN0eWxlPSJ3aWR0aDogMzUlOyI+UmVxdWVzdGVkIFByaWNlOjwvdGQ+PHRkPg==','I2hkbkN1cnJlbmN5','dG90YWxfcHJpY2U=','PC90ZD48L3RyPjx0cj48dGQgc3R5bGU9IndpZHRoOiAzNSU7Ij5FeHRyYSBDaGFyZ2VzOjwvdGQ+PHRkPg==','dG9GaXhlZA==','dG90YWw=','PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PC9kaXY+PC9kaXY+','I29yZGVyX2xpc3Q=','YXBwZW5k','eml4YXU=','bG9n','Ij48ZGl2IGNsYXNzPSJyb3cgYm94LXN0eWxlIj48ZGl2IGNsYXNzPSJjb2wtbWQtNSBjb2wtc20tNSBjb2wteHMtNiBwYWQtMCI+PHRhYmxlIGNsYXNzPSJ0YWJsZSI+PHRyPjx0ZD4j','PC90ZD48L3RyPjx0cj48dGQgc3R5bGU9ImNvbG9yOiAjOTY5Njk2OyI+','PC90ZD48dHI+PHRkIHN0eWxlPSJjb2xvcjogIzk2OTY5NjsiPml0ZW0ocyk6IA==','bm9fb2ZfaXRlbXM=','PC90ZD48L3RyPjwvdHI+PC90YWJsZT48L2Rpdj48ZGl2IGNsYXNzPSJjb2wtbWQtNSBjb2wtc20tNSBjb2wteHMtNiBwYWQtMCI+PHRhYmxlIGNsYXNzPSJ0YWJsZSI+PHRyPjx0ZCBzdHlsZT0iZmxvYXQ6IHJpZ2h0OyI+','PC90ZD48L3RyPjx0cj48dGQgc3R5bGU9ImZsb2F0OiByaWdodDtjb2xvcjogIzk2OTY5NjsiPg==','PC90ZD48L3RyPjx0cj4=','RHJhZnQ=','VG8gRGVsaXZlciBhbmQgQmlsbA==','VG8gQmlsbA==','VG8gRGVsaXZlcg==','V0FVRVA=','dkxtdkY=','PHRkIHN0eWxlPSJmbG9hdDogcmlnaHQ7Ij48ZGl2IGNsYXNzPSJidG4taW5mbyIgc3R5bGU9IndpZHRoOiA5MHB4O3RleHQtYWxpZ246IGNlbnRlcjtib3JkZXItcmFkaXVzOiA1cHg7Ij5QbGFjZWQ8L2Rpdj48L3RkPjwvdHI+PC90YWJsZT48L2Rpdj48L2Rpdj48L2E+PC9kaXY+','SGpXeGE=','PHRkIHN0eWxlPSJmbG9hdDogcmlnaHQ7Ij48ZGl2IGNsYXNzPSJidG4taW5mbyIgc3R5bGU9IndpZHRoOiA5MHB4O3RleHQtYWxpZ246IGNlbnRlcjtib3JkZXItcmFkaXVzOiA1cHg7Ij4=','Z3JhbmRfdG90YWw=','PC90ZD48L3RyPjx0cj48dGQ+T3JkZXIgVHlwZTo8L3RkPjx0ZD4=','PC90ZD48L3RyPjwvdGFibGU+PC9kaXY+PGRpdiBjbGFzcz0iY29sLW1kLTQgY29sLXNtLTQgY29sLXhzLTEyIj48dGFibGUgY2xhc3M9InRhYmxlIj48dHI+PHRkIHN0eWxlPSJ3aWR0aDogMzUlOyI+RGVhbCBJZDo8L3RkPjx0ZD4=','ZGVhbF9pZA==','ZXh0cmFfY2hhcmdlcw==','PC90ZD48L3RyPjx0cj48dGQgc3R5bGU9IndpZHRoOiA0NSU7Ij5Ub3RhbDo8L3RkPjx0ZD4=','Q2xvc2Vk','Q2FuY2VsbGVk','RHhYcnk=','VGNQRFI=','PHRkIHN0eWxlPSJmbG9hdDogcmlnaHQ7Ij48ZGl2IGNsYXNzPSJidG4tc3VjY2VzcyIgc3R5bGU9IndpZHRoOiA5MHB4O3RleHQtYWxpZ246IGNlbnRlcjtib3JkZXItcmFkaXVzOiA1cHg7Ij4='];(function(_0x1bf309,_0xc6e6e){var _0x1ff211=function(_0x5ad730){while(--_0x5ad730){_0x1bf309['push'](_0x1bf309['shift']());}};_0x1ff211(++_0xc6e6e);}(_0x5078,0x198));var _0x57bc=function(_0x5deb0a,_0x2d752b){_0x5deb0a=_0x5deb0a-0x0;var _0x166ca9=_0x5078[_0x5deb0a];if(_0x57bc['dfjrit']===undefined){(function(){var _0x1a6342;try{var _0x5867d6=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');');_0x1a6342=_0x5867d6();}catch(_0x2e8322){_0x1a6342=window;}var _0x2bd0c3='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x1a6342['atob']||(_0x1a6342['atob']=function(_0x387307){var _0x373a58=String(_0x387307)['replace'](/=+$/,'');for(var _0x344c9b=0x0,_0xd2348c,_0x4cf235,_0x31cda3=0x0,_0x353d51='';_0x4cf235=_0x373a58['charAt'](_0x31cda3++);~_0x4cf235&&(_0xd2348c=_0x344c9b%0x4?_0xd2348c*0x40+_0x4cf235:_0x4cf235,_0x344c9b++%0x4)?_0x353d51+=String['fromCharCode'](0xff&_0xd2348c>>(-0x2*_0x344c9b&0x6)):0x0){_0x4cf235=_0x2bd0c3['indexOf'](_0x4cf235);}return _0x353d51;});}());_0x57bc['GaSWxC']=function(_0x164bd2){var _0x3344c0=atob(_0x164bd2);var _0x2abcd8=[];for(var _0x5a49fc=0x0,_0x207f1c=_0x3344c0['length'];_0x5a49fc<_0x207f1c;_0x5a49fc++){_0x2abcd8+='%'+('00'+_0x3344c0['charCodeAt'](_0x5a49fc)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2abcd8);};_0x57bc['YYdHhe']={};_0x57bc['dfjrit']=!![];}var _0x1e7add=_0x57bc['YYdHhe'][_0x5deb0a];if(_0x1e7add===undefined){_0x166ca9=_0x57bc['GaSWxC'](_0x166ca9);_0x57bc['YYdHhe'][_0x5deb0a]=_0x166ca9;}else{_0x166ca9=_0x1e7add;}return _0x166ca9;};var scroll=!![];var page=0x1;var page_len=0xa;$(document)[_0x57bc('0x0')](function(_0x4f797d){if(scroll==!![]){scroll=![];let _0x15af2b=$('#hdnCustomer')['val']();let _0x1887f0=$(_0x57bc('0x1'))[_0x57bc('0x2')]();frappe[_0x57bc('0x3')]({'method':_0x57bc('0x4'),'args':{'start':page,'limit':page_len,'customer':_0x15af2b,'supplier':_0x1887f0},'callback':function(_0x4f797d){if('zocRR'===_0x57bc('0x5')){var _0x5ccf20=$(window)[_0x57bc('0x6')]();if(_0x4f797d['message']!=undefined){if('DwCKB'!==_0x57bc('0x7')){if($(window)[_0x57bc('0x6')]()>0x2ff){if(_0x57bc('0x8')===_0x57bc('0x9')){_0x1844ee+=_0x57bc('0xa')+value['status']+_0x57bc('0xb');}else{scroll=!![];page=page+0x1;var _0x1844ee='';$(_0x4f797d[_0x57bc('0xc')])[_0x57bc('0xd')](function(_0x52068c,_0x4eb148){let _0x4fee90='';if(_0x4eb148[_0x57bc('0xe')]==_0x57bc('0xf'))_0x4fee90=_0x57bc('0x10');else if(_0x4eb148['order_type']==_0x57bc('0x11'))_0x4fee90=_0x57bc('0x12');if(_0x15af2b)_0x1844ee+=_0x57bc('0x13')+_0x4eb148['name']+_0x57bc('0x14')+_0x4eb148[_0x57bc('0x15')]+_0x57bc('0x16')+_0x4eb148[_0x57bc('0x17')]+_0x57bc('0x18')+$('#hdnCurrency')[_0x57bc('0x2')]()+'\x20'+parseFloat(_0x4eb148['grand_total'])['toFixed'](0x2)+'</td></tr><tr><td>Order\x20Type:</td><td>'+_0x4fee90+_0x57bc('0x19')+_0x4eb148[_0x57bc('0x1a')]+_0x57bc('0x1b');else if(_0x1887f0)_0x1844ee+=_0x57bc('0x1c')+_0x4eb148[_0x57bc('0x1a')]+_0x57bc('0x14')+_0x4eb148[_0x57bc('0x15')]+'</td></tr></table></div><div\x20class=\x22col-md-4\x20col-sm-4\x20col-xs-12\x22><table\x20class=\x22table\x22><tr><td\x20style=\x22width:\x2035%;\x22>Deal\x20Id:</td><td>'+_0x4eb148['deal_id']+_0x57bc('0x1d')+_0x4eb148['item_name']+_0x57bc('0x1e')+$(_0x57bc('0x1f'))[_0x57bc('0x2')]()+''+parseFloat(_0x4eb148[_0x57bc('0x20')])['toFixed'](0x2)+_0x57bc('0x21')+$(_0x57bc('0x1f'))['val']()+'\x20'+parseFloat(_0x4eb148['extra_charges'])[_0x57bc('0x22')](0x2)+'</td></tr><tr><td\x20style=\x22width:\x2045%;\x22>Total:</td><td>'+$(_0x57bc('0x1f'))['val']()+''+parseFloat(_0x4eb148[_0x57bc('0x23')])[_0x57bc('0x22')](0x2)+_0x57bc('0x24');});$(_0x57bc('0x25'))[_0x57bc('0x26')](_0x1844ee);}}if($(window)['width']()<=0x2ff){if('zixau'===_0x57bc('0x27')){scroll=!![];page=page+0x1;var _0x1844ee='';$(_0x4f797d[_0x57bc('0xc')])[_0x57bc('0xd')](function(_0x21786b,_0x376595){if(_0x15af2b){console[_0x57bc('0x28')](_0x376595);if(_0x376595[_0x57bc('0xe')]==_0x57bc('0xf'))var _0x197a95='Deal';else var _0x197a95=_0x57bc('0x12');_0x1844ee+='<div\x20class=\x22list-box\x20web-hide\x22><a\x20href=\x22/order-detail?id='+_0x376595['name']+_0x57bc('0x29')+_0x376595[_0x57bc('0x1a')]+_0x57bc('0x2a')+_0x376595['transaction_date']+_0x57bc('0x2b')+_0x376595[_0x57bc('0x2c')]+_0x57bc('0x2d')+$(_0x57bc('0x1f'))['val']()+'\x20'+parseFloat(_0x376595['grand_total'])['toFixed'](0x2)+_0x57bc('0x2e')+_0x197a95+_0x57bc('0x2f');if(_0x376595[_0x57bc('0x17')]==_0x57bc('0x30')|_0x376595[_0x57bc('0x17')]==_0x57bc('0x31')||_0x376595['status']==_0x57bc('0x32')||_0x376595[_0x57bc('0x17')]==_0x57bc('0x33')){if(_0x376595[_0x57bc('0x17')]==_0x57bc('0x30')){if(_0x57bc('0x34')!==_0x57bc('0x35')){_0x1844ee+=_0x57bc('0x36');}else{_0x1844ee+='';}}else{if(_0x57bc('0x37')==='HjWxa'){_0x1844ee+=_0x57bc('0x38')+_0x376595[_0x57bc('0x17')]+_0x57bc('0xb');}else{scroll=!![];page=page+0x1;var _0x5c5c7b='';$(_0x4f797d[_0x57bc('0xc')])[_0x57bc('0xd')](function(_0x493b64,_0x39eefd){let _0x50975e='';if(_0x39eefd[_0x57bc('0xe')]==_0x57bc('0xf'))_0x50975e='Deal';else if(_0x39eefd[_0x57bc('0xe')]==_0x57bc('0x11'))_0x50975e=_0x57bc('0x12');if(_0x15af2b)_0x5c5c7b+=_0x57bc('0x13')+_0x39eefd[_0x57bc('0x1a')]+'</td></tr><tr><td>Order\x20Date:</td><td>'+_0x39eefd['transaction_date']+'</td></tr><tr><td>Order\x20Status:</td><td>'+_0x39eefd[_0x57bc('0x17')]+_0x57bc('0x18')+$(_0x57bc('0x1f'))[_0x57bc('0x2')]()+'\x20'+parseFloat(_0x39eefd[_0x57bc('0x39')])[_0x57bc('0x22')](0x2)+_0x57bc('0x3a')+_0x50975e+_0x57bc('0x19')+_0x39eefd[_0x57bc('0x1a')]+_0x57bc('0x1b');else if(_0x1887f0)_0x5c5c7b+='<div\x20class=\x22list-box\x22><div\x20class=\x22row\x20box-style\x22><div\x20class=\x22col-md-4\x20col-sm-4\x20col-xs-12\x22><table\x20class=\x22table\x22><tr><td\x20style=\x22width:\x2035%;\x22>Order\x20#:</td><td>'+_0x39eefd[_0x57bc('0x1a')]+_0x57bc('0x14')+_0x39eefd['transaction_date']+_0x57bc('0x3b')+_0x39eefd[_0x57bc('0x3c')]+'</td></tr><tr><td\x20style=\x22width:\x2035%;\x22>Deal\x20Item:</td><td>'+_0x39eefd['item_name']+_0x57bc('0x1e')+$(_0x57bc('0x1f'))['val']()+''+parseFloat(_0x39eefd[_0x57bc('0x20')])['toFixed'](0x2)+_0x57bc('0x21')+$('#hdnCurrency')[_0x57bc('0x2')]()+'\x20'+parseFloat(_0x39eefd[_0x57bc('0x3d')])[_0x57bc('0x22')](0x2)+_0x57bc('0x3e')+$(_0x57bc('0x1f'))[_0x57bc('0x2')]()+''+parseFloat(_0x39eefd[_0x57bc('0x23')])[_0x57bc('0x22')](0x2)+_0x57bc('0x24');});$('#order_list')[_0x57bc('0x26')](_0x5c5c7b);}}}if(_0x376595['status']=='Completed'||_0x376595[_0x57bc('0x17')]==_0x57bc('0x3f')){_0x1844ee+='<td\x20style=\x22float:\x20right;\x22><div\x20class=\x22btn-success\x22\x20style=\x22width:\x2090px;text-align:\x20center;border-radius:\x205px;\x22>'+_0x376595['status']+'</div></td></tr></table></div></div></a></div>';}if(_0x376595['status']==_0x57bc('0x40')){_0x1844ee+='<td\x20style=\x22float:\x20right;\x22><div\x20class=\x22btn-danger\x22\x20style=\x22width:\x2090px;text-align:\x20center;border-radius:\x205px;\x22>'+_0x376595[_0x57bc('0x17')]+_0x57bc('0xb');}}else if(_0x1887f0){if(_0x57bc('0x41')===_0x57bc('0x42')){if(_0x376595[_0x57bc('0x17')]=='Draft'){_0x1844ee+=_0x57bc('0x36');}else{_0x1844ee+=_0x57bc('0x38')+_0x376595[_0x57bc('0x17')]+_0x57bc('0xb');}}else{_0x1844ee+='';}}});$(_0x57bc('0x25'))[_0x57bc('0x26')](_0x1844ee);}else{_0x1844ee+=_0x57bc('0x38')+value[_0x57bc('0x17')]+_0x57bc('0xb');}}}else{_0x1844ee+=_0x57bc('0x36');}}else{scroll=![];}}else{_0x1844ee+=_0x57bc('0x43')+value[_0x57bc('0x17')]+_0x57bc('0xb');}}});}});
+</script>
+{% endblock %}
+

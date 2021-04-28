@@ -1,0 +1,134 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+<section class="dashboard">
+    <div class="">
+        <div class="row" style="margin-right: 0;margin-left: 0;">
+            <div class="col-md-3 col-xs-12 col-sm-3 mobile-hide">
+                {% include "templates/layout/sidebar.html" %}
+            </div>
+            <div class="col-md-9 col-xs-12 col-sm-9 content-data pad-0">
+                <!-- <div class="mobile-hide">
+                <h2>Order Detail - {{order_details.name}}</h2>                
+                
+                </div> -->
+                <!-- <hr>                 -->
+                
+         {% include "templates/pages/detail.html" %}  
+ 
+            </div>
+        </div>
+</section>
+<style type="text/css">
+  .list-contain-a{
+    font-size: 18px !important;
+  }
+  .table tbody tr td{
+    border-top: 0;
+  }
+  .list-box{
+    padding: 10px;
+  }
+  .box-style{
+    margin-right: 0;
+    margin-left: 0;
+    border: 1px solid #ddd;
+    background: #e6e3e3;
+  }
+  .btn{
+    margin-top: 30px;
+  }
+  .detail_box{
+    background:#f5f5f5;
+    float: left;
+    width: 100%;
+    /*padding-top: 25px;*/
+    /*padding-bottom: 70px;*/
+    font-family: sans-serif;
+    /*margin-top:15px;*/
+    margin-bottom: 50px;
+    border: 1px solid #dedfe3 !important;
+    /* padding-bottom: 15px; */
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+  }
+  .detail_box .box_item{
+    /*width:90%;*/
+    background:#fff;
+    text-align: left;
+  }
+  .detail_box .box_item1{
+    padding-bottom: 40px;
+    float: left;  
+    width: 100%
+  }
+  .detail_box .table_design{
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    background: #fff;
+    color:#737373;
+  }
+  .table_design .title{
+    color: #915048;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .table_design .txt_design{
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    float: left;
+  }
+  .table_design .td_style{
+    font-weight: bold;
+   /* border-left:1px solid #c3c3c3;
+    border-bottom:1px solid #c3c3c3;
+    border-top:1px solid #c3c3c3;*/
+    padding: 10px !important;
+  }
+  @media screen and (max-width: 767px) and (min-width: 320px){
+    .dashboard{
+      background-color: #f1f3f6;
+    }
+    .detail_box .box_item{
+        width: auto;
+    }
+    .mobile-hide{
+        display: none !important;
+    }
+    .detail_box .box_item1{
+        padding: 0px;
+        float: left;
+        width: 100%;
+    }
+    .table_design .txt_design{
+        font-size: 13px;
+    }
+    .detail_box .table_design{
+      margin-bottom: 0px;
+    }
+    .table_design .title{
+        font-size: 17px;
+    }
+    .pad-0{
+      padding: 0px !important;
+    }
+    .detail_box{
+      margin-bottom: 0px;
+          padding: 15px;
+    }
+  }
+  
+  @media screen and (min-width: 992px){
+    .page-section {
+        margin: 0px auto;
+        max-width: 1366px;
+        padding: 14px 64px 14px !important;
+    }
+}
+</style>
+{% endblock %}
+
+

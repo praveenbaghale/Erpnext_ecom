@@ -1,0 +1,12 @@
+{
+	"css/website-css.css":[
+		"public/css/normalize.css",
+		"public/css/bootstrap.css",
+		"public/css/owl.carousel.css",
+		"public/css/responsive.css"
+	],
+	"css/glasscase.css":[
+		"public/css/glasscase.css",
+		"public/css/glasscase.minf195.css"
+	]
+}

@@ -1,0 +1,53 @@
+{% extends "templates/layout/customweb.html" %}
+
+{% block meta_block %}
+<meta name="description" content="{{MetaDescription}}">
+<meta name="keywords" content="{{MetaKeywords}}">
+ {% endblock %}
+ {% block content %}
+      <div class="title-breadcrumb">
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ol class="breadcrumb">                        
+                        <li>
+                          <a href="/"><span class="lnr lnr-home"></span></a>
+                          
+
+                        </li>
+                        <li><a href="#">About Us</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="welcome" class="padding pos-rel" >
+       
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 content">
+         {% if about_us %}{{about_us}}{% endif %}
+      </div>
+    </div>
+  </div>
+</section> 
+
+<style type="text/css">
+  .content{
+    /* padding: 25px; */
+    min-height: 350px;
+    /* margin-top: 18px; */
+    /* margin-bottom: 18px; */
+    background: #fff;
+    padding-top: 10px;
+    margin: 0px;
+    text-align: justify;
+  } 
+  .mar-8{
+    margin: 8px; 
+  }
+
+</style>
+
+    {% endblock %}

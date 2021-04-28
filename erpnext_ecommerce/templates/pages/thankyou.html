@@ -1,0 +1,181 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% if payment_status == "Completed" %}
+    <div class="success">
+        <h2>Thank you! Your order has been placed successfully</h2>
+        <p>An email will be sent to you.</p>
+    </div>
+    {% else %}
+    <div class="success">
+        <h2>Payment Unsuccessful.</h2>
+        <p>It seems your payment failed somehow. {% if payment_url %} You can try to
+            <a href="{{ payment_url }}">make payment</a> again. {% endif %}</p>
+    </div>
+    {% endif %}
+    <div>
+        <p style="text-align: center;">Your order number: <a href="/order-detail?id={{Order.name}}">{{Order.name}}</a></p>
+    </div>
+    <div style="text-align: center;">
+        <a href="/order-detail?id={{Order.name}}" class="btn btn-warning ">Order Details</a>
+        <a href="/" class="btn btn-default">Continue Shopping</a>
+    </div>
+    <!-- <div class="row order-details" style="display: none">
+    	<div class="col-md-2"></div>
+    	<div class="col-md-8">
+	    	<div class="p-format">
+			    <div id="content">
+			        <div class="row">
+			        	<div class="col-md-12">
+			        	</div>
+			        	<div class="col-md-12" style="padding: 5px 35px;">
+			        		<h5 style="margin-bottom: 10px;">Order Info</h5>
+			        		<div class="col-md-6 col-sm-6" style="padding-left: 0;">	        			
+			        			<table style="width: 100%;margin-bottom: 10px;">
+				                    <tr>
+				                        <td><b>Order Id</b></td>
+				                        <td>{{Order.name}}</td>	                    	
+				                    </tr>
+				                    <tr>
+				                        <td><b>Customer Id</b></td>
+				                        <td>{{Order.customer}}</td>	                    	
+				                    </tr>
+				                    <tr>
+				                    	<td><b>Customer Name</b></td>
+				                        <td>{{Order.customer_name}}</td>
+				                    </tr>
+				                </table>
+			        		</div>
+			        		<div class="col-md-6 col-sm-6">
+			        			<table style="width: 100%;margin-bottom: 10px;">
+			        				<tr>
+			        					<td><b>Date</b></td>
+			        					<td>{{frappe.utils.formatdate(Order.transaction_date,"dd MMM, YYYY")}}</td>
+			        				</tr>
+			        				{% if Order.contact_mobile %}
+			        				<tr>
+				                        <td><b>Mobile No</b></td>
+				                        <td>{{Order.contact_mobile}}</td>	                    	
+				                    </tr>
+			        				{% endif %}
+			        				{% if Order.contact_email %}
+			        				<tr>
+				                        <td><b>Email</b></td>
+				                        <td>{{Order.contact_email}}</td>	                    	
+				                    </tr>
+			        				{% endif %}
+			        			</table>
+			        		</div>
+			        	</div>
+			            <div class="col-md-12">                
+			                <table class="table table-bordered addr-table">
+			                    <thead>
+			                        <tr>
+			                            <th class="bb-0 bbl">Billing Address</th>
+			                            <th class="bb-0 bbr">Shipping Address</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                        <tr>
+			                            <td style="width: 50%;" class="bb-0 bbl">{{Order.address_display}}</td>
+			                            <td class="bb-0">
+			                            	{% if Order.shipping_address %}{{Order.shipping_address}}{% else %}{{Order.address_display}}{% endif %}
+			                            </td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+			                <table class="table table-bordered bbl bbr">
+			                    <thead>
+			                        <tr>
+			                            <th class="bb-0 bbl">Product</th>
+			                            <th class="bb-0">Quantity</th>
+			                            <th class="bb-0">Rate</th>
+			                            <th class="bb-0 bbr">Amount</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                        {% for item in Order.items %}
+			                        <tr>
+			                            <td class="bbl" style="width: 50%">{{item.item_name}}</td>
+			                            <td>{{item.qty|round|int}}</td>
+			                            <td class="text-right">{{Currency}} {{"%0.2f" % item.rate | float}}</td>
+			                            <td class="text-right">{{Currency}} {{"%0.2f" % item.amount | float}}</td>
+			                        </tr>
+			                        {% endfor %}
+			                    </tbody>
+			                </table> 
+			            </div>
+			            <div class="col-md-12">
+			            	<div class="col-md-6"></div>
+				            <div class="col-md-6" style="padding-bottom: 30px;">
+				            	<table style="margin-top: 10px; width: 100%;">
+				            		<tr>
+				            			<td><b>Total</b></td>
+				            			<td class="text-right">{{Currency}} {{"%0.2f" % Order.total | float}}</td>
+				            		</tr>
+				            		{% if Order.taxes %}{% for tax in Order.taxes %}
+				            		<tr>
+				            			<td><b>{{tax.description}}</b></td>
+				            			<td class="text-right">{{Currency}} {{"%0.2f" % tax.tax_amount | float}}</td>
+				            		</tr>
+				            		{% endfor %}{% endif %}
+				            		<tr>
+				            			<td><b>Grand Total</b></td>
+				            			<td class="text-right">{{Currency}} {{"%0.2f" % Order.grand_total | float}}</td>
+				            		</tr>
+				            		{% if Order.rounded_total %}
+				            		<tr>
+				            			<td><b>Rounded Total</b></td>
+				            			<td class="text-right">{{Currency}} {{"%0.2f" % Order.rounded_total | float}}</td>
+				            		</tr>
+				            		{% endif %}
+				            		<tr>
+				            			<td><b>In Words</b></td>
+				            			<td class="text-right">{{Order.in_words}}</td>
+				            		</tr>
+				            	</table>
+				            </div>
+			            </div>
+				            
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
+    </div> -->
+</div>
+<style type="text/css">
+    .success{
+        text-align: center;
+        margin: 50px 0;
+        /*min-height: 300px;*/
+    }
+    #content{
+    	border: 1px solid #ddd;
+    	background: #fff;
+    	margin-bottom: 25px;
+    }
+    .addr-table{
+    	border: 0;
+    	border-top: 1px solid #ddd;
+    	margin-bottom: 0;
+    }
+    .bb-0{
+    	border-bottom: 0 !important;
+    }
+    .bbr{
+    	border-right: 0 !important;
+    }
+    .bbl{
+    	border-left: 0 !important;
+    }
+    @media (min-width: 1200px){
+		.container {
+		    min-height: 350px;
+		}
+	}
+</style>
+{% endblock %}

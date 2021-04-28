@@ -1,0 +1,46 @@
+{% if Items %}{% for item in Items %}
+{% if item.variant_of %}
+{% set route = frappe.db.get_value("Item", item.variant_of, 'route') %}
+{% else %}
+{% set route = item.route %}
+{% endif %}
+    
+    <div class="col-md-3 col-sm-2 col-xs-6 pad-5 itemslist">
+      
+        <div class="product-single" {% if item.pricing_rule %} data-priceRule="{{item.pricing_rule.title}}" data-minQty="{{item.pricing_rule.min_qty}}" data-maxQty="{{item.pricing_rule.max_qty}}" data-marginType="{{item.pricing_rule.margin_type}}" data-marginRate="{{item.pricing_rule.margin_type_rate}}" data-priceType="{{item.pricing_rule.price_or_discount}}" data-discountPercent="{{item.pricing_rule.discount_percentage}}" data-discountAmount="{{item.pricing_rule.discountPrice}}" {% endif %} data-itemrate="{{item.standard_rate}}">
+            <div class="product-image">
+                {% if item.is_stock_item==1 and item.in_stock==0 %}
+                    <span class="sold-out">SOLD OUT</span>
+                {% endif %}
+                <a href="/{{route}}{% if item.variant_of %}?variant={{item.name}}{% endif %}">
+                    <img src="{% if item.thumbnail %}{{item.thumbnail}}{% else %}/assets/erpnext_ecommerce/images/no-img-120.jpg{% endif %}" alt="#" class="img-responsive">
+                </a>
+            </div>
+            <div class="itemTag"></div>
+            <div class="hot-wid-rating" data-item="{{item.name}}" data-item-name="{{item.item_name}}" data-stockItem="{{item.is_stock_item}}" data.stock="{{item.in_stock}}">
+            
+                <h4>
+                    <a href="/{{route}}{% if item.variant_of %}?variant={{item.name}}{% endif %}">
+                        {{item.item_name}}
+                        {% if item.deal_category %}
+                        <span style="color: red;font-weight: 600;">Live</span>
+                        {% endif %}
+                    </a>
+                </h4>
+                <div class="product-wid-price clearfix" {%if not item.variants%}style=""{%endif%}>
+                    {% if item.product_info and item.product_info.price %}
+                    {% if item.product_info.price.price_list_rate|float == item.item_price %}
+                    <ins>{{item.product_info.price.formatted_price}}</ins>
+                    {% else %}
+                    <ins>{{item.product_info.price.formatted_price}}</ins>
+                    {% if item.item_price %}<del>{{frappe.utils.fmt_money(item.item_price)}}</del>{% endif %}
+                    {% endif %}
+                    {% elif item.item_price %}
+                    <ins>{{frappe.utils.fmt_money(item.item_price)}}</ins>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}{% endif %} 
+  

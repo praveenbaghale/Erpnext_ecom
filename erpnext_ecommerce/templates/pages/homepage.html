@@ -1,0 +1,1155 @@
+{% extends "templates/layout/customweb.html" %}
+
+{% block loader %}
+{% include "/templates/pages/homepageloader.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="col-xs-12 mobile_featured_categories">
+<div class="featured_category">
+
+     {% for item in featured_category %}
+     <div class="featured_category_mobile">
+         <a href="/{{item.route}}">
+            <img src="{% if item.image %}{{item.image}}{% else %}{% if no_image %}{{no_image}}{% else %}/assets/cmswebsite/images/no-image-800x511.png{% endif %}{% endif %}">
+           <span>   {{item.item_group_name}}</span>
+                                </a>
+      
+     </div>
+     {%endfor%}
+</div>
+</div>
+{% if sliders %}
+<div id="myCarousel" class="carousel slide main_slider" data-ride="carousel" >
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+      {% for item in sliders %}
+       <li data-target="#myCarousel" data-slide-to="{{ loop.index-1}}" class="{%if loop.index==1%}active{%endif%}"></li>
+        {% endfor %}
+ 
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner">
+      {% for item in sliders %}
+           <div class="item {%if loop.index==1%}active{%endif%}">
+     <a href="{% if item.redirect_url %}{{item.redirect_url}}{% endif %}"> <img src="{{item.slider_image}}"  style="width:100%"></a>
+    </div>
+            {% endfor %}
+   
+
+  </div>
+ 
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="fa fa-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="fa fa-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<div id="mobileCarousel" class="carousel slide  main_slider slider-mobile" data-ride="carousel" >
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+      {% for item in sliders %}
+       <li data-target="#mobileCarousel" data-slide-to="{{ loop.index-1}}" class="{%if loop.index==1%}active{%endif%}"></li>
+        {% endfor %}
+ 
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" >
+    {%set sliderCounter=0%}
+      {% for item in mobile_sliders %}
+      {%if item.mobile_image%}
+
+           <div class="item {%if loop.index==1%}active{%endif%}">
+     <a href="{% if item.redirect_url %}{{item.redirect_url}}{% endif %}"> <img src="{{item.mobile_image}}"  style="width:100%"></a>
+    </div>
+    
+    {%endif%}
+   {% endfor %}
+   
+
+  </div>
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#mobileCarousel" data-slide="prev">
+    <span class="fa fa-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#mobileCarousel" data-slide="next">
+    <span class="fa fa-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<!-- <div class="main_slider"> -->
+    <!-- <div class="tp-banner-container">
+        <div class="tp-banner">
+            <ul class="height-300">
+                {% for item in sliders %}
+                <li data-transition="zoomout" data-slotamount="7" data-masterspeed="1000" onclick="redirectSlider(this)" data-url="{% if item.redirect_url %}{{item.redirect_url}}{% endif %}"> -->
+                    <!-- MAIN IMAGE -->
+                    <!-- <img src="{{item.slider_image}}" alt="{{item.title}}" data-bgfit="contain" data-bgposition="left top" data-bgrepeat="no-repeat"> -->
+                    <!-- LAYER NR. 1 -->
+                    <!-- <div class="tp-caption black_heavy_60 skewfromleftshort tp-resizeme rs-parallaxlevel-0" data-x="50" data-y="133" data-speed="500" data-start="1850" data-easing="Power3.easeInOut" data-splitin="chars" data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" style="z-index: 7; max-width: auto; max-height: auto; white-space: nowrap;">Fresh Vegetables
+                    </div> -->
+                    <!-- LAYER NR. 2 -->
+                    <!-- <div class="tp-caption grey_regular_18 customin tp-resizeme rs-parallaxlevel-0" data-x="50" data-y="200" data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" data-speed="500" data-start="2600" data-easing="Power3.easeInOut" data-splitin="none" data-splitout="none" data-elementdelay="0.05" data-endelementdelay="0.1" style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">
+                        <div style="text-align:left;font-family: 'Quicksand', sans-serif">That this group would somehow form a family that's the way<br /> we all became the
+                            Brady Bunch. Love exciting and new. Come <br />aboard were expecting you. Love life's
+                            sweetest rewards<br /></div>
+                    </div> -->
+                    <!-- LAYER NR. 3 -->
+                    <!-- <div class="tp-caption green_bold_bg_20 skewfromright randomrotateout tp-resizeme rs-parallaxlevel-10" data-x="50" data-y="290" data-speed="1000" data-start="3900" data-easing="Power3.easeInOut" data-splitin="none" data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" data-end="10200" data-endspeed="1000" style="z-index: 15; max-width: auto; max-height: auto; white-space: nowrap;">
+                        <a href="#"><img src="/assets/cmswebsite/images/shop-btn.png" alt="#">
+                            </a>
+                    </div> -->
+            <!-- </li>
+                {% endfor %}                
+            </ul>
+            <div class="tp-bannertimer"></div>
+        </div>  -->
+        <!-- <div class="home-slider">
+            {% for item in sliders %}
+      
+            <img src="{{item.slider_image}}" />
+ 
+              {% endfor %}   
+        </div> -->
+     <!--    <div id="main-slider">
+            {% for item in sliders %}
+            <div>
+            <img src="{{item.slider_image}}" alt="{{item.title}}" >
+        </div>
+            {% endfor %}
+        </div>
+    </div> -->
+
+{% endif %}
+<!-- MAIN-SLIDER-AREA END -->
+<!-- Banners below slider -->
+{% if slider_banners %}
+<section class="section-padding p-t-10">
+    <div class="pd-15">
+        <div class="row">
+            {% for item in slider_banners %}
+            {% include "/templates/pages/homebanners.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- Banners below slider end -->
+<!-- BEST-SELLER-AREA -->
+
+{% if best_sellers %}
+<section class="best_sellercurosel_area section-padding p-t-10">
+    <div class="pd-15">
+        <div class="row"  >
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="home-card">
+                <div class="headline">
+                    <h2>Best Sellers</h2>
+                    <!-- <button type="button" class="btn btn-primary  home-btn">View More</button> -->
+
+                </div>
+                <div class="bestseller-carousel">
+                    {% for item in best_sellers %}
+                    {% include "/templates/pages/homeproducts.html" %}
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- BEST-SELLER-AREA END -->
+
+<!-- Banners below best sellers -->
+{% if bestseller_banners %}
+<section class="section-padding">
+    <div class="pd-15">
+        <div class="row">
+            {% for item in bestseller_banners %}
+            {% include "/templates/pages/homebanners.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- Banners below best sellers end -->
+
+<section class="best_sellercurosel_area section-padding" id="Deals">
+    <div class="pd-15">
+        <div class="row"  >
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="home-card">
+                <div class="headline">
+                    <h2>Top Savers</h2>
+                    <!-- <button type="button" class="btn btn-primary  home-btn">View More</button> -->
+                </div>
+                <div class="deals-carousel">
+                    
+                    <!-- {% for item in deals %}
+                    {% include "/templates/pages/homeproducts.html" %}
+                    {% endfor %} -->
+                    
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banners below top sellers -->
+{% if topseller_banners %}
+<section class="section-padding">
+    <div class="pd-15">
+        <div class="row">
+            {% for item in topseller_banners %}
+            {% include "/templates/pages/homebanners.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- Banners below top sellers end -->
+
+<section class="best_sellercurosel_area section-padding" id="featuredProducts">
+    <div class="pd-15">
+        <div class="row" >
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="home-card">
+                <div class="headline">
+                    <h2>Featured Products</h2>
+                    <!-- <button type="button" class="btn btn-primary  home-btn">View More</button> -->
+                </div>
+                <div class="products-carousel">
+                    {% if featured_products %}
+                    {% for item in featured_products %}
+                    {% include "/templates/pages/homeproducts.html" %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banners below feature_products -->
+{% if featuredProducts_banners %}
+<section class="section-padding">
+    <div class="pd-15">
+        <div class="row">
+            {% for item in featuredProducts_banners %}
+            {% include "/templates/pages/homebanners.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- Banners below feature_products end -->
+{%if home_page_settings.featured_categories==1%}
+{% if featured_category %}
+<section>
+    <div class="home-card1 hidden-xs hidden-sm">
+         <div class="col-md-12 col-sm-12 col-xs-12 null-padding">
+                <div class="headline">
+                    <h2>Categories</h2>
+                    <!-- <button type="button" class="btn btn-primary home-btn1">View More</button> -->
+                </div>
+            </div>
+        <div class="row" >
+           
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                 <div class="">
+                <div class="row" style="margin: 0">
+                    {% for item in featured_category %}
+                    <div class="col-md-3 col-sm-4 col-xs-12 homeCategoryList">
+                        <div class="bg-w row" style="margin: 0;margin-bottom: 10px;">
+                            <div class="col-md-5 col-sm-4 col-xs-6 pad-10">
+                                <a href="/{{item.route}}">
+                                    <img src="{% if item.image %}{{item.image}}{% else %}{% if no_image %}{{no_image}}{% else %}/assets/cmswebsite/images/no-image-800x511.png{% endif %}{% endif %}">
+                                </a>
+                            </div>
+                            <div class="col-md-7 col-sm-8 col-xs-6 pad-10">
+                                <a href="/{{item.route}}">
+                                    <div class="cat-list">
+                                        <h6>{{item.item_group_name}}</h6>
+                                        {% if item.sublist %}
+                                        <div class="desc" title="{{item.sublist}}">{{item.sublist_short}}</div>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endif %}
+
+{%if not home_page_settings.featured_categories%}
+{% if featured_category %}
+                    {% for category in featured_category %}
+{%if category.products%}
+<section class="best_sellercurosel_area section-padding" id="category-products">
+    <div class="pd-15">
+        <div class="row" >
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="home-card">
+                <div class="headline">
+                    <h2>{{category.item_group_name}}</h2>
+                    <!-- <button type="button" class="btn btn-primary  home-btn">View More</button> -->
+                </div>
+                <div class="products-carousel">
+                    {% if category.products %}
+                    {% for item in category.products %}
+
+                    {% include "/templates/pages/homeproducts.html" %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+                    {% endif %}
+
+                    {% endfor %}
+
+                    {% endif %}
+                    {% endif %}
+
+<!-- Banners below feature_category -->
+{% if featuredCategory_banners %}
+<section class="section-padding">
+    <div class="pd-15" >
+        <div class="row">
+            {% for item in featuredCategory_banners %}
+            {% include "/templates/pages/homebanners.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- Banners below feature_category end -->
+
+{% if brands %}
+<section class="best_sellercurosel_area section-padding">
+    <div class="home-card3">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 null-padding">
+                <div class="headline">
+                    <h2>Brands</h2>
+                    <!-- <button type="button" class="btn btn-primary home-btn1">View More</button> -->
+                </div>
+                <div class="brand-list">
+                    {% for item in brands %}
+                    <div>
+                        <a href="/{{item.route}}">
+                            <img src="{% if item.image %}{{item.image}}{% else %}{% if no_image %}{{no_image}}{% else %}/assets/cmswebsite/images/no-image-800x511.png{% endif %}{% endif %}">
+                        </a>
+                        <div class="hot-wid-rating">
+                            <h4><a href="/{{item.route}}">{{item.brand}}</a></h4>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- NEWSLETTER-AREA -->
+<section id="newsletter-bg" class="newsletter_area section-padding">
+    <div class="newsletter-overlay">
+        <div class="container">
+            <div class="row" style="margin:0">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="subscribe-header">
+                        <h2><span class="font-b-3">Newsletter</span> <span class="font-b" style="color:#fff">Subscribe</span></h2>
+                        <div class="n_line"></div>
+                        <p>Subscribe to your mailing list to receive on new arrivals, special offers and other discount information.</p>
+                        <form class="form subscribe-form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="f-name" class="sr-only">Newsletter</label>
+                                    <input type="text" class="form-control" id="f-name" placeholder="Enter your email address">
+                                    <div class="input_icon">
+                                      <!--   <img src="/assets/cmswebsite/images/news.png" alt="#"> -->
+                                      <span class="lnr lnr-envelope font-24"></span>
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <button id="submit-newsletter" type="button">SUBMIT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="footer_top_area  footer-padding hidden-xs">
+    <div class="container-floud">
+        <div class="row" style="margin: 0;">
+            <!--        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="top-border"></div>
+                    </div> -->
+            <div class="col-sm-4 col-sm-4 col-xs-12">
+                <div class="footer_top_single">
+                    <i class="fa fa-plane"></i>
+                    <h4>Free Shipping on order over $1000</h4>
+                    <p>It's time to meet the Muppets on the Muppet Show tonight. And we know Flipper.</p>
+                </div>
+            </div>
+            <div class="col-sm-4 col-sm-4 col-xs-12">
+                <div class="footer_top_single">
+                    <i class="fa fa-gift"></i>
+
+                    <h4>unlimited gifts on every order</h4>
+                    <p>It's time to meet the Muppets on the Muppet Show tonight. And we know Flipper.</p>
+                </div>
+            </div>
+            <div class="col-sm-4 col-sm-4 col-xs-12">
+                <div class="footer_top_single">
+                    <i class="fa fa-exchange"></i>
+                    <h4>100% money back guarantee</h4>
+                    <p>It's time to meet the Muppets on the Muppet Show tonight. And we know Flipper.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.product-wid-price {
+  
+    min-height: 25px;
+}
+.hot-wid-rating h4{
+            font-size: 14px;
+          /*  min-height: 30px !important;*/
+        }
+.height-300{
+    max-height: 200px !important;
+    min-height: 200px !important;
+}
+.font-24{
+    font-size: 24px
+}
+        .pad-10{
+            padding: 10px;
+        }
+        .cat-list h6{
+            font-size: 15px;
+           
+        }
+        .brand-list.owl-carousel .owl-nav{
+            top: 16%;
+        }
+        .owl-carousel .owl-item img{
+                min-height: 120px;
+        }
+      /*  .owl-carousel .owl-item{
+                margin-right: 5px !important;
+        }*/
+        .owl-theme{
+                padding: 0px 10px !important;
+        }
+        .cat-list .desc{
+            font-size: 12px;
+            color: #8a8a8a;
+        }
+        .cat-list{
+            min-height: 84px;
+        }
+        .products-carousel h4{
+            text-align: left;
+        }
+        .hot-wid-rating{
+            min-height: 50px;
+        }
+        .brand-name{
+                display: none;
+        }
+        .home-card{
+                display: block;
+                background: #fff;
+                padding: 0px;
+                padding-bottom: 0px;
+                border: 1px solid #dedfe3 !important;
+                padding-bottom: 15px;
+                border-radius: 2px;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+
+        }
+        .home-card1{
+                display: block;
+                background: #fff;
+               /* padding: 15px;*/
+                padding-bottom: 0px;
+                border: 1px solid #dedfe3 !important;
+                padding-bottom: 15px;
+                margin: 5px 15px;
+                border-radius: 2px;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+        }
+        .home-card3{
+                display: block;
+                background: #fff;
+                padding: 0px 15px 10px 15px;
+                padding-bottom: 0px;
+                border: 1px solid #dedfe3 !important;
+                padding-bottom: 15px;
+                margin: 10px 15px;
+                border-radius: 2px;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+        }
+/*.owl-carousel .owl-nav{
+    display: none;
+}*/
+@media screen and (max-width: 767px){
+    .headline h2{
+        font-size: 18px;
+    }
+    .brand-list.owl-carousel .owl-nav{
+            top: 15%;
+    }
+  /*  .owl-carousel .owl-item{
+                margin-right: 20px !important;
+    }*/
+    .home-card3{
+            margin: 10px 5px;
+    }
+      .home-card1{
+            margin: 5px 5px;
+      }
+  /*  .owl-carousel .owl-nav{
+        top: -55px;
+    }*/
+   /* .owl-carousel .owl-prev{
+        padding: 0px 8px;
+    }*/
+   /* .owl-carousel .owl-next{
+        padding: 0px 8px;
+    }*/
+    .owl-carousel .hot-wid-rating h4{
+        font-size: 12px;
+    }
+    .section-padding .pd-15{
+            padding: 5px 5px;
+    }
+/*.main_slider{
+            height: 100px;
+}*/
+.page-section {
+/*    margin-top: 49px;*/
+        overflow-x: hidden;
+}
+/*.tp-banner-container
+{
+    width:100% !important;
+}*/
+.entire_header,#mobile_navbar {
+   
+    width: 100%;
+}
+body {
+    overflow: hidden;
+    width: 100%;
+}
+.subscribe-header form.form.subscribe-form div.form-group div.input-group input#f-name.form-control{
+    font-size: 15px;
+    padding-left: 35px;
+}
+.subscribe-form input{
+    height: 55px;
+}
+.subscribe-header .input_icon{
+    left: 9px;
+    top: 15px;
+}
+.subscribe-header .input_icon img{
+    height: 15px;
+}
+.subscribe-header .input-group-addon{
+    height: 55px;
+}
+.subscribe-header .input-group-addon button{
+    padding: 0px 8px;
+    font-size: 14px;
+}
+}
+.featured_category_mobile {
+        float: left;
+    width: 20%;
+    /* display: inline-block; */
+    text-align: center;
+    max-height: 60px;
+    overflow: hidden;
+    font-size: 1rem;
+    padding: 0 10px;
+    line-height: 15px;
+}
+.featured_category {
+    float: left;
+    width: calc(100% + 30px);
+    background: #fff;
+    margin-left: -15px;
+        padding: 8px 0;
+}
+.featured_category_mobile img {
+       height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 2px;
+    width: 30px;
+}
+.featured_category_mobile span
+{
+       width: 100%;
+    float: left;
+    white-space: normal;
+        margin-top: 3px;
+}
+.carousel-indicators {
+    bottom: 0;
+}
+.carousel-control{
+    top: 45%;
+    font-size: 13px;
+    width: 4%;
+}
+.carousel-control .fa{
+    padding: 15px;
+    background: #52525263;
+}
+.disabled{
+    background: #7da435a3 !important;
+    cursor: not-allowed;
+}
+@media screen and (min-width:767px) and (max-width:992px){
+    .carousel-control{
+        width: 6%;
+        top: 38%;
+    }
+}
+.slider-mobile
+{
+    display: none;
+}
+@media screen and (max-width:767px){
+    .logo_area
+{
+       max-height: 107px !important;
+}
+    .main_slider
+    {
+        display: none;
+    }
+    .slider-mobile
+    {
+        display: block !important;
+            margin-top: -5px;
+    }
+    .owl-carousel .owl-next ,.owl-carousel .owl-prev{
+    border: 1px solid #cccccc;
+    color: #cccccc;
+    display: inline-block;
+  
+    padding: 1px 10px;
+   
+    position: absolute;
+    height: 40px;
+    width: 35px;
+    border: 1px solid #dedfe3 !important;
+    color: inherit !important;
+    font-size: 18px;
+    padding-top: 9px;
+    padding-left: 0px;
+    background: #fff !important;
+    opacity: 0.8;
+}
+.col-xs-12 {
+    width: 100%;
+    padding-bottom: 5px;
+}
+    .home-page-header,.home-page-search
+{
+    display: block !important;
+}
+.all-page-header
+{
+    display: none !important;
+}
+.page-section {
+    margin-top: 104px !important;
+    overflow-x: hidden;
+}
+    .carousel-control{
+        top: 33%;
+        font-size: 8px;
+        width: 6%;
+    }
+    .carousel-control .fa{
+        padding: 6px;
+    }
+    .carousel-indicators li{
+        width: 6px;
+        height: 6px;
+    }
+    .carousel-indicators .active{
+        width: 8px;
+        height: 8px;
+    }
+    .homepage-template{
+        display: none;
+    } 
+}
+#myCarousel a.right.carousel-control, #myCarousel a.left.carousel-control {
+    background: #fff;
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    opacity: 1;
+    color: #222;
+}
+#myCarousel a.left.carousel-control {
+    left: 8%;
+}
+#myCarousel a.right.carousel-control {
+    right: 8%;
+}
+.main_slider .carousel-control {
+    top: 45%;
+    font-size: 13px;
+}
+
+</style>
+{% endblock %}
+{% block script %}
+<script src="/assets/cmswebsite/js/main.js"></script>
+<!-- <script>
+        {% include "templates/includes/addtocart.js" %}
+    </script> -->
+<script type="text/javascript">
+    function redirectSlider(e){
+        var url=$(e).attr('data-url')
+        if(url)
+            window.location.href=url;
+    }
+    $(document).ready(function(){
+        $("#main-slider").carousel();
+        get_homepage_data()
+        $('#submit-newsletter').click(function(){
+            var email=$('#f-name').val();
+            let allow=true;
+            if(email=='')
+                allow=false;
+            else{
+                if(!validate_email(email))
+                    allow=false;
+            }
+            if(allow){
+                $.ajax({
+                    type: 'POST',
+                    Accept: 'application/json',
+                    ContentType: 'application/json;charset=utf-8',
+                    url: window.location.origin + '/api/method/salespurchase.sales_and_purchase.api.newsletter_subscribe',
+                    data: { 'email': email },
+                    dataType: "json",
+                    async: false,
+                    headers:{
+                        'X-Frappe-CSRF-Token':'{{csrf_token}}'
+                    },
+                    success: function(data) {
+                        if (data.message) {
+                            $('#message_modal .modal-title').text(data.message.status);
+                            $('#message_modal .modal-body').html(data.message.msg)
+                            $('#message_modal').modal('show');
+                            $('#f-name').val('');
+                        }
+                    },
+                    error:function(data,xhr,code){
+                        console.log(data)
+                        console.log(xhr)
+                        console.log(code)
+                    }
+                })
+            }else{
+                $('#message_modal .modal-title').text('Alert');
+                $('#message_modal .modal-body').html('Please enter valid email')
+                $('#message_modal').modal('show');
+            }
+        })
+    })
+    function get_homepage_data(){
+        $.ajax({
+            type:'GET',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/salespurchase.sales_and_purchase.api.get_homepage_data',
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success:function(data){
+                if(data.message){
+                    construct_top_saver(data.message.top_savers)
+                    construct_featured_products(data.message.featured_products)                    
+                }
+            }
+        })
+    }
+    function construct_top_saver(data){
+        if(data.length>0){
+            var html=get_productHtml(data)            
+            $('#Deals .deals-carousel').html(html);
+            $('.deals-carousel').owlCarousel({
+                loop:true,
+                nav:true,
+                margin:20,  
+                navText:['<span class="lnr lnr-chevron-left"></span>','<span class="lnr lnr-chevron-right"></span>'], 
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                    },
+                    600:{
+                        items:4,
+                    },
+                    800:{
+                        items:5
+                    },
+                    1000:{
+                        items:6,
+                    }
+                }
+            });
+            check_price('.deals-carousel')
+        }else{
+            $('#Deals').hide();
+        }
+    }
+    function construct_featured_products(data){
+        if(data.length>0){
+            var html=get_productHtml(data);            
+            $('#featuredProducts .products-carousel').html(html)
+            $('#featuredProducts .products-carousel').owlCarousel({
+                loop:true,
+                nav:true,
+                margin:20,  
+                navText:['<span class="lnr lnr-chevron-left"></span>','<span class="lnr lnr-chevron-right"></span>'], 
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                    },
+                    600:{
+                        items:4,
+                    },
+                    800:{
+                        items:5,
+                    },
+                    1000:{
+                        items:6,
+                    }
+                }
+            }); 
+            $('#category-products .products-carousel').owlCarousel({
+                loop:true,
+                nav:true,
+                margin:20,  
+                navText:['<span class="lnr lnr-chevron-left"></span>','<span class="lnr lnr-chevron-right"></span>'], 
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                    },
+                    600:{
+                        items:4,
+                    },
+                    800:{
+                        items:5,
+                    },
+                    1000:{
+                        items:6,
+                    }
+                }
+            }); 
+            
+            check_price('.products-carousel')
+        }else{
+            $('#featuredProducts').hide()
+        }
+    }
+    function get_productHtml(data){
+        var html='';
+        var currency=$('#hdnCurrency').val();
+        $(data).each(function(k,v){
+            let has_variant=0;
+            if(v.variants && v.variants.length>0){
+                has_variant=1
+            }
+            html+='<div class="men-single"><div class="product-image"><a href="/'+v.route+'"><img src="';
+            if(v.image)
+                html+=v.image
+            else
+                html+='{{no_image}}';
+            html+='" alt="#"></a></div><input type="hidden" id="hdnIsVariant" value="'+has_variant+'" />'
+            html+='<div class="itemTag">';
+            if(v.pricing_rule && v.pricing_rule.title){
+                html+=v.pricing_rule.title;
+            }
+            html+='</div>';
+            html+='<div class="hot-wid-rating" data-item="'+v.name+'" data-item-name="'+v.item_name+'" data-price="'+v.standard_rate+'" data-image="'+v.image+'" data-stockItem="'+v.is_stock_item+'" style="margin-bottom: 0">';
+            // if(v.brand){
+            //     html+='<a href="/'+v.brand_route+'"><div class="brand-name">'+v.brand+'</div></a>';
+            // }
+            html+='<h4><a href="/'+v.route+'">'
+            if(v.item_name.length>30)
+                html+=v.item_name.substring(0, 30)+'...'
+            else
+                html+=v.item_name
+            html+='</a></h4>';
+            if(has_variant==1){
+                html+='<select id="variant" class="form-control" onchange="selectVariant(this)">';
+                $(v.variants).each(function(key,val){
+                    html+='<option value="'+val.name+'" data-name="'+val.item_name+'" data-price="'+val.standard_rate+'" data-qty="'
+                    if(val.stock_qty && val.stock_qty[0]){
+                        html+=val.stock_qty[0][0]
+                    }
+                    html+='" data-uom="'+val.uom+'" data-stockItem="'+val.is_stock_item+'">'+val.item_name+'</option>';                    
+                })
+                html+='</select>'
+                $(v.variants).each(function(key,val){
+                    html+='<div class="product-wid-price clearfix product-variant" style="display: none;" data-variant="'+val.name+'" data-standardRate="'+val.standard_rate+'"'
+                    if(val.pricing_rule){
+                        html+=' data-priceRule="'+val.pricing_rule.title+'" data-priceType="'+val.pricing_rule.price_or_discount+'" data-discountPercent="'+val.pricing_rule.discount_percentage+'" data-discountAmount="'+val.pricing_rule.discountPrice+'" '
+                    }
+                    html+='>'
+                    if(val.price){
+                        if(parseFloat(val.price.price_list_rate)==val.standard_rate){
+                            html+='<ins>'+val.price.formatted_price+'</ins>'
+                        }else{
+                            html+='<ins>'+val.price.formatted_price+'</ins>\
+                            <del>'+currency+' '+parseFloat(val.standard_rate)+'</del>'
+                        }
+                        html+='<input type="hidden" id="hdnProductRate" value="'+val.price.price_list_rate+'" />'
+                    }else{
+                        html+='<ins>'+currency+' '+val.standard_rate+'</ins>\
+                        <input type="hidden" id="hdnProductRate" value="'+val.standard_rate+'" />'
+                    }
+                    html+='</div>';
+                })
+            }else{
+                html+='<div class="product-wid-price clearfix">';
+                html+=' <input type="hidden" name="stockUom" id="stockUom" value="'+v.uom+'">';
+                html+='   <input type="hidden" name="availStock" id="availStock" value="';
+                if(v.is_stock_item){
+                    if (v.in_stock==1 && v.stock_qty!=null && v.stock_qty!=undefined ){
+                        html+=v.stock_qty[0][0];
+                    } else {
+                        html+='0';
+                    }
+                }else{
+                    html+='0';
+                }                    
+                html+='" />'
+                html+='<input type="hidden" name="hdnImage" id="hdnImage" value="'+v.image+'" />';
+                if(v.price){
+                    if(parseFloat(v.price.price_list_rate)==parseFloat(v.standard_rate)){
+                        html+='<ins>'+v.price.formatted_price+'</ins>'
+                    }else{
+                        html+='<ins>'+v.price.formatted_price+'</ins><del>'+currency+' '+parseFloat(v.standard_rate).toFixed(2)+'</del><input type="hidden" id="hdnProductRate" value="'+v.price.price_list_rate+'" />'
+                    }
+                }else{
+                    html+='<ins>'+currency+' '+parseFloat(v.standard_rate).toFixed(2)+'</ins><input type="hidden" id="hdnProductRate" value="'+v.standard_rate+'" />';
+                }
+                html+='<div class="col-xs-4 col-sm-4" style="display: none;">\
+                <input type="text" step="1" value="1" title="Qty" class="form-control" name="newCartQty" id="cartQty"></div>';
+                html+='</div>';
+            }
+            let disabled_cls=''
+            if(has_variant){
+                if(!v.variant_stock)
+                    disabled_cls=' disabled';
+            }else{
+                if(!v.in_stock){
+                    disabled_cls=' disabled'
+                }
+            }
+            html+=' <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="text-align: center;padding:0">\
+            <a class="btn btn-primary btn-block'+disabled_cls+'" onclick="addtocart1(this)"><span class="lnr \lnr-cart font-c"></span> <span class="list-bt">Add to Cart</span></a>\
+            </div></div></div>';
+        })
+        return html;
+    }
+function addtocart1(e) {
+    var isVariant = $(e).parent().parent().parent().find('#hdnIsVariant').val();
+    var disabled = $(e).find('a').attr('disabled')
+    var stockItem=''
+    if (disabled != "disabled") {
+        var item = {};
+        var current_qty = '';
+        if (isVariant == "1") {
+            item.item_code = $(e).parent().parent().find('#variant').val();
+            item.rate = parseFloat($(e).parent().parent().find('div[data-variant="' + item.item_code + '"] #hdnProductRate').val());
+            item.uom = $(e).parent().parent().find('#variant option:selected').attr('data-uom');
+            item.item_name = $(e).parent().parent().find('#variant option:selected').attr('data-name');
+            current_qty = $(e).parent().parent().find('#variant option:selected').attr('data-qty');
+            stockItem = $(e).parent().parent().find('#variant option:selected').attr('data-stockItem');
+            // item.image_view = $(e).parent().parent().parent().find('div[data-variant="' + item.item_code + '"] #hdnImage').val()
+            // window.location.href=$(e).parent().parent().parent().find('a:eq(0)').attr('href')
+            // return;
+        } else {
+            item.item_code = $(e).parent().parent().parent().find('.hot-wid-rating').attr('data-item')
+            stockItem = $(e).parent().parent().parent().find('.hot-wid-rating').attr('data-stockItem')
+            item.rate = parseFloat($(e).parent().parent().parent().find('#hdnProductRate').val())
+            item.item_name = $(e).parent().parent().parent().attr('data-item-name')
+            current_qty = $(e).parent().parent().parent().find('#availStock').val();
+            item.uom = $(e).parent().parent().parent().find('#stockUom').val();
+            item.image_view = $(e).parent().parent().parent().find('#hdnImage').val()
+        }
+        // item.qty = parseFloat($(e).parent().parent().find('#cartQty').val())
+        item.qty=1;
+        item.stock_uom = item.uom;
+        var qty = 0;
+        $('.qtyErr').hide();
+        var allow=false;
+        if(stockItem=='1'){
+            if(parseInt(current_qty) >= parseInt(item.qty)){
+                allow=true;
+            }else{
+                allow=false;
+            }
+        }else{
+            allow=true;
+        }
+        if (allow) {
+            if (item.qty > 0) {
+                var productscart = JSON.parse(localStorage.getItem('productscart'));
+                var cartdata = {};
+                var total_price = 0;
+                cartdata.reference = 'Item';
+                var items = [];
+                var added = false;
+                var qtyErr = false;
+                if (qtyErr) {
+                    var html = 'Sorry! Only ' + parseInt(current_qty) + ' is available.';
+                    $('#message_modal .modal-title').text('Alert');
+                    $('#message_modal .modal-body').html(html)
+                    $('#message_modal').modal('show');
+                } else {
+                    item.amount = item.qty * item.rate;
+                    item.price_list_rate = item.rate;
+                    item.base_price_list_rate = item.rate;
+                    item.base_rate = item.rate;
+                    item.net_rate = item.rate;
+                    item.base_net_rate = item.rate;
+                    item.base_amount = item.amount;
+                    item.net_amount = item.amount;
+                    item.base_net_amount = item.amount;
+                    item.description = item.item_name;
+                    item.warehouse = "Reserved Warehouse - S";
+                    total_price += item.amount;
+                    if (!added)
+                        items.push(item);
+                    cartdata.items = items;
+                    cartdata.total_price = total_price;
+                    cartdata.sales_tax = 0;
+                    cartdata.order_total_amount = total_price;
+                    insert_cartitem(item.item_code,parseInt(item.qty),parseFloat(item.rate),'Cart')
+                }
+            } else {
+                $('.qtyErr').show();
+            }
+        } else {
+            var html = 'Sorry! Only ' + current_qty + ' is available.';
+            $('#message_modal .modal-title').text('Alert');
+            $('#message_modal .modal-body').html(html)
+            $('#message_modal').modal('show');    
+        }
+    }
+}
+function insert_cartitem(item_code, qty, rate, cartType) {
+    let qty_type='';
+    if(cartType!='Wishlist')
+        qty_type='add'
+    $.ajax({
+        type: 'POST',
+        Accept: 'application/json',
+        ContentType: 'application/json;charset=utf-8',
+        url: window.location.origin + '/api/method/salespurchase.sales_and_purchase.api.insert_cartItems',
+        data: { 'item_code': item_code, 'cartType': cartType, 'qty': qty, 'rate': rate, 'qty_type': qty_type },
+        dataType: "json",
+        async: false,
+        headers:{
+            'X-Frappe-CSRF-Token':'{{csrf_token}}'
+        },
+        success: function(data) {
+            if (data.message) {
+                if (data.message.status == 'failed') {
+                    $('#message_modal .modal-title').text('Alert');
+                    $('#message_modal .modal-body').html(data.message.message)
+                    $('#message_modal').modal('show');                    
+                } else {
+                    $('.cartCount').text(qty);
+                    getAdminCartData();                
+                    if(cartType=='Wishlist')
+                        showCartSlider('wish')
+                    else
+                        showCartSlider('cart')                    
+                }
+            }
+        }
+    })
+}
+function check_price(cls) {
+    $(cls).find('.men-single').each(function(){
+        var me=this;
+        var variant=$(me).find('#hdnIsVariant').val();
+        if(variant=="1"){
+            var selected_variant=$(me).find('#variant').val();
+            $(me).find('div[data-variant="'+selected_variant+'"]').show();
+            if($(me).find('div[data-variant="'+selected_variant+'"]').attr('data-priceRule')){
+                var div=$(me).find('div[data-variant="'+selected_variant+'"]');
+                var price_type=$(div).attr('data-priceType');
+                var discount_percent=$(div).attr('data-discountPercent');
+                var discount_amount=$(div).attr('data-discountAmount');
+                var html=''
+                var pricerule=$(div).attr('data-priceRule')
+                if(price_type=='Price'){
+                    var actual=$(div).attr('data-standardRate')
+                    var diff=parseFloat(actual)-parseFloat(discount_amount)
+                    html='Flat '+currency+' '+parseFloat(diff).toFixed(2)+' Off';
+                }else{
+                    html=parseInt(discount_percent)+'% Off'
+                }
+                $(me).find('.itemTag').text(html);
+            }
+        }
+    })
+}
+function selectVariant(e) {
+    var variant = $(e).val();
+    $(e).parent().find('.product-wid-price').hide();
+    $(e).parent().find('div[data-variant="' + variant + '"]').show()
+}
+</script>
+{% endblock %}

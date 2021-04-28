@@ -1,0 +1,987 @@
+ {% extends "templates/layout/customweb.html" %}
+ {% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+<div class="page-card-1">
+  <div class="forgetpassword-panel">
+ <div class="sign-in-left-panel" style="" id="existingUserLogin">
+  <div class="panel-content">
+    <h2>Forget Password?</h2>
+     <div class="form-group">
+     <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+      <input id="FgtPwdMail" type="email" value="" class="form-control" placeholder="Enter Email" required="">
+                                       
+    </div>
+     <span class="error usrErr" style="display: none;">
+<span class="icon">!</span>
+     Please enter valid email.</span>
+        <span class="invalid-register" id="invalid-register">Entered email id does not exist.</span>
+
+                                       <button type="button" onclick="SendFgtPwdMail()" class="buy-now-btn-desktop" id="ForgetBtn">Submit</button>
+                                 <button type="button" onclick="backlogin()" class="btn btn-danger forget-danger buy-now-btn-desktop">Cancel</button>
+                                
+                                      <a class="buy-now-btn-desktop mobilebtn" onclick="newUser()">Sign Up</a>
+       </div>
+      
+                                   
+                                   
+                                </div>
+</div>
+<div class="sign-in-right-panel" style="padding: 0;width: 308px;">
+    <div class="login-left-panel"> 
+    <div class="panel-right-content">
+    <h2 style="margin-top: 0;color: #000;">Hello Friend !</h2><p>
+    Enter your personal details to journey with us.
+</p>
+
+<a class="buy-now-btn-desktop" onclick="newUser()">Sign Up</a>
+</div></div></div>
+</div>
+  <div class="sign-panel">
+ <div class="sign-in-left-panel" style="" id="existingUserLogin">
+  <div class="panel-content">
+    <h2>Sign in to D.Haus</h2>
+     <div class="form-group">
+     <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+      <input id="LoginEmail" type="email" value="" class="form-control" placeholder="Enter Email" required="">
+                                       
+    </div>
+     <span class="error usrErr" style="display: none;">
+<span class="icon">!</span>
+     Please enter email.</span>
+       </div>
+        <div class="form-group">
+     <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock" style="font-size: 17px;"></i></span>
+       <input id="LoginPassword" type="password" value="" class="form-control" placeholder="Enter Password" required="">
+       <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+        </div>
+                                        <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter password.</span>
+                                        
+    </div>
+                                   
+                                    <div class="form-group">
+                                        
+                                       
+                                        <a class="forget-link" onclick="OpenForgetPassword()" >Forget Password?</a>
+<div class="col-md-12" style="padding: 0px;text-align: center;display: block; float: left; width: 100%;" id="existingUserLoginBtns">
+                                        <span class="errormessage" id="LoginError">Invalid email or password.</span>
+
+                                      <button type="button" onclick="loginUser()" class="buy-now-btn-desktop" id="LoginBtn">Sign In</button>
+                                      <!-- <a class="signin buy-now-btn-desktop" href="/register?return=checkout">Sign Up</a> -->
+                                      <a class="buy-now-btn-desktop mobilebtn" onclick="newUser()">Sign Up</a>
+                                      
+                                      
+                                </div>
+                                    </div>
+                                </div>
+</div>
+<div class="sign-in-right-panel" style="padding: 0;width: 308px;">
+    <div class="login-left-panel"> 
+    <div class="panel-right-content">
+    <h2 style="margin-top: 0;color: #000;">Hello Friend !</h2><p>
+    Enter your personal details to journey with us.
+</p>
+
+<a class="buy-now-btn-desktop" onclick="newUser()">Sign Up</a>
+</div></div></div>
+</div>
+ <div class="col-md-12" style="padding:0;float: none;">
+ <div id="newUserRegistration" style="display: none;">
+  <div class="sign-in-right-panel" style="padding: 0;width: 308px;">
+    <div class="login-left-panel"> 
+    <div class="panel-right-content">
+    <h2 style="margin-top: 0;color: #000;">Welcome Back</h2><p>
+    To keep connected with us please login with your person info.
+</p>
+
+<a class="buy-now-btn-desktop"  onclick="backlogin()">Sign In</a>
+</div></div></div>
+<div class="sign-in-left-panel">
+<div class="panel-content">
+    <h2>Create Account</h2>
+                                  <div class="col-md-12" style="padding:0;float: none;">
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user"  ></i></span>
+                                        
+                                        <input id="RegisterFirstname" type="text" value="" class="form-control" placeholder="Enter First Name" required="">
+                                      </div>
+                                        <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter first name.</span>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user"  ></i></span>
+                                        
+                                        <input id="RegisterLastname" type="text" value="" class="form-control" placeholder="Enter Last Name" required="">
+                                      </div>
+                                        <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter last name.</span>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-envelope"  ></i></span>
+                                        <input id="RegisterEmail" type="email" value="" class="form-control" placeholder="Enter Email" required="">
+                                      </div>
+                                        <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter valid email.</span>
+                                    </div>
+                                     <div class="form-group">
+                                          <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-phone"  ></i></span>
+                                          <input id="Registermobile" type="text" value="" class="form-control" placeholder="Enter Phone Number" required="">
+                                        </div>
+                                          <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter phone number.</span>
+                                      </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-lock" style="font-size: 17px"  ></i></span>
+                                        <input id="RegisterPassword" type="password" value="" class="form-control" placeholder="Enter Password" required="">
+                                      </div>
+                                        <span class="error usrErr" style="display: none;"><span class="icon">!</span>Please enter password.</span>
+                                         <span class="error invalid-pwd" style="display: none;"><span class="icon">!</span>Include symbols, numbers and capital letters in the password and must be minimum 8 characters length.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-lock" style="font-size: 17px"  ></i></span>
+                                        <input id="SignupcnfrmPwd" type="password" value="" class="form-control" placeholder="Confirm Password" required="">
+                                      </div>
+                                                                                 <span class="error pwd-fill-err" style="display: none;"><span class="icon">!</span>Please enter your password.</span>
+                                              <span class="error pwd-cnfrm-err" style="display: none;"><span class="icon">!</span>Your password didn't match with your confirm password.</span> 
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12" style="padding: 0px; float: none; text-align: center; " id="newUserRegistrationBtns">
+                                   <span class="error" id="RegisterError"> </span>
+                                      <a class="signin buy-now-btn-desktop" onclick="registerUser()"  id="UserRegisterBtn">Submit</a>
+                                     <a class="buy-now-btn-desktop mobilebtn"  onclick="backlogin()">Back</a>
+                                </div>
+                                </div>
+                                
+                                
+                              </div>
+                            </div>
+                          </div>
+                           </div>
+   <!-- <div id="forgot_pwd_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="z-index: 1050;max-width: 365px;">
+            <div class="modal-content forgotModal forgotpswd">
+                <div class="modal-header" style="display: none;">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 style="
+    font-size: 17px;
+">Forgot your password?</h5>
+                            
+                            <div>
+                                <div class="form-group">                                       
+                                    <input id="FgtPwdMail" type="email" value="" class="form-control" placeholder="Enter Email" required="">
+                                    <span class="error usrErr">Please enter valid email.</span>
+                                    <span class="error invalid-email">Entered email id does not exist.</span>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="col-md-12">
+                            <div style="
+    text-align: center;
+">
+                                <button type="button" onclick="SendFgtPwdMail()" class="btn btn-primary primary">Submit</button>
+                                 <button type="button" onclick="CloseModal()" class="btn btn-danger forget-danger">Cancel</button>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>                     
+            </div>
+        </div>
+    </div>    -->                        
+ <script src="https://code.jquery.com/jquery-latest.js"></script>  
+<script type="text/javascript">
+
+ 
+  function validate_forget_form()
+  {
+    var returnValue=true;
+     if($('#FgtPwdMail').val()=="")
+      {
+        $('#FgtPwdMail').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#FgtPwdMail').parent().parent().find('.usrErr').hide(); }, 3000);
+        returnValue=false;
+      }
+      if ($('#FgtPwdMail').val()!="")
+      {
+        if(!validateEmail($('#FgtPwdMail').val()))
+        {
+          $('#FgtPwdMail').parent().parent().find(".usrErr").show();
+            setTimeout(function(){ $('#FgtPwdMail').parent().parent().find('.usrErr').hide(); }, 3000);
+          returnValue=false;
+        }
+      }
+      return returnValue;
+  }
+  function SendFgtPwdMail()
+  {
+     if(validate_forget_form()){
+      $("#ForgetBtn").attr("disabled","disabled");
+       $("#ForgetBtn").text("Loading...");
+
+       $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/frappe.core.doctype.user.user.reset_password',
+            data: { 'user': $('#FgtPwdMail').val()},
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data) {
+                if(data.message!='not found'){
+                    $("#ForgetBtn").removeAttr("disabled");
+                  $("#ForgetBtn").text("Submit");
+                  $('#FgtPwdMail').val('');
+                    $('#message_modal .modal-title').text('Success');
+                    $('#message_modal .modal-body').html('Password reset link have been sent to your email address.')
+                    $('#message_modal').modal('show');
+                }else{
+                    $('#invalid-register').show();
+                      $("#ForgetBtn").removeAttr("disabled");
+                  $("#ForgetBtn").text("Submit");
+                    setTimeout(function(){ $('#invalid-register').hide(); }, 3000);
+                }
+            },
+            error: function(xhr, text, data) {
+                 $("#ForgetBtn").removeAttr("disabled");
+                  $("#ForgetBtn").text("Submit");
+                var html = xhr.responseJSON._server_messages;
+                var msg=JSON.parse(html);
+                $('.invalid-register span').text(JSON.parse(msg[0]).message)
+                $(".invalid-register").show();
+                  setTimeout(function(){ $('#invalid-register').hide(); }, 3000);
+            }
+        });
+     }
+  }
+  $(document).ready(function(){
+    $("#LoginEmail").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+
+    });
+      $("#LoginPassword").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+
+    });
+        $("#RegisterFirstname").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+
+    });
+          $("#RegisterLastname").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+
+    });
+            $("#RegisterEmail").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+       $(this).parent().parent().find(".emailErr").hide();
+
+    });
+     $("#Registermobile").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+
+    });
+      $("#RegisterPassword").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+      $(this).parent().parent().find(".invalid-pwd").hide();
+      
+    });
+     $("#FgtPwdMail").keyup(function(){
+      $(this).parent().parent().find(".usrErr").hide();
+       $(this).parent().parent().find(".invalid-email").hide();
+       $('#invalid-register').hide();
+    });
+    $("#LoginPassword").keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          loginUser();
+        }
+       event.stopPropagation();
+     });
+    $("#RegisterPassword").keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          registerUser();
+        }
+       event.stopPropagation();
+     });
+    $('#Registermobile').on('keydown',function(e){
+      KeyDown(e);
+    })
+  });
+  function registerUser() {
+    var formData = {};
+    formData.first_name = $('#RegisterFirstname').val();
+    formData.last_name = $('#RegisterLastname').val();
+    formData.customer_name = $('#RegisterFirstname').val()+' '+$('#RegisterLastname').val();
+    formData.email_id = $('#RegisterEmail').val();
+    formData.mobile = $('#Registermobile').val();
+    formData.new_password = $('#RegisterPassword').val();
+    // formData.select_ctr= $('#select_ctr').val();
+    if (validate_register_form()) {
+      $("#UserRegisterBtn").attr("disabled","disabled");
+      $("#UserRegisterBtn").text("Loading...");
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.insert_newcustomer',
+            data: {'data':JSON.stringify(formData)},
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data) {
+                // placeOrder();
+                loginusers(formData.email_id,formData.new_password,true);
+            },
+            error: function(xhr, text, data) {
+                if(xhr.status == 409){
+                    alert("Email-ID already registered")
+                }
+                $("#UserRegisterBtn").text("Submit");
+                var d = JSON.parse(xhr.responseJSON._server_messages)
+                var msg = JSON.parse(d)
+                var html = msg.message;
+                // $('#message_modal .modal-title').text('Alert');
+                // $('#message_modal .modal-body').html(html)
+                // $('#message_modal').modal('show');
+                $("#RegisterError").html(html);
+                $("#RegisterError").show();
+                $("#UserRegisterBtn").text("Submit");
+                $("#UserRegisterBtn").removeAttr("disabled");
+                setTimeout(function(){ $("#RegisterError").hide() }, 3000);
+
+            }
+        })
+    }  
+    else
+    {
+    $("#UserRegisterBtn").text("Submit");
+      $("#UserRegisterBtn").removeAttr("disabled");
+    }  
+}
+function validatepwd(pwd){
+    if(pwd.length<8){
+    return false;
+  }
+  var up_case=/[A-Z]+/;
+  if(!up_case.test(pwd)){
+    return false;
+  }
+  var l_case=/[a-z]+/;
+  if(!l_case.test(pwd)){
+    return false;
+  }
+  var special=/([!,%,&,@,#,$,^,*,?,_,~])/;
+  if(!special.test(pwd)){
+    return false;
+  }
+  var num=/[0-9]+/;
+  if(!num.test(pwd)){
+    return false;
+  }
+  return true;
+}
+
+function validate_register_form()
+{
+  var returnValue=true;
+    
+      if($('#RegisterFirstname').val()=="")
+      {
+        $('#RegisterFirstname').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#RegisterFirstname').parent().parent().find('.usrErr').hide(); }, 3000);
+
+       return false;
+      }
+       if($('#RegisterLastname').val()=="")
+      {
+        $('#RegisterLastname').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#RegisterLastname').parent().parent().find('.usrErr').hide(); }, 3000);
+
+       return false;
+      }
+       if($('#RegisterEmail').val()=="")
+      {
+        $('#RegisterEmail').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#RegisterEmail').parent().parent().find('.usrErr').hide(); }, 3000);
+
+        return false;
+      }
+      if ($('#RegisterEmail').val()!="")
+      {
+        if(!validateEmail($('#RegisterEmail').val()))
+        {
+        $('#RegisterEmail').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#RegisterEmail').parent().parent().find('.usrErr').hide(); }, 3000);
+
+       return false;
+        }
+      }
+       if($('#Registermobile').val()=="")
+      {
+        $('#Registermobile').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#Registermobile').parent().parent().find('.usrErr').hide(); }, 3000);
+
+        return false;
+      }
+      
+       if($('#RegisterPassword').val()=="")
+      {
+        $('#RegisterPassword').parent().parent().find(".usrErr").show();
+          setTimeout(function(){ $('#RegisterPassword').parent().parent().find('.usrErr').hide(); }, 3000);
+
+       return false;
+      }
+
+      if ($('#RegisterPassword').val()!="")
+      {
+        let pwd=$("#RegisterPassword").val();
+        let check_pwd=validatepwd(pwd)
+        if(check_pwd!=true)
+        {
+         
+            $('#RegisterPassword').parent().parent().find('.invalid-pwd').show();
+          setTimeout(function(){ $('#RegisterPassword').parent().parent().find('.invalid-pwd').hide(); }, 3000);
+
+          return false;
+        }      
+      }
+      if($('#SignupcnfrmPwd').val()=="")
+      {
+        $('#SignupcnfrmPwd').parent().parent().find(".pwd-fill-err").show();
+          setTimeout(function(){ $('#SignupcnfrmPwd').parent().parent().find('.pwd-fill-err').hide(); }, 3000);
+
+       return false;
+      }
+       else {
+            let cnfmpwd = $('#SignupcnfrmPwd').val();
+            if (!signincnfrmpwd(cnfmpwd)) {
+                returnValue = false;
+                $('#SignupcnfrmPwd').parent().parent().find(".pwd-cnfrm-err").show();
+                setTimeout(function(){ $('#SignupcnfrmPwd').parent().parent().find('.pwd-cnfrm-err').hide(); }, 3000);
+            }
+        }
+      return returnValue;
+}
+function signincnfrmpwd(cnfrmpwd) {
+    var regpassword = $("#RegisterPassword").val();
+    if (regpassword != cnfrmpwd) {
+        return false
+    } else {
+        return true
+    }
+}
+  function newUser()
+  {
+    $(".sign-panel").hide();
+    $("#newUserRegistration").show();
+    $("#newUserRegistrationBtns").show();
+    $("#existingUserLoginBtns").hide();
+    $(".usrErr").hide();
+    $(".emailErr").hide();
+    $(".invalid-pwd").hide();
+    $("#newUserRegistration input").val('');
+    $("#existingUserLogin input").val('');
+    $(".forgetpassword-panel").hide();
+    // $(".page-card").css("height","530px")
+    
+  }
+    function OpenForgetPassword()
+  {
+    $(".forgetpassword-panel").show();
+     
+    $(".sign-panel").hide();
+    $("#newUserRegistration").hide();
+    $("#newUserRegistrationBtns").show();
+    $("#existingUserLoginBtns").hide();
+    $(".usrErr").hide();
+    $(".emailErr").hide();
+    $(".invalid-pwd").hide();
+    $("#newUserRegistration input").val('');
+    $("#existingUserLogin input").val('');
+  }
+  function backlogin()
+  {
+     $(".forgetpassword-panel").hide();
+    $("#newUserRegistration input").val('');
+    $("#existingUserLogin input").val('');
+    $(".usrErr").hide();
+    $(".emailErr").hide();
+    $(".invalid-pwd").hide();
+    $("#existingUserLogin").show();
+    $("#newUserRegistration").hide();
+    $("#newUserRegistrationBtns").hide();
+    $("#existingUserLoginBtns").show();
+    // $(".page-card").css("height","280px")
+     $(".sign-panel").show();
+    $("#newUserRegistration").hide();
+  }
+  function loginUser() {
+    var username = $('#LoginEmail').val();
+    var password = $('#LoginPassword').val();
+    $('.usrErr').hide();
+    $('.pwdErr').hide();
+    if (validate_login()) {
+      $("#LoginBtn").attr("disabled","disabled");
+       $("#LoginBtn").text("Loading...");
+
+       
+      loginusers(username,password,true)
+    }
+}
+function validate_login()
+{
+   if ($('#LoginEmail').val() == '')
+   {
+      $('#LoginEmail').parent().parent().find('.usrErr').show();
+      setTimeout(function(){ $('#LoginEmail').parent().parent().find('.usrErr').hide(); }, 3000);
+
+      return false;
+   }
+    if ($('#LoginPassword').val() == '')
+    {
+        $('#LoginPassword').parent().parent().find('.usrErr').show();
+      setTimeout(function(){ $('#LoginPassword').parent().parent().find('.usrErr').hide(); }, 3000);
+
+        return false;
+    }
+    return true;
+}
+function loginusers(username, password, reload) {
+  var formData={'cmd': 'login',
+                'usr': username,
+                'pwd': password,
+                'device': 'desktop',
+  }
+    $.ajax({
+        type: 'POST',
+        Accept: 'application/json',
+        ContentType: 'application/json;charset=utf-8',
+        url: window.location.origin,
+        data: formData,
+        dataType: "json",
+        async: false,
+        headers:{
+            'X-Frappe-CSRF-Token':'{{csrf_token}}'
+        },
+        success: function(data) {
+           
+            window.location.href =data.home_page;
+        },
+         error: function(xhr, text, data) {
+          console.log('error')
+          $("#LoginBtn").text("Sign In");
+          $("#LoginBtn").removeAttr("disabled");
+
+          $("#LoginError").show();
+          setTimeout(function(){ $("#LoginError").hide() }, 3000);
+
+        }
+      });
+    }
+    function validateEmail(value){
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+        if (reg.test(value) == false) 
+        {
+        
+            return false;
+        }
+
+        return true;
+
+}
+$(".toggle-password").click(function() {
+
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var x = document.getElementById("LoginPassword");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+});
+</script>
+<style>
+  .field-icon {
+  float: right;
+  padding-right: 10px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+}
+  .forgetpassword-panel{
+    display: none;
+    float: left;
+    border: 1px solid #ddd;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.23);
+  }
+  .input-group {
+    position: relative;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+.form-group {
+  margin-bottom: 5px;
+      position: relative;
+  }
+.sign-in-left-panel
+{
+  padding: 0px;background: #fff;width: 430px;float: left;
+}
+.sign-in-right-panel
+{
+    /*border: 1px solid #aaa;*/
+    background: #f0f0f0;
+    padding: 0;
+    width: 308px;
+float: left;
+}
+#newUserRegistration .sign-in-right-panel{
+  border-right: 1px solid #ddd;
+}
+.sign-panel .sign-in-right-panel{
+  border-left: 1px solid #ddd;
+}
+.forgetpassword-panel .sign-in-right-panel{
+  border-left: 1px solid #ddd;
+}
+.panel-content
+{
+    
+    padding: 100px 35px;
+    text-align: center;
+    width: 350px;
+    margin: 0 auto;
+    /* float: left; */
+    min-height: 459px;
+}
+#newUserRegistration .panel-content
+{
+    
+    padding: 51px 35px;
+    text-align: center;
+    width: 350px;
+    margin: 0 auto;
+}
+.panel-right-content
+{
+   text-align: center;
+    width: 220px;
+    margin: 0 auto;
+}
+.panel-content h2
+{
+  color: #af1a31;font-size: 24px
+}
+
+  .forget-danger
+{
+  
+    display: inline-block;
+    border-radius: 2px;
+    color: #fff !important;
+    padding: 7px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: box-shadow .2s ease;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    border: none;
+    line-height: 23px;
+    vertical-align: super;
+ 
+}
+
+
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+    display: none;
+}
+  .page-card {
+    max-width: 360px;
+    padding: 15px;
+    margin: 30px auto;
+    border: 1px solid #d1d8dd;
+    border-radius: 4px;
+    background-color: #fff;
+    /*height: 280px;*/
+}
+.form-control{
+  height:40px;
+  background: #f8f8f8;
+    border-radius: 0px;
+}
+.sign-panel{
+    float: left;
+    border: 1px solid #ddd;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.23);
+}
+.page-head {
+    background: #af1a31;
+    color: #fff;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-top: -15px;
+    border-radius: 3px 3px 0 0;
+    padding: 8px 15px;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+.buy-now-btn-desktop {
+  color: #ffffff;
+    display: block;
+    font-size: 14px;
+    /* font-weight: 600; */
+    /* height: 40px; */
+    padding-top: 12px;
+    width: auto;
+    border: 1px solid #aa3b2d;
+    font-family: inherit;
+    /* width: 100%; */
+    /*font-family: 'font-bold';*/
+    /* float: left; */
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 7px 20px;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    margin-bottom: 15px;
+        margin-top: 15px;    border-radius: 0;
+    box-shadow: none;
+    vertical-align: baseline;
+}
+.buy-now-btn-desktop:focus
+{
+  color:#fff;
+}
+.input-group .fa
+{
+  font-size: 12px;
+}
+#newUserRegistration,#newUserRegistrationBtns,#LoginError,#RegisterError {
+    display: none;
+}
+#LoginError,#RegisterError
+{
+  width: 100%;
+    float: left;
+    margin-bottom: 10px;
+}
+.forget-link {
+       width: 100%;
+    color: #337ab7;
+    font-family: 'font-bold';
+    font-size: 14px;
+    /* text-align: right; */
+    float: left;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.login-left-panel .buy-now-btn-desktop
+{
+   border: 1px solid #fff;
+    background: #fff;
+    color: #af1a31;
+}
+.page-card-1 {
+    max-width: 740px;
+    padding: 0;
+    margin: 30px auto;
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+}
+.login-left-panel {
+    /*background-image: url("/assets/cmswebsite/images/login-bg-Green-1.png");*/
+    min-height: 450px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #000;
+    padding: 165px 15px;
+    text-align: center;
+    width: 100%;
+    float: left;
+    margin-bottom: 30px;
+        background-repeat: no-repeat;
+    background-size: cover;
+}
+span.input-group-addon {
+    padding: 6px 9px !important;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #f4f8f7;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    height: auto;
+    border-right: none;
+}
+.error {
+    display: none;
+ color: #6a6969;
+    text-align: left;
+    width: 100%;
+    float: left;
+    margin-bottom: 5px;
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    padding: 10px 10px;
+    border: 1px solid #c3c3c3;
+    min-width: 200px;
+    border-radius: 5px;
+    max-width: 250px;
+    right: 0;
+}
+span.icon {
+    background: orange;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: 14px;
+    font-family: 'font-bold';
+    margin-right: 5px;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    border-left: none;
+    padding-left: 0;
+}
+.error:after, .error:before {
+    bottom: 100%;
+    left: 18%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.error:after {
+    border-color: rgba(136, 183, 213, 0);
+    border-bottom-color: #fff;
+    border-width: 8px;
+    margin-left: -8px;
+}
+.error:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-bottom-color: #c3c3c3;
+    border-width: 9px;
+    margin-left: -9px;
+}
+.errormessage,.invalid-register
+{
+  color: red;
+  display: none;
+}
+.invalid-register{
+  text-align: left;
+    float: left;
+}
+.input-group-addon:hover {
+    background: #f4f8f7;
+    border-color: #ccc;
+    color: #555;
+}
+.mobilebtn
+{
+  display: none;
+}
+@media screen and (min-width: 767px){
+#newUserRegistration{
+    float: left;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.23);
+    margin-bottom: 30px;
+  }
+}
+ @media screen and (max-width: 767px){
+#newUserRegistration .panel-content {
+        padding: 10px 15px;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    min-height: auto;
+}
+.page-card-1 {
+    max-width: 740px;
+    padding: 0;
+       margin: 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+}
+.login-left-panel{
+  display: none;
+}
+.sign-in-right-panel{
+  width:100% !important;
+}
+.sign-in-left-panel {
+    padding: 0px;
+    background: #fff;
+    width: 100%;
+    float: left;
+}
+.sign-in-left-panel {
+    padding: 0px;
+    background: #fff;
+    width: 100%;
+    float: left;
+}
+#newUserRegistration .sign-in-left-panel {
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.23);
+  }
+
+.panel-content {
+    /*padding: 20px 15px;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    min-height: auto;*/
+    padding: 45px 35px;
+    text-align: center;
+    width: 350px;
+    margin: 0 auto;
+    min-height: 350px;
+}
+
+.buy-now-btn-desktop {
+      background: #e65341;
+    border-color: #e65341 !important;
+   
+    /*float: left;*/
+}
+.mobilebtn
+{
+  display: inline-block;
+}
+}
+</style>
+{% endblock %}

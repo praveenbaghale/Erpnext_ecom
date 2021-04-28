@@ -1,0 +1,11 @@
+{% for group in item_group %}
+<div class="col-md-3 col-sm-4 col-xs-6">
+    <div class="list hot-wid-rating">
+        <a href="/{{group.route}}">
+         <span class="child-category-title">{{group.name}}</span>
+            <img data-src="{% if group.image %}{{group.image}}{% else %}/assets/erpnext_ecommerce/images/no-image-800x511.png{% endif %}" class=" img-responsive category-child-image" />
+        </a>
+        
+    </div>
+</div>
+{% endfor %}

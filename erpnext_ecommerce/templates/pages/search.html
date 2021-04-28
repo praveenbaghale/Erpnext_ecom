@@ -1,0 +1,306 @@
+{% extends "templates/layout/customweb.html" %}
+
+{% block loader %}
+{% include "/templates/pages/listpageloader.html" %}
+{% endblock %}
+
+{% block content %}
+    <input type="hidden" name="hdnSearchTxt" id="hdnSearchTxt" value="{{searchText}}">
+    <input type="hidden" name="hdnBrandFilter" id="hdnBrandFilter" value="{% if brand %}{{brand}}{% endif %}">
+    <input type="hidden" name="hdnMinFilter" id="hdnMinFilter" value="{% if minValue %}{{minValue}}{% endif %}" />
+    <input type="hidden" name="hdnMaxFilter" id="hdnMaxFilter" value="{% if maxValue %}{{maxValue}}{% endif %}" />
+    <input type="hidden" name="hdnRatings" id="hdnRatings" value="{% if rating %}{{rating}}{% endif %}">
+    <input type="hidden" name="hdnSortFilter" id="hdnSortFilter" value="{% if sort %}{{sort}}{% endif %}">
+    {% if attribute %}{% for item in attribute %}
+    <input type="hidden" name="hdnAttrFilter" id="hdnAttrFilter" data-attribute="{{item.attribute}}" value="{{item.value}}">
+    {% endfor %}{% else %}
+    <input type="hidden" name="hdnAttrFilter" id="hdnAttrFilter" value="">{% endif %}
+    <div class="filter-slide">
+        <div id="FiltersList" data-off-canvas="filter-slider left overlay">
+            <div class="mobile-filters"></div>
+        </div>
+    </div>
+    <section class="page-title-area" style="display: none;">
+        <div class="page-title-overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="page-title">
+                            <h3>Search Results - {{searchText}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="title-breadcrumb">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ol class="breadcrumb">                        
+                        <li><a href="/"><span class="lnr lnr-home"></span></a></li>
+                        <li><a href="#">Search Results</a></li>
+                    </ol>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12" style="position: relative;">
+                 <h3 style="margin-top: 5px;margin-bottom: 15px;font-size: 22px;font-family: 'font-bold';font-weight: normal;">Search Results - {{searchText}}</h3>
+                    <div class="product-title product-sort-options hidden-xs">
+                        <div class="sortType">
+                            <label>Sort By</label>
+                            <ul>
+                                <li><a class="dropdown-item" data-id="relevance" onclick="sortProducts(this)">Relevance</a></li>
+                                <li><a class="dropdown-item" data-id="name_asc" onclick="sortProducts(this)">Name: A-Z</a></li>
+                                <li><a class="dropdown-item" data-id="name_desc" onclick="sortProducts(this)">Name: Z-A</a></li>
+                                <li><a class="dropdown-item" data-id="price_asc" onclick="sortProducts(this)">Price: Low to High</a></li>
+                                <li><a class="dropdown-item" data-id="price_desc" onclick="sortProducts(this)">Price: High to Low</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-list-area section-padding">
+        <div class="mob-filters">
+            <div style="border-right: 1px solid #d3d3d3;">
+                <a class="btn-block" onclick="show_mobile_filters()"><i class="fa fa-filter"></i>Filters</a>
+            </div>
+            <div>
+                <a class="btn-block" onclick="show_mobile_sort_options()"><i class="fa fa-sort"></i>Sort</a>
+                <div class="mob-sort">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+        <div class="bg-w container-fluid" style="border: none;">
+            <div class="row null-mar">
+                <div class="col-md-3 col-sm-3 col-xs-12 pad-0 hidden-xs" id="ProductFilters">
+                    <div class="brands">
+                        
+                    </div>
+                    <div class="filter f1 bor-b">
+                        <h3>Brands <span class="fa fa-chevron-up accr-action" onclick="accrod(this)"></span></h3>
+                        <div class="brand_list accr-items">                            
+                        </div>
+                    </div>
+                    <!-- <div class="filter">
+                        <h3>Ratings <span class="fa fa-chevron-up accr-action" onclick="accrod(this)"></span></h3>
+                        <div class="rating_list accr-items">
+                            <label class="radio-container">
+                                <input type="radio" name="ratings" value="4" onclick="select_rating(this)">
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star"></span> 
+                                <span class="txt">&amp; more</span>
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="ratings" value="3" onclick="select_rating(this)">
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star"></span> 
+                                <span class="txt">&amp; more</span>
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="ratings" value="2" onclick="select_rating(this)">
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star"></span> 
+                                <span class="txt">&amp; more</span>
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="ratings" value="1" onclick="select_rating(this)">
+                                <span class="fa fa-star active"></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star "></span> 
+                                <span class="fa fa-star"></span> 
+                                <span class="txt">&amp; more</span>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div> -->
+                    <div class="filter bor-t">
+                        <h3>Custom Price Range</h3>
+                        <div class="customPrice">
+                            <div class="custom">
+                                <input type="text" name="minPrice" id="minPrice" placeholder="Min" value="{% if minValue %}{{minValue}}{% endif %}" />
+                            </div>
+                            <div class="custom">
+                                <input type="text" name="maxPrice" id="maxPrice" placeholder="Max" value="{% if maxValue %}{{maxValue}}{% endif %}" />
+                            </div>
+                            <div class="custom">
+                                <input type="button" onclick="search_custom_price()" value="GO" class="btn btn-default">
+                            </div>                     
+                        </div>
+                    </div>
+                    <div class="attribute-filter"></div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12">                    
+                    <!-- <div class="product-title" style="">
+                        <h3 class="font">Products</h3>                        
+                    </div> -->
+                    <div class="row applied-filters">
+                      {%for brand in brandslist%}
+                      <a class="active-filter" onclick="RemoveFilter('brand','{{brand}}')">
+                       <span class="active-filter-label">  {{brand}}</span>
+                      </a>
+                      {%endfor%}
+                      {%if rating%}
+                      <a class="active-filter" onclick="RemoveFilter('rating','{{rating}}')">
+                       <span class="active-filter-label">  {{rating}} stars & more</span>
+                      </a>
+                      {%endif%}
+                       {%for attribute in attributelist%}
+                      <a class="active-filter" onclick="RemoveFilter('{{attribute.attribute}}','{{attribute.unique_name}}')">
+                       <span class="active-filter-label">  {{attribute.name}}</span>
+                      </a>
+                      {%endfor%}
+                      {%if minValue%}
+                      {%if maxValue%}
+                      <a class="active-filter" onclick="RemovePriceFilter()">
+                       <span class="active-filter-label">{{minValue}} - {{maxValue}}</span>
+                      </a>
+                      {%else%}
+                       <a class="active-filter" onclick="RemoveFilter('min','{{minPrice}}')">
+                       <span class="active-filter-label">From {{minValue}}</span>
+                      </a>
+                      {%endif%}
+                      {%else%}
+                      {%if maxValue%}
+                        <a class="active-filter" onclick="RemoveFilter('max','{{maxPrice}}')">
+                       <span class="active-filter-label">Upto {{maxValue}}</span>
+                      </a>
+                        {%endif%}
+                      {%endif%}
+                       {%if brandslist or rating or attributelist%}
+                        <a class="active-filter remove-filter" onclick="RemoveAllFilter()">
+                       <span class="active-filter-label"> Remove all filters</span>
+                      </a>
+                       {%endif%}
+                    </div>
+                        {% if Items or Items_group %}                        
+                        <div class="null-mar" id="products-list-otr">
+                            {% if Items_group %}{{Items_group}}{% endif %}
+                            {% if Items %}{{Items}}{% endif %}
+                        </div>
+                        {% else %}
+                        <div class="no-res">
+                            <div>Sorry! No results found.</div>
+                        </div>
+                        {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+        .hot-wid-rating h4{
+            font-size: 14px;
+            /*min-height: 30px;*/
+        }
+        .product-single{
+            background: #fff;
+        }
+        .size-cart{
+            float: none;
+        }
+        .cart-btns{
+            margin-top: 10px;
+        }
+        .cart-link{
+            color: #fff !important;
+            padding: 6px 12px;
+            font-size: 15px;
+            background: #7da435;
+            text-align: center;
+            cursor: pointer;
+        }
+        #variant:focus{
+            border-color: #ccc;
+        }
+        #variant option{
+            font-size: 12px;
+            padding-bottom: 5px !important;
+        }
+        #variant option span{
+            font-size: 10px;
+        }
+/*            .filter{
+            margin-left: 10px;
+    }*/
+    .mar-10{
+            margin: 10px;
+    }
+        #variant{
+            font-size: 12px;
+            height: 30px;
+        }
+        .no-pad{
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .hot-wid-rating{
+            /*min-height: 1px !important;*/
+        }
+        .hot-wid-rating h4{
+            /*min-height: 1px !important;*/
+        }
+        .product-single{
+            min-height: 405px;
+        }
+        .pad-5{
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+        .disabled{
+            background: #7da435a3 !important;
+            cursor: not-allowed;
+        }
+        .f1{
+            margin-top: 0;
+        }
+        @media screen and (max-width: 992px)
+        {
+            .product-image {
+                height: 115px;
+            }
+            .product-list-area .container-fluid{
+                padding:0px;
+            }
+        }
+        @media screen and (max-width: 767px){
+        div#products-list-otr {
+            margin-top: 0px !important;
+            }
+        }
+        @media screen and (min-width: 769px){ 
+        .lazyload
+        {
+            min-height: {{category_image_size}}px;
+            background:#f1f3f6;
+        }
+        .div-lazy-load .lazyload
+        {
+            display: none;
+        }
+        
+        .deal-info{
+    min-height: 72px;
+}
+    }
+    </style>
+{% endblock %}
+{% block script %}
+<script>
+    {% include "templates/includes/addtocart.js" %}
+</script>
+{% endblock %}

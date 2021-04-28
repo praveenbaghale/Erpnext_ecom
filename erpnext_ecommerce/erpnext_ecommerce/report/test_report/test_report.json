@@ -1,0 +1,26 @@
+{
+ "add_total_row": 0, 
+ "creation": "2020-05-18 12:25:32.074137", 
+ "disable_prepared_report": 0, 
+ "disabled": 0, 
+ "docstatus": 0, 
+ "doctype": "Report", 
+ "idx": 0, 
+ "is_standard": "Yes", 
+ "letter_head": "Default Letterhead", 
+ "modified": "2020-05-18 12:28:34.679201", 
+ "modified_by": "Administrator", 
+ "module": "Erpnext Ecommerce", 
+ "name": "Test Report", 
+ "owner": "Administrator", 
+ "prepared_report": 0, 
+ "query": "SELECT * FROM `tabShipping Rule Condition` WHERE 22.000 between from_value and to_value\n", 
+ "ref_doctype": "Wishlist Item", 
+ "report_name": "Test Report", 
+ "report_type": "Query Report", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ]
+}

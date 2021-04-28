@@ -1,0 +1,144 @@
+<footer class="entire_footer">
+        <!-- FOOTER-TOP-AREA -->
+        
+        <!-- FOOTER-TOP-AREA:END -->
+        
+        <!-- FOOTER-WIDGET-AREA -->
+        <div class="footer-widget">
+            <div class="ovelay">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-3 col-sm-5 col-xs-12">
+                            <div class="widget_logo">
+                                <a href="index.html"><img src="/assets/erpnext_ecommerce/images/logo.png" alt="logo"></a>
+                                <ul>
+                                    {% if footer_address %}
+                                    <li>
+                                        <div class="wl_left">
+                                           <!--  <i class="fa fa-location-arrow"></i> -->
+                                           <span class="lnr lnr-map-marker foot-i"></span>
+                                        </div>
+                                        <div class="wl_right">
+                                            
+                                            <!-- <a href="#"><span>Address :</span> {{footer_address}}</a> -->
+                                            <div style="color: #363636;"><span>Address :</span> {{footer_address}}<div>
+                                            
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% if footer_email %}
+                                    <li>
+                                        <div class="wl_left">
+                                         <!--    <i class="fa fa-envelope-o"></i> -->
+                                         <span class="lnr lnr-envelope foot-i"></span>
+                                        </div>
+                                        <div class="wl_right">
+                                            <!-- <a href="#"><span>E-mail :</span> {{footer_email}}</a> -->
+                                            <div style="color: #363636;"><span>E-mail :</span> <a href = "mailto: {{footer_email}}">{{footer_email}}</a></div>
+
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% if footer_phone %}
+                                    <li>
+                                        <div class="wl_left">
+                                           <!--  <i class="fa fa-phone"></i> -->
+                                            <span class="lnr lnr-phone-handset foot-i"></span>
+                                        </div>
+                                        <div class="wl_right">
+                                            <!-- <a href="#"><span>phone :</span> {{footer_phone}}</a> -->
+                                            <div style="color: #363636;"><span>Phone :</span> {{footer_phone}}<div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="widget_single">
+                                <h4 data-toggle="collapse" data-target="#footer-account" aria-controls="footer-account" aria-expanded="false" class="nav-toggler collapsed"><a  >My Account</a></h4>
+                                <ul id="footer-account" class="nav-collapse collapse">
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/my-profile">My Account</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/wishlist">Wishlist</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/cart">Shopping Cart</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/checkout">Checkout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="widget_single">
+                                <h4 data-toggle="collapse" data-target="#footer-info" aria-controls="footer-info" aria-expanded="false" class="nav-toggler collapsed"><a>Information</a></h4>
+                                <ul id="footer-info" class="nav-collapse collapse">
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/about">About Us</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/terms-conditions">Terms &amp; Conditions</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/privacy-policy">Privacy Policy</a>
+                                    </li>  
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/shipping-policy">Shipping Policy</a>
+                                    </li>                                   
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="widget_single">
+                                <h4 data-toggle="collapse" data-target="#footer-support" aria-controls="footer-info" aria-expanded="false" class="nav-toggler collapsed"><a href="#">Our Support</a></h4>
+                                <ul  id="footer-support" class="nav-collapse collapse">
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/support">Contact Us</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="/return-policy">Return Policy</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-12" style="display: none;">
+                            <div class="widget_single">
+                                <h4  data-toggle="collapse" data-target="#footer-services" aria-controls="footer-info" aria-expanded="false" class="nav-toggler collapsed"><a >Our Services</a></h4>
+                                <ul id="footer-services" class="nav-collapse collapse">
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="#">Shipping &amp; Returns</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="#">International Shopping</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="#">Best Customer Support</a>
+                                    </li>
+                                    <li><span class="lnr lnr-chevron-right foot-ra"></span><a href="#">Easy Replacement</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER-WIDGET-AREA:END -->
+        
+        <!-- FOOTER-AREA -->
+        <div class="footer_area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="footer_text">
+                            <p>&copy;{{frappe.utils.formatdate(frappe.utils.today(), 'YYYY')}} <a href="index.html">Dhaus</a>. All rights reserved</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="footer_right" style="display: none;">
+                            <ul>
+                                <li><a href="#"><img src="/assets/erpnext_ecommerce/images/mc.png" alt="" /></a></li>
+                                <li><a href="#"><img src="/assets/erpnext_ecommerce/images/visa.png" alt="" /></a></li>
+                                <li><a href="#"><img src="/assets/erpnext_ecommerce/images/crr.png" alt="" /></a></li>
+                                <li><a href="#"><img src="/assets/erpnext_ecommerce/images/disco.png" alt="" /></a></li>
+                                <li><a href="#"><img src="/assets/erpnext_ecommerce/images/bank.png" alt="" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER-AREA:END -->
+    </footer>

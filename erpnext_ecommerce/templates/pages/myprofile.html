@@ -1,0 +1,490 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+<section class="dashboard">
+    <div class="container-floud">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 col-sm-3 hidden-xs pad-right-5">
+                {% include "templates/layout/sidebar.html" %}
+            </div>
+            <div class="col-md-9 col-xs-12 col-sm-9 content-data pad-left-5">
+                <div class="web-hide customer-card">
+                    <img src="/assets/erpnext_ecommerce/images/Person-Male-Light-icon.svg" class="profile-pic">
+                    <h4 class="customer-name">{{ UserDetails.full_name }}</h4>
+                    {% if customer_id %}
+                    <!-- <a href="/edit-profile?name={{customer_id}}"> <i class="lnr lnr lnr-pencil"></i></a> -->
+                    <a href="/updateprofile"> <i class="lnr lnr lnr-pencil"></i></a>
+                    {% elif supplier_id %}
+                    <a href="/supplier-profile?name={{supplier_id}}"> <i class="lnr lnr lnr-pencil"></i></a>
+                    {% endif %}
+                </div>
+                <div class="web-hide profile-mobile-content">
+                    <div class="profile-nav-links">
+                        <div class="profile-nav-link">
+                            <span>Profile</span>
+                            {% if customer_id %}
+                            <!-- <a href="/edit-profile?name={{customer_id}}"> Update Profile</a> -->
+                            <a href="/updateprofile"> Update Profile</a>
+                            {% elif supplier_id %}
+                            <a href="/supplier-profile?name={{supplier_id}}"> Update Profile</a>
+                            {% endif %}
+                        </div>
+                        <div class="profile-nav-link">
+                            <span>My Orders</span>
+                            <a href="/my-orders-list">
+                                View All Orders
+                            </a>
+                        </div>
+                        <div class="profile-nav-link">
+                            <span>My Addresses</span>
+                            <a href="/my-address">
+                                Manage Addresses
+                            </a>
+                        </div>
+                    </div>
+                    <div class="profile-log-out-mobile">
+                        <a href="/?cmd=web_logout" style="cursor: pointer;">
+                            <span class="lnr lnr-exit-up sideicons"></span>Logout
+                        </a>
+                    </div>
+                </div>
+                <div class="inner-card mobile-hide">
+                    <div style="background: #fff;border: 1px solid #eee;">
+                        <div id="welcome_message">
+                            <h3 style="padding-top: 25px;margin-top: 0;margin-bottom: 25px;">Welcome to D.Haus</h3>
+                        </div>
+                        <div class="user-dashboard">
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="display: none;">
+                                <div class="dashboard-stat color-2">
+                                    <div class="dashboard-stat-content">
+                                        <h4>{{today_count}}</h4> <span>Today<br /><span style="display:none">Orders</span></span>
+                                    </div>
+                                    <div class="dashboard-stat-icon"><i class="lnr lnr-map"></i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="dashboard-stat color-1">
+                                    <div class="dashboard-stat-content">
+                                        <!-- <h4>{{weekly_count}}</h4> <span>This <br />Week</span> -->
+                                        {% if customer_id %}<h4>{{all_count}}</h4> <span>Total Orders</span>{% elif supplier_id %}<h4>{{today_count}}</h4> <span>Today <span style="display:none">Orders</span></span>{% endif %}
+                                    </div>
+                                    <div class="dashboard-stat-icon"><i class="lnr lnr-map"></i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="dashboard-stat color-3">
+                                    <div class="dashboard-stat-content">
+                                        <!-- <h4>{{monthly_count}}</h4> <span>This<br /> Month</span> -->
+                                        {% if customer_id %}<h4>{{Currency}} {{"%0.2f" % paid_amount | float}}</h4> <span>
+                                            Paid Amount</span>{% elif supplier_id %}<h4>{{weekly_count}}</h4> <span>This Week</span>{% endif %}
+                                    </div>
+                                    <div class="dashboard-stat-icon"><i class="lnr lnr-map"></i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="dashboard-stat color-4">
+                                    <div class="dashboard-stat-content">
+                                        <!-- <h4>{{all_count}}</h4> <span>All<br /> Time</span> -->
+                                        {% if customer_id %}<h4>{{Currency}} {{"%0.2f" % pending_amount | float}}</h4> <span>
+                                            To Be Paid</span>{% elif supplier_id %}<h4>{{all_count}}</h4> <span>All Time</span>{% endif %}
+                                    </div>
+                                    <div class="dashboard-stat-icon"><i class="lnr lnr-map"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="recent_orders">
+                            <div id="heading">
+                                <div class="col-md-6  col-sm-6">
+                                    <p><i class="fa fa-signal" style="margin-right:15px"></i>Recent Orders</p>
+                                </div>
+                                <div class="col-md-6  col-sm-6">
+                                    <a href="/my-orders-list" class="btn btn-primary float-right">View All</a>
+                                </div>
+                            </div>
+                            {% if customer_id %}
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Order Date</th>
+                                        <th class="mobile-hide">Order Status</th>
+                                        <th class="mobile-hide">Order Type</th>
+                                        <th>Order Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if orders %} {% for item in orders %}
+                                    <tr>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.transaction_date}}</td>
+                                        <td class="mobile-hide">{{item.status}}</td>
+                                        <td class="mobile-hide">{% if item.order_type=="Sales" %}Deal{% else %}Online Shopping{% endif %}</td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}} {% else %}${% endif %}{{"%0.2f" % item.grand_total | float}}</td>
+                                    </tr>
+                                    {% endfor %} {% else %}
+                                    <tr>
+                                        <td colspan="5">No Records Found</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% elif supplier_id %}
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Order Date</th>
+                                        <th class="mobile-hide">Requested Price</th>
+                                        <th class="mobile-hide">Extra Charges</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if deals %} {% for item in deals %}
+                                    <tr>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.transaction_date}}</td>
+                                        <td class="mobile-hide">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.total_price | float}}</td>
+                                        <td class="mobile-hide">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.extra_charges | float}}</td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.total | float}}</td>
+                                    </tr>
+                                    {% endfor %} {% else %}
+                                    <tr>
+                                        <td colspan="5">No Records Found</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style type="text/css">
+.dashboard .profile-menu {
+    margin-top: 11px;
+}
+
+.pad-left-5 {
+    padding-left: 5px;
+}
+
+.pad-right-5 {
+    padding-right: 5px;
+}
+
+.inner-card {
+    float: left;
+    display: block;
+    background: #fff;
+    padding: 0px;
+    padding-bottom: 0px;
+    /* border: 1px solid #dedfe3 !important; */
+    /* padding-bottom: 15px; */
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .08);
+    width: 100%;
+    margin-bottom: 20px;
+   }
+
+#welcome_message {
+    text-align: center;
+
+}
+
+#recent_orders {
+    margin: 25px 15px;
+    padding-bottom: 5px;
+}
+
+#heading {
+    float: left;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px 15px 10px 0;
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
+}
+
+#welcome_message {
+    padding: 0px;
+}
+
+.pad-8 {
+    padding: 8px;
+}
+
+#heading a {
+    /*   float: right;
+    margin-top: -27px;
+    margin-right: 20px;
+    color: #c36f13;*/
+}
+
+@media screen and (max-width: 767px) {
+    .logo_area {
+        background: #222 none repeat scroll 0 0;
+        padding: 12px;
+        box-shadow: none;
+        max-height: 53px;
+    }
+
+    .pad-left-5 {
+        padding-left: 0px !important;
+        padding-right: 0px;
+
+    }
+
+    .dashboard {
+        margin-top: -34px;
+    }
+
+    .float-right {
+        float: none;
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 320px) {
+    
+
+    .mobile-hide {
+        display: none;
+    }
+
+    .customer-card {
+        width: 100%;
+        /* height: 100px; */
+        background: #222 none repeat scroll 0 0;
+        padding: 20px 15px;
+        position: relative;
+    }
+
+    .customer-name {
+        /*padding-top: 21px;*/
+        text-align: center;
+        color: white;
+        font-size: 20px;
+    }
+
+    .profile-pic {
+        margin-top: 26px;
+        padding-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        height: 80px;
+    }
+}
+
+@media screen and (min-width: 767px) {
+    .web-hide {
+        display: none;
+    }
+
+    #heading p {
+
+        font-size: 17px;
+        margin-left: 0;
+        margin-bottom: 0;
+        padding-top: 4px;
+
+    }
+
+    #heading a {
+        margin-top: 0;
+        float: right;
+        margin-right: -15px;
+        padding: 5px 15px;
+        margin-bottom: 0;
+    }
+}
+
+.table>caption+thead>tr:first-child>th,
+.table>colgroup+thead>tr:first-child>th,
+.table>thead:first-child>tr:first-child>th,
+.table>caption+thead>tr:first-child>td,
+.table>colgroup+thead>tr:first-child>td,
+.table>thead:first-child>tr:first-child>td {
+    border-top: 0;
+    padding: 10px !important;
+
+    color: #222;
+}
+
+.table tbody tr:hover {
+    background: #f7f7f7;
+    cursor: pointer;
+}
+
+.dashboard-stat.color-1 {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.2));
+    background-color: #64bc36;
+}
+
+.dashboard-stat {
+    display: inline-block;
+    padding: 0;
+    height: 120px;
+    background-color: #fff !important;
+    border: 1px solid #ddd;
+    color: rgb(54, 54, 54);
+    border-radius: 4px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: .3s;
+    cursor: default;
+}
+
+.dashboard-stat-content {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    /*width: 45%;*/
+    transform: translateY(-50%);
+}
+
+.dashboard-stat-icon {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-40%);
+    font-size: 80px;
+    opacity: .3;
+}
+
+.dashboard-stat-icon {
+    font-size: 50px;
+}
+
+.dashboard-stat-content h4 {
+    font-size: 30px;
+    font-weight: 600;
+    color: rgb(54, 54, 54);
+    /*color: rgb(255, 255, 255);*/
+    font-family: "Open Sans";
+    letter-spacing: -1px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.dashboard-stat-content span {
+    font-size: 18px;
+    margin-top: 4px;
+    line-height: 24px;
+    font-weight: 300;
+    display: inline-block;
+}
+.dashboard-stat-content .currency{
+    font-size: 15px;
+}
+
+.dashboard-stat.color-2 {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.1));
+    background-color: #363841;
+}
+
+.dashboard-stat.color-3 {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.3));
+    background-color: #ffae00;
+}
+
+.dashboard-stat.color-4 {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.1));
+    background-color: #f3103c;
+}
+
+.profile-nav-links {
+
+    float: left;
+    width: 100%;
+}
+
+.web-hide.profile-mobile-content {
+    /* float: left; */
+    /* width: 100%; */
+    margin: 10px 25px;
+}
+
+.profile-nav-link span {
+    color: #323232;
+    font-size: 16px;
+    margin-bottom: 16px;
+    word-break: break-word;
+
+}
+
+.profile-nav-link {
+    padding: 20px 15px 15px;
+    display: block;
+    color: #848484;
+    font-size: 12px;
+    line-height: 16px;
+    word-break: break-word;
+    background-color: #fff;
+    position: relative;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1);
+    margin-bottom: 10px;
+}
+
+.profile-nav-link a {
+    border-top: 1px solid #ebebeb;
+    padding: 15px 0;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #2874f0;
+    text-align: right;
+    padding-bottom: 0;
+    display: block;
+
+}
+
+.customer-card .lnr {
+
+    color: #fff;
+    font-size: 18px;
+    position: absolute;
+    right: 10%;
+    bottom: 10px;
+
+}
+
+.profile-log-out-mobile {
+    background-color: #fff;
+    float: left;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+
+    font-size: 17px;
+
+}
+
+.profile-log-out-mobile a {
+    float: left;
+    width: 100%;
+    padding: 15px 15px;
+}
+@media screen and (max-width: 991px) and (min-width: 768px){
+    .dashboard-stat-content h4{
+        font-size: 20px;
+    }
+    .dashboard-stat-content span{
+        font-size: 15px;
+    }
+}
+@media screen and (min-width: 992px){
+    .page-section {
+        margin: 0px auto;
+        max-width: 1366px;
+        padding: 14px 64px 14px !important;
+    }
+}
+</style>
+{% endblock %}

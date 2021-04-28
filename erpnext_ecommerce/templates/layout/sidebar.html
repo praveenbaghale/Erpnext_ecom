@@ -1,0 +1,72 @@
+<div class="inner-card hidden-xs">
+<div class="profile-sidebar hidden-xs">
+    <div class="contact-box" style="border: 1px solid #eee">
+       
+        <div class="contact-img">
+            <img src="/assets/erpnext_ecommerce/images/Person-Male-Light-icon.svg"  class="profile-pic"  >
+        </div>
+        <div class="contact-caption">
+               <small>Hello</small>
+             <span>{{ UserDetails.full_name }}</span>
+               
+           
+        </div>
+    </div>
+    <div class="profile-menu">
+
+        <div id="menu-content" class="accordion collapse in">
+           <li>
+                <a href="/"> 
+                        <span class="lnr lnr-home sideicons"></span>
+                         Home </a>
+            </li>
+           <li>
+                <a href="/my-profile"> 
+                        <span class="lnr lnr-magic-wand sideicons"></span>
+                         Dashboard </a>
+            </li>
+            {% if customer_id %}
+            <li id="update-profile">
+                <!-- <a href="/edit-profile?name={{customer_id}}"> 
+                          <span class="lnr lnr-user sideicons"></span>
+                         Profile </a> -->
+                <a href="/updateprofile"> 
+                          <span class="lnr lnr-pencil sideicons"></span>
+                         Edit Profile </a>
+            </li>
+            {% elif supplier_id %}
+            <li id="update-profile">
+                <a href="/supplier-profile?name={{supplier_id}}"> 
+                          <span class="lnr lnr-user sideicons"></span>
+                         Profile </a>
+            </li>
+            {% endif %}
+            <li id="update-address">
+                <a href="/my-address"> 
+                         <span class="lnr lnr-map-marker sideicons"></span>
+                         Manage Addresses </a>
+            </li>
+            <li id="orderlist">
+                <a href="/my-orders-list"> 
+                          <span class="lnr lnr-calendar-full sideicons"></span>
+                          My Orders </a>
+            </li>    
+            
+            <li style="border-bottom: 0;">
+                <!-- <a onclick="logout_user()" style="cursor: pointer;">
+                <span class="lnr lnr-exit-up sideicons"></span>Logout   
+                  </a> -->
+                  <a href="/?cmd=web_logout" style="cursor: pointer;">
+                <span class="lnr lnr-exit-up sideicons"></span>Logout   
+                  </a>
+            </li>
+        </div>
+    </div>
+</div>
+</div>
+
+<style type="text/css">
+.dashboard .contact-box .top-box{padding:0 20px}.sideicons{font-size:16px;padding-right:15px}.contact-caption a,.contact-caption span{color:#fff}#menu-content .fa{font-size:20px}.contact-box{float:left;width:100%;background:#fff;margin-bottom:10px;border-radius:2px;box-shadow:0 2px 4px 0 rgba(0,0,0,.08);padding:12px}.dashboard .profile-menu{margin-top:0!important;float:left;width:100%;box-shadow:0 2px 4px 0 rgba(0,0,0,.08);border:none}.contact-caption{float:left}.contact-img{float:left}.contact-img img{height:50px;width:50px}.contact-caption a,.contact-caption span{color:#222;float:left;width:100%;padding-left:15px;font-size:16px}.contact-box small{font-size:13px;padding-left:15px;width:100%;float:left}
+</style>
+
+

@@ -1,0 +1,818 @@
+<header class="entire_header" style="display: block;">
+    <!-- Header-area:END -->
+    <!-- Logo-area -->
+    <!-- <div class="top-nav"> -->
+        <div class="container-fluid">
+        <div class="top-nav-style">
+            <span class="float-l">
+                {% if footer_email %}<span class="top-nav-content-l">Email : <a href = "mailto: {{footer_email}}">{{footer_email}}</a></span>{% endif %}
+                {% if footer_phone %}<span class="top-nav-content-l">Phone : <a href = "tel:{{footer_email}}">{{footer_phone}}</a></span>{% endif %}
+            </span>
+            <span class="float-r">
+                <a href="/about" class="top-nav-content-r"><span>About Us</span></a>
+                <a href="/support" style="border:none !important" class="top-nav-content-r"><span>Contact us</span></a>
+            </span>
+        </div>
+    </div>
+    <!-- </div> -->
+    <div class="logo_area" style="background-color: white">
+        <div class="container-fluid">
+            <div class="row pad-20">
+              
+                <div class="{% if map_api %}col-md-3 col-sm-3{% else %}col-md-5 col-sm-4{% endif %} col-xs-12">
+                        <div class="search-area">
+                            <form>
+                                <div class="control-group">
+                                    <ul class="categories-filter animate-dropdown" style="display: none;">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">All Categories <b class="caret"></b></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a onclick="selectSearchCategory(this)">All Categories</a></li>
+                                                {% if Categories %}{% for item in Categories %}
+                                                <li><a onclick="selectSearchCategory(this)">{{item.category_name}}</a></li>
+                                                {% endfor %}{% endif %}
+                                            </ul>
+                                            <input type="hidden" name="search-key" id="search-key">
+                                        </li>
+                                    </ul>
+                                    <input type="text" class="search-field ui-autocomplete-input" name="productSearch" id="productSearch" autocomplete="off" placeholder="Search for products, brands and categories…" /><!--  placeholder="Search for products, brands and categories…"  -->
+                                    <a class="search-button" href="#"></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="{% if map_api %}col-md-5 col-sm-3 col-xs-12{% else %}col-sm-3 col-md-3 col-xs-12{% endif %} mobile-header-column">
+                    <div class="home-page-header">
+                    <div class="only-mobile clearfix">
+                        <div class="ofm pull-left">
+                                <div class="m_nav" id="MobileNavbar">
+                                   <span class="lnr lnr-menu" style="font-size: 24px;"></span>                                                       
+                                </div>
+                                <div class="m_nav" id="CloseMobileNavbar">
+                                   <span class="lnr lnr-cross" style="min-width: 24px;float: left;"></span>
+                                </div>
+                            </div>
+                            <div class="logo" style="float: left;">
+                        <a href="/" style="float: left;margin-left:15px;">
+                            <img class="img-responsive" src="/assets/erpnext_ecommerce/images/logo-icon.png" alt="">
+                        </a>
+                    </div>                    
+                    <div class="pull-right pl-10">
+                        <div class="locationPicker ">
+                            <a onclick="openMobileSearch()">
+                            <span class="lnr lnr-magnifier"></span></a>
+                        </div>
+                         <div class="locationPicker">
+                             <a onclick="showCartSlider('cart')">
+                            <span class="lnr lnr-cart">
+
+                            <div class="cartCountdiv"><span class="cartCount"></span></div>
+                        </a>
+                        </div>
+                         <div class="locationPicker" style="margin-right: 0;">
+
+                              {% if frappe.session.user=="Guest" %}
+                              <a href="/login">
+                              <span class="lnr lnr-user"></span>
+                          </a>
+                              
+                            {%else%}
+                             <a href="/my-profile">
+                              <span class="lnr lnr-user"></span>
+                          </a>
+                                {%endif%}
+                           
+                        </div>
+                        
+                    </div>
+                
+                    </div>
+                </div>
+             
+                    <div class="logo hidden-xs {% if map_api %}col-md-5 col-sm-9{% endif %}" style="margin-top: -8px;">
+                        <a href="/" style="float: left;"><img class="img-responsive" src="/assets/erpnext_ecommerce/images/logo.png" alt="">
+                        </a>
+                    </div>
+                    {% if map_api %}
+                    <div class="col-md-7 col-sm-2 hidden-xs locationPicker" onclick="locationPicker()">
+                        <span class="fa fa-map-marker"></span><span class="addr hidden-sm"></span>
+                    </div>
+                    {% endif %}
+                    <div class="only-mobile clearfix home-page-search">
+                        <input type="text" class="form-control" id="mobile-search-text" placeholder="Search for products, brands and categories…" />
+                       <span class="fa fa-search _964ee_2R_VR"></span>
+                    </div>
+                </div>
+
+                    <div class="{% if map_api %} col-md-4 col-sm-6{% else %}col-md-4 col-sm-5{% endif %} col-xs-12 hidden-xs">
+                        <div class="header-right">
+                            <ul>
+                                <li style="position: relative;">
+                                    <a onclick="showCartSlider('cart')" style="cursor: pointer;">
+                                       
+                                        <span class="lnr lnr-cart wi-24"></span>
+                                        <span class="cartCount cartCountstyle">0</span>
+                                        <span class="font-t">Cart</span>
+                                    </a>
+                                    
+                                </li>
+                                <li style="position: relative;">
+                                    <a onclick="showCartSlider('wishlist')" style="cursor: pointer;">
+                                       
+                                        <span class="lnr lnr-heart wi-24"></span>
+                                        <span class="wishCount cartCountstyle">0</span>
+                                        <span class="font-t">Wishlist</span>
+                                    </a>
+                                    
+                                </li>
+                                {% if frappe.session.user=="Guest" %}
+                                <li class="last-child">
+                                    <a class="logg" href="/login">
+                                    
+                                         <span class="lnr lnr-user wi-24"></span>
+                                            <span class="font-t">Login</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="last-child dropdown">
+                                    <a class="logg dropdown-toggle" href="#" data-toggle="dropdown">
+                                      <span class="lnr lnr-user wi-24" style="margin-right: 5px;"></span>
+                                      <span class="font-t">{% if UserDetails.full_name %}{{UserDetails.full_name}}{% elif UserDetails.first_name %}{{UserDetails.first_name}}{% else %}{{UserDetails.name}}{% endif %}</span>
+                                    </a>
+                                    <ul class="dropdown-menu" style="padding: 0px">
+                                        <li><a href="/my-profile"><i class="lnr lnr-user"></i>My Profile</a></li> 
+                                        <li><a href="/my-orders-list"><i class="lnr lnr-calendar-full"></i>My Orders</a></li>
+                                           <li><a href="/my-address"><i class="lnr lnr-map-marker"></i>My Addresses</a></li>
+                                           {% if frappe.session.user=="Administrator" or frappe.session.user=="Admin" %}
+                                           <li><a href="/desk"><i class="lnr lnr-map-marker"></i>Admin</a></li>
+                                           {% endif %}
+                                     <!--    <li><a href="/wishlist"><i class="lnr lnr-heart"></i>Wishlist</a></li> -->
+                                        <!-- <li><a onclick="logout_user()" style="cursor: pointer;"><i class="lnr lnr-exit-up"></i>Logout</a></li> -->
+                                        <li><a href="/?cmd=web_logout" style="cursor: pointer;"><i class="lnr lnr-exit-up"></i>Logout</a></li>
+                                    </ul>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGO-AREA:END -->
+    <!-- MENU-AREA -->
+ 
+<nav class="navbar navbar-default hidden-xs menu-area" role="navigation">
+  <div class="container-fluid" style="padding-left: 0;padding-right: 0;">
+    <!-- Brand and toggle get grouped for better mobile display -->
+  <!--   <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"></a>
+    </div> -->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+        <ul class="nav navbar-nav">
+      
+        <li class="dropdown mega-dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">All Categories<span class="lnr lnr-menu lf"></span></a>       
+        <div class="dropdown-menu mega-dropdown-menu">
+            <div class="mega-mm">
+            
+                    
+                    <div class="megamenu-content">
+                        <div class="megamenu-sub-content">
+                        <div class="megamenu-sub-content-left">
+                            <div class="tab">
+                                        {% if dealsCategory %}
+                            <button class="tablinks active" onmouseover="openCity(event, 'deals')">Deals</button>
+                            {%endif%}
+                              {% if ItemGroupList %}{% for item in ItemGroupList %}
+                             
+                                      <button class="tablinks {%if loop.index==1 and not dealsCategory%}active{%endif%}" onmouseover="openCity(event, '{{item.route}}')">{{item.item_group_name}}</button>
+                            {% endfor %}{% endif %}
+
+                              </div>
+                        </div>
+                         <div class="megamenu-sub-content-right">
+
+                            {% for category in ItemGroupList %}
+                            
+                            <div id="{{category.route}}" class="tabcontent"  {%if loop.index==1 and not dealsCategory%}style="display:flex"{%endif%}>
+                                <div class="tab-content-sub-scroll">
+                                      <div class="tab-content-sub">
+
+                             <!--  {% for sub in category.child %}
+                                        
+                                       <div class="col-md-4 text-left wid-25c">
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            </div>
+                                 {% endfor %} -->
+                               
+                                 {%if category.megamenu_itemgroups%}
+                                 {%if category.megamenu_itemgroups.first_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.first_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.second_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.second_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.third_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.third_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.fourth_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.fourth_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+                                 {%endif%}
+                            
+
+                                    </div>
+                                    {%if category.menu_image%}
+
+                                      <a href="/{{category.route}}">   <img src="{{category.menu_image}}" style="padding-bottom: 20px;" alt="#"></a>
+                                      {%endif%}
+                                    
+                                    </div>
+                                     </div>
+                                {% endfor %}
+                                
+                          
+       
+               
+                        </div>
+
+                     </div>
+</div></div>
+</li>
+{% if dealsCategory %}
+<li class="dropdown mega-dropdown">
+ <a href="/deals" class="dropdown-toggle" >Deals<span class="caret"></span></a>       
+        <div class="dropdown-menu mega-dropdown-menu">
+               <div class="mega-m">
+                      <div class="mega-c">
+                   <div class="tab-content-sub-scroll">
+ {% for sub in dealsCategory[0].child %}
+ <div class="col-md-3 text-left ">
+                             <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                              {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+
+                             {%endif%}
+   </div>
+  {% endfor %}
+</div>
+</div>
+</div>
+        </div>
+</li>
+{%endif%}
+
+   {% for category in ItemGroupList %}
+   {%if category.child%}
+<li class="dropdown mega-dropdown">
+          <a href="/{{category.route}}" class="dropdown-toggle" >{{category.item_group_name}}<span class="caret"></span></a>       
+        <div class="dropdown-menu mega-dropdown-menu">
+                    <div class="mega-m">
+                      <div class="mega-c">
+                   <div class="tab-content-sub-scroll">
+  <div class="tab-content-sub">
+    <!--  {% for sub in category.child %}
+ <div class="col-md-3 text-left">
+                             <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                             {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            </div>
+                            {% endfor %} -->
+       {%if category.megamenu_itemgroups%}
+                                 {%if category.megamenu_itemgroups.first_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.first_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.second_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.second_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.third_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.third_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+
+                                 {%if category.megamenu_itemgroups.fourth_column_items%}
+                                  <div class="col-md-3 text-left wid-25c">
+                                 {%for sub in category.megamenu_itemgroups.fourth_column_items%}
+                                
+                              <h4><a href="/{{sub.route}}">{{sub.item_group_name}}</a></h4>
+                               {% if sub.child %}
+                              <ul class="nav-list">
+                                {% for cc in sub.child %}
+                                <li><a  href="/{{cc.route}}">{{cc.item_group_name}}</a></li>
+                                 {% endfor %}
+                                </ul>
+                             {%endif%}
+                            
+                            {%endfor%}
+                            </div>
+                                 {%endif%}
+                                 {%endif%}
+    </div>
+     {%if category.menu_image%}
+
+                                      <a href="/{{category.route}}">   <img src="{{category.menu_image}}" style="padding-bottom: 20px;" alt="#"></a>
+                                      {%endif%}
+</div>
+</div>
+</div>
+</div>
+</li>
+{%else%}
+<li class="mega-dropdown">
+          <a href="/{{category.route}}" >{{category.item_group_name}}</a>
+{% endif%}
+
+{% endfor %}
+
+
+    
+        </ul>
+      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+
+
+
+
+    <!-- MOBILE VIEW MENU -->
+
+    
+
+    <nav class="navbar navbar-default home-page-header" id="mobile_navbar" data-off-canvas="mobile-slidebar left overlay">
+        <div class="navbar-header" style="display: none;">
+            <button type="button" class="close_menu"><i class="fa fa-times"></i></button>
+            <img src="/assets/erpnext_ecommerce/images/logo.png">
+        </div>
+            <div>
+                <div class="user-details clearfix">
+                    {% if frappe.session.user=="Guest" %}
+                    <div class="col-md-6 col-sm-6 col-xs-6 login">
+                        <a href="/login" class="btn-block">Login</a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 login">
+                        <a href="/register" class="btn-block">Signup</a>
+                    </div>
+                    {% elif UserDetails %}
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="disp-flex">
+                            <div>
+                                <img src="/assets/erpnext_ecommerce/images/user1.png" alt="#">
+                            <!--     <span class="lnr lnr-user mob-user"></span> -->
+                            </div>
+                            <div>
+                                <div><strong>{{UserDetails.full_name}}</strong></div>
+                                <div>{{UserDetails.name}}</div>
+                                <div class="user-menus disp-flex">
+                                    {% if customer or supplier_id %}
+                                    <a href="/my-profile" style="margin-right: 15px;">View Profile</a>
+                                    {% endif %}
+                                    <!-- <a onclick="logout_user()" style="cursor: pointer;">Logout</a> -->
+                                    <a href="/?cmd=web_logout" style="cursor: pointer;">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="cart-menu">
+                    <div class="clearfix">
+                        <div class="col-md-6 col-sm-6 col-xs-6 mobile-menu-box" style="border-right: 1px solid #ddd;border-bottom: 1px solid #ddd">
+                            <a href="/cart">
+                                <div class="disp-flex">
+                                    <div>
+                                        <!-- <img src="/assets/erpnext_ecommerce/images/cart-icon.png" alt="#" class="img-responsive"> -->
+                                        <span class="lnr lnr-cart mob-ic">
+                                        <!-- <span class="fa fa-shopping-bag"></span> -->
+                                    </div>
+                                    <div class="txt">
+                                        <span>Cart</span><br>
+                                        <span class="sub-txt"><span class="cartCount"></span> items in cart</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 mobile-menu-box" style="border-bottom:  1px solid #ddd;">
+                            <a {% if frappe.session.user=="Guest" %}href="/login"{% else %}href="/my-orders-list"{% endif %}>
+                                <div class="disp-flex">
+                                    <div>
+                                        <!-- <img src="/assets/erpnext_ecommerce/images/wishlist-icon.png" alt="#" class="img-responsive"> -->
+                                        <span class="lnr lnr-calendar-full mob-ic"></span>
+                                        <!-- <span class="fa fa-heart"></span> -->
+                                    </div>
+                                    <div class="txt">
+                                        <span>Track Orders</span><br>
+                                        <span class="sub-txt">View Order Status</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 mobile-menu-box" style="border-right: 1px solid #ddd;display: none;">
+                            <a {% if frappe.session.user=="Guest" %}href="/login"{% else %}href="/wishlist"{% endif %}>
+                                <div class="disp-flex">
+                                    <div>
+                                        <!-- <img src="/assets/erpnext_ecommerce/images/cart-icon.png" alt="#" class="img-responsive"> -->
+                                        <span class="lnr lnr-heart mob-ic">
+                                        <!-- <span class="fa fa-shopping-bag"></span> -->
+                                    </div>
+                                    <div class="txt">
+                                        <span>Wishlist</span><br>
+                                        <span class="sub-txt"><span class="wishCount"></span> items in list</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 mobile-menu-box" style="border-right: 1px solid #ddd;">
+                            <a {% if frappe.session.user=="Guest" %}href="/login"{% else %}href="/my-address"{% endif %}>
+                                <div class="disp-flex">
+                                    <div>
+                                        <!-- <img src="/assets/erpnext_ecommerce/images/cart-icon.png" alt="#" class="img-responsive"> -->
+                                        <span class="lnr lnr-map-marker mob-ic">
+                                        <!-- <span class="fa fa-shopping-bag"></span> -->
+                                    </div>
+                                    <div class="txt">
+                                        <span>Address</span><br>
+                                        <span class="sub-txt">items in list</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 mobile-menu-box">
+                            <a {% if frappe.session.user=="Guest" %}href="/login"{% else %}href="/my-profile"{% endif %}>
+                                <div class="disp-flex">
+                                    <div>
+                                        <!-- <img src="/assets/erpnext_ecommerce/images/wishlist-icon.png" alt="#" class="img-responsive"> -->
+                                        <span class="lnr lnr-user mob-ic"></span>
+                                        <!-- <span class="fa fa-heart"></span> -->
+                                    </div>
+                                    <div class="txt">
+                                        <span>My Profile</span><br>
+                                        <span class="sub-txt">Update Profile</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+      
+                </ul>
+                <div class="mobile-category">
+                   <h5 class="dl-trigger">Categories</h5>
+                    <div id="dl-menu" class="dl-menuwrapper">                        
+                        <ul class="dl-menu dl-menuopen">
+                           {% if dealsCategory %}
+                             <li>
+                                <a href="{%if dealsCategory %}#{%else%}/deals{%endif%}">Deals</a>
+                                {%if  dealsCategory[0].child %}
+                                 <ul class="dl-submenu">
+                                {% for category in dealsCategory[0].child %}
+                           
+                                    <li>
+                                        <a  href="{%if  category.child %}#{%else%}/{{category.route}}{%endif%}">{{category.item_group_name}}</a>
+                                        {%if  category.child %}
+                                          <ul class="dl-submenu">
+                                              {% for sub in category.child %}
+                                          <li><a href="/{{sub.route}}">{{sub.item_group_name}}</a></li>
+                                          {% endfor %}
+                                          </ul>
+                                            {%endif%}
+                                      </li>
+                            
+                           {%endfor%}
+                           </ul>
+                            {%endif%}
+                           </li>
+                           {%endif%}
+                            {% if ItemGroupList %}
+                            {% for category in ItemGroupList %}
+                             <li>
+                                <a href="{%if category.child %}#{%else%}/{{category.route}}{%endif%}">{{category.item_group_name}}</a>
+                               {% if category.child %}
+                                <ul class="dl-submenu">
+                                  {% for sub in category.child %}
+                                       <li>
+                                        <a  href="{%if  sub.child %}#{%else%}/{{sub.route}}{%endif%}">
+                                          {{sub.item_group_name}}
+                                        </a>
+                                          {%if  sub.child %}
+                                          <ul class="dl-submenu">
+                                              {% for subsub in sub.child %}
+                                          <li><a href="/{{subsub.route}}">{{subsub.item_group_name}}</a></li>
+                                          {% endfor %}
+                                          </ul>
+                                            {%endif%}
+                                      </li>
+                                  {%endfor%}
+                            </ul>
+                               {%endif%}
+                           </li>
+                              {%endfor%}
+                            {%endif%}
+                            
+                        </ul>
+                    </div>
+</div>
+ <div class="mobile-menu-footer-links">
+  <ul>
+    <li><a href="/about">About Us</a></li>
+    <li><a href="/support">Conact Us</a></li>
+    <li><a href="/terms-conditions">Terms &amp; Conditions</a></li>
+    <li><a href="/privacy-policy">Privacy Policy</a></li>
+    <li><a href="/return-policy">Return Policy</a></li>
+    
+    
+  </ul>
+  </div>
+  <div class="mobile-menu-footer-links mobile_menu_footer">
+                   <h5 class="dl-trigger">Contact Info</h5>
+                   <ul>
+                    {% if footer_email %}
+                    <li>
+
+                      <span class="lnr lnr-envelope mob-ic">
+                                        <!-- <span class="fa fa-shopping-bag"></span> -->
+                                    </span>
+    <a href = "mailto: {{footer_email}}">{{footer_email}}</a></li>{% endif %}
+    {% if footer_phone %}
+    <li>
+                <span class="lnr lnr-phone mob-ic">
+                                        <!-- <span class="fa fa-shopping-bag"></span> -->
+                                    </span><a href = "tel:{{footer_email}}">{{footer_phone}}</a></li>{% endif %}
+    
+    
+  </ul>
+                 </div>
+             
+            </div>
+    </nav>
+    <!-- MOBILE VIEW MENU:END -->
+</header>
+<div id="cartSlide">
+    <div id="cartlist" data-slide="right" data-off-canvas="cart-slider right overlay">
+        <div class="headers">
+            <a class="close_cart" onclick="closeCart()"><img class="img-responsive" src="/assets/erpnext_ecommerce/images/left-arrow.svg" alt="" style="width: 20px;height: 18px;margin: 10px;"/></a>
+            <!-- <h6>Your Cart</h6> -->
+            <ul class="nav nav-tabs">
+                <li data-id="cart" class="active" style="width: 50%"><a data-toggle="tab" href="#shoppingCart">Shopping Cart<span class="cartCount cartCountstyle">0</span></a></li>
+                <li data-id="wishlist" style="width: 50%;"><a data-toggle="tab" href="#wishlist">Wishlist<span class="cartCountstyle wishCount">0</span></a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div id="shoppingCart" class="tab-pane fade in active">
+               <div class="cart-slider-loading" >
+                    <img src="/assets/erpnext_ecommerce/images/cart-loading.gif" ><br>Loading...
+                </div>
+                <div class="alert alert-success alert-dismissible" role="alert"  style="display:none;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" style="font-size: 20px;">×</span>
+                    </button>
+                    <span>
+                        The product <strong id="cart-panel-product"></strong> has been successfully added to your cart
+                    </span>
+                </div>
+                <div class="has-product">
+                    <div class="cartitems"></div>
+                    <div class="cartfooter">
+                        <div class="sub-div">
+                            <h6>Subtotal</h6>
+                            <h4 id="subtotal">{% if Currency %}{{Currency}}{% else %}${% endif %} 0.00</h4>
+                        </div>
+                        <div class="check-div">
+                            <a href="/cart" class="mobview-btn"><span class="lnr lnr-cart lnr-f"></span> Cart</a>
+                            <a href="/checkout" class="bg-primary mobview-btn" style="color: white; background-color: #af1a31;"><span class="lnr lnr-checkmark-circle lnr-f"></span>Checkout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-product">
+                    <div>
+                        <div class="title">Cart is empty</div>
+                        <div>
+                            <img src="/assets/erpnext_ecommerce/images/cart-icon.png">
+                        </div>
+                        <p>Please add products to your cart.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="wishlist" class="tab-pane fade">
+                   <div class="wishlist-slider-loading" >
+                    <img src="/assets/erpnext_ecommerce/images/cart-loading.gif" ><br>Loading...
+                </div>
+                 <div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" style="font-size: 20px;">×</span>
+                </button>
+                <span>
+                    The product <strong id="wishlist-panel-product"></strong> has been successfully added to wishlist
+                </span>
+            </div>
+                <div class="nostock">Sorry! No stock available.</div>
+                <div class="has-product">
+                    <div class="wishlistitems"></div>
+                    <div class="cartfooter">
+                        <div class="wish-div">
+                            <a href="/wishlist" class="bg-primary mobview-btn" style="color: white; background-color: #af1a31;">View Wishlist</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-product">
+                    <div>
+                        <div class="title">Wishlist is empty</div>
+                        <div>
+                            <img src="/assets/erpnext_ecommerce/images/wishlist-icon.png">
+                        </div>
+                        <p>Please add products to your wishlist.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-search-section">
+    <div class="mobile-search-top">
+    <a onclick="HideMobileSearch()" style="
+    float: left;
+    margin-top: 2px;
+">
+     <img src="/assets/erpnext_ecommerce/images/left-arrow.svg"/>
+    </a>
+    <input type="text" id="ProductSearch-Mobile" placeholder="Search for Products..." class="form-control mobile-search-control search-field ui-autocomplete-input"  autocomplete="off" name="ProductSearch-Mobile" />
+</div>
+    </div>
+<style type="text/css">
+.megamenu-content{overflow:hidden;position:absolute;top:0;-webkit-transition:opacity .3s ease-in-out;-o-transition:opacity .3s ease-in-out;transition:opacity .3s ease-in-out;width:100%}.megamenu-sub-content{background-color:#fff;-webkit-column-count:4;column-count:4;-webkit-column-gap:0;column-gap:0;height:500px;overflow-y:hidden;position:relative;width:100%;z-index:6;flex-wrap:wrap;display:flex}.megamenu-sub-content-left{background-color:#f2f2f2;height:100%;width:20%;overflow-y:auto;position:relative}.megamenu-sub-content-right{width:80%;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;flex-wrap:wrap;display:flex}.wi-1{width:25%}.lf{padding-left:8px;font-size:14px}.menu-area .nav-tabs>li>a{background-color:#fff}.wi-2{width:25%}.wi-3{width:25%}.wi-4{width:25%}.mg{margin-bottom:10px}.no-product{text-align:center;padding:25px 15px;display:none}.wi-24{font-size:22px}.font-t{font-size:12px;padding-left:0px; width: 100%; float: left;}.no-product .title{font-size:18px;font-weight:600}.navbar-default .navbar-nav>.open>a,.navbar-default .navbar-nav>.open>a:hover{color:#759e2e;background-color:#fff}.navbar-default .navbar-nav>.open>a,.navbar-default .navbar-nav>.open>a:focus{color:#759e2e;background-color:#fff}.navbar{margin-bottom:0}.navbar-default{background:#fff!important;border-color:transparent;padding:0!important;min-height:42px;border-bottom:1px solid #d7d7d7!important;box-shadow:0 1px 3px 0 rgba(0,0,0,.13)}.navbar-brand{width:0;height:48px}.menu-area .nav-tabs{display:inline-block;border-bottom:none;font-weight:700}.menu-area .nav-tabs>li.active>a,.menu-area .nav-tabs>li.active>a:focus,.menu-area .nav-tabs>li.active>a:hover,.menu-area .nav-tabs>li>a,.menu-area .nav-tabs>li>a:focus,.menu-area .nav-tabs>li>a:hover{border:none;border-radius:0}.nav-list{border-bottom:0 solid #eee;list-style:none;padding-inline-start:0}.nav-list>li{padding:20px 15px 15px}.nav-list>li>a:hover{text-decoration:none}.nav-list>li>a>span{display:block;font-weight:700;text-transform:uppercase}.pad-left{padding-left:0}.mega-dropdown{position:static!important}.mega-dropdown-menu{padding:0 0 0;text-align:center;width:calc(100% + 2px);height:500px;overflow-y:hidden;background-color:#000;left:-1px;/*width:1256px;*/max-width: 1440px;left:0;right:0;margin:0 auto}.dwb{display:-webkit-box}.mega-m{background-color:#fff;-webkit-column-gap:0;column-gap:0;height:100%;overflow-y:hidden;padding:0;position:relative;width:100%}#cartSlide .check-div a,#cartSlide .wish-div a{border:none!important}.tab-content-sub-scroll{width:100%!important;display:flex;padding:20px}.mega-mm{background-color:#fff;-webkit-column-gap:0;column-gap:0;height:100%;overflow-y:hidden;position:relative;width:100%}.mega-c{-webkit-box-flex:1;flex:1;flex-wrap:wrap}.pad-15{padding:15px 15px}.wid-25{width:25.85rem}.float-l{float:left}.float-r{float:right}.top-nav-content-l{margin:2px 0;padding:2px 0 2px 12px;;line-height:22px;display:inline;float:left;font-size:12px;font-weight:500}.top-nav-content-l a{padding-right:12px;border-right:1px solid #d7d7d7}.top-nav-content-r{padding:4px 12px;line-height:22px;display:inline;float:left;float:left;font-size:12px;font-weight:500}.top-nav-content-r:hover{padding:4px 12px;color:#fff;background-color:#af1a31;line-height:22px;display:inline;float:left}.top-nav-content-r a{color:#828282;border-right:1px solid #d7d7d7}.top-nav-content-r a:hover{color:#fff}.top-nav-style{height:30px}.dropdown-menu li a{padding:5px 0!important}.bg-white{background:#fff;padding-left:0;padding-right:0;border-right:1px solid #eee;min-height:388px}.navbar-default .navbar-nav>li>a{-webkit-transition:all .25s ease;-moz-transition:all .25s ease;-ms-transition:all .25s ease;-o-transition:all .25s ease;transition:all .25s ease}.ui-autocomplete .ui-menu-item:focus,.ui-autocomplete .ui-menu-item:hover{background:#f7f7f7}.ui-autocomplete .active{background:#f7f7f7}.ui-autocomplete-category{font-weight:600;padding:10px;font-size:13px;letter-spacing:1px}.ui-autocomplete .ui-menu-item{padding:10px;cursor:pointer}.ui-autocomplete{padding:0}.menu-area .nav-tabs li a{padding-left:30px!important}.mob-ic{font-size:18px;padding-right:10px;padding-top:5px;float:left}.dropdown-menu h4,.h4{font-size:15px;margin-bottom:10px;float:left;line-height:20px;width:100%;font-weight:400}.owl-prev span{left:12px;position:absolute}.owl-next span{left:12px;position:absolute}.tab{float:left;background-color:#f2f2f2;width:100%!important;height:450px;padding:15px 0}.tab button{display:block;background-color:inherit;color:#020202;padding:10px 15px;width:100%!important;border:none;outline:0;text-align:left;cursor:pointer}.tab button:hover{background-color:#fff;color:#af1a31}.tab button.active{background-color:#fff}.tabcontent{float:left;padding:0 12px;width:100%;border-left:none;display:none;padding:1.875rem;flex-wrap:wrap;background-color:#fff;-webkit-column-count:4;column-count:4;-webkit-column-gap:0;column-gap:0;height:500px;overflow-y:hidden;padding:0;position:relative;width:100%!important}.slimScrollDiv{width:100%!important}.tab-content-sub{-webkit-box-flex:1;-ms-flex:1;flex:1;flex-wrap:wrap;display:block}@media (min-width:768px){.navbar-nav{float:left;margin:-1px;-webkit-transition:all .25s ease;-moz-transition:all .25s ease;-ms-transition:all .25s ease;-o-transition:all .25s ease;transition:all .25s ease}.navbar-nav>li>a{padding-top:10px!important;padding-bottom:10px!important}}@media screen and (max-width:767px){.navbar-default{background:#f2f2f2!important;padding-bottom:45px!important}.top-nav-style{display:none}.tab{background-color:#f2f2f2;width:100%;height:140px}.mega-dropdown{position:relative!important}.tabcontent{width:100%}.navbar-default .navbar-nav>li>a{color:#020202}.dropdown-menu1{list-style:none}.dropdown-menu1 li a:before{content:'\f105';font-family:FontAwesome;margin-left:2px;padding-right:5px}a:focus,a:hover{color:#759e2e}.navbar-default .navbar-nav>li>a:hover{color:#fff;background-color:#759e2e}.dropdown-menu1 li a{padding:15px 0}}.hide a{display:none}.show a{display:none}.show a.back{display:block}.show .second-layer{display:block}#bs-megadropdown-tabs{padding-left:0;padding-right:0}.menu-area .navbar-nav{max-height:39px;display:block;overflow:hidden;text-align:justify;width:100%;margin:0 auto;float:none;padding:0}.navbar-default .navbar-nav>li>a:hover{color:#000;background-color:#fff;font-weight:600}.dropdown-menu h4 a:hover,.dropdown-menu li:hover a{color:#af1a31!important}.mobile-menu-box{min-height:50px;padding-top:7px}.mobile-category,.mobile-menu-footer-links{background-color:#fff;margin-top:5px;border-top:1px solid #ddd}.mobile-menu-footer-links{position:relative;float:left;width:100%}.mobile-menu-footer-links ul li{list-style:none;padding:10px 30px;border-bottom:1px solid #ddd;position:relative}.mobile-menu-footer-links ul{padding:0}.mobile-menu-footer-links ul li a:before{position:absolute;top:14px;line-height:50px;font:normal normal normal 18px/1 FontAwesome;speak:none;-webkit-font-smoothing:antialiased;content:"\f105";color:#50545b;left:15px}.mobile-menu-footer-links ul li a{font-size:13px}.navbar-default .navbar-nav>li.menu-active>a{color:#000;background-color:#fff;font-weight:600}._964ee_2R_VR{display:block;position:absolute;right:.625rem;top:57%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);height:1.875rem;color:#bbb;font-size:16px}@media screen and (max-width:767px){.mobile-header-column{padding:0!important}input#mobile-search-text{background:#fff;margin-top:10px;color:#222;font-size:12px;border:none;height:40px}#mobile-search-text::placeholder,::-webkit-input-placeholder{color:#444;opacity:1}.page-section{margin-top:53px;overflow-x:hidden}}@media screen and (min-width:769px){.navbar-default{max-height:50px;border:none}}.mobile_featured_categories{display:none}@media screen and (max-width:767px){.all-page-header .logo{width:calc(100% - 130px)}.mobile-hide{display:none!important}.list-bt{font-size:11px}.font-c{font-size:15px}.btn-primary{padding:5px 10px}#cartSlide .sub-div{float:left;padding:0 10px;color:#fff}.cartfooter h6{font-size:15px;padding-top:7px;margin-bottom:10px;color:#020202}#subtotal{margin-bottom:10px;color:#020202;font-size:15px}#cartSlide .check-div a,#cartSlide .wish-div a{border:1px solid #fff;padding:10px;color:#020202;margin-top:10px;font-size:14px}#cartSlide .check-div{text-align:right;padding:0 0;margin-right:10px;height:52px;margin-top:30px}.mobview-btn{height:52px!important;width:50%!important;padding:10px 15px!important;text-align:center!important}.hidden-md{display:none}.mobile_featured_categories{display:block}html{overflow-x:hidden}.carousel{float:left}}#cartSlide .cartCountstyle{right:auto;top:-5%;left:auto}.home-page-search{display:none}.mobile_page_title{float:left;width:calc(100% - 65px);overflow:hidden;color:#fff;font-size:16px;margin-left:10px;height:20px;text-overflow:ellipsis;white-space:nowrap;margin-top:7px}.header-right .dropdown-menu li a i{background-color:#af2131;color:#fff;padding:6px;border-radius:50%;font-size:10px;margin-right:10px}.mobile_menu_footer ul li a:before{content: "" !important;}.mobile_menu_footer h5 {
+    padding: 15px 15px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #ddd;
+    margin-top: 0;
+    font-size: 15px;
+}.mobile_menu_footer ul li{padding: 10px 15px !important;}.search-area .search-field {
+    width: 300px !important;
+}.search-area .search-button{padding: 5px 15px 9px !important;}
+.navbar-default {
+    background: #fff!important;
+    border-color: transparent;
+    padding: 0!important;
+    min-height: 42px;
+    border-top: 1px solid #d7d7d7!important;
+    box-shadow: 0 1px 0px 0 rgba(0,0,0,.13);
+}
+  @media screen and (min-width: 992px){
+    .entire_header {
+      background-color: #f8f8f8;
+    }
+  }
+  @media screen and (max-width: 767px){
+  .widget_single h4 a {color:#363636 !important}
+  .nav-toggler:after{color:#363636 !important}
+  .footer-widget a {
+    color: #363636;}
+  }
+</style>
+ <!-- <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script> -->
+<!-- <script>
+ $(document).ready(function () {
+  console.log("------------------453")
+    $('.tab-content-sub').masonry({
+        itemSelector: '.text-left',
+    });
+});
+</script> -->
+<script type="text/javascript">
+
+    function goBack() {
+      window.history.back();
+    }
+function OpenMobileMenu()
+{
+    $('#mobile_navbar').animate({
+            left: "0"
+        }, 500, 'linear');
+        $('#MobileNavbar').hide()
+        $('#CloseMobileNavbar').show()
+        $('body').css('overflow-y', 'hidden')
+}
+</script>

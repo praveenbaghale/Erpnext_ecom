@@ -1,0 +1,302 @@
+{% extends "templates/layout/customweb.html" %}
+{% block content %}
+    
+    <!-- BREADCRUMBS -->
+    <div class="title-breadcrumb">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">                    
+                    <ol class="breadcrumb">
+                        <li><a href="/"><span class="lnr lnr-home"></span></a></li>
+                        <li><a href="/cart">Shoping cart</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BREADCRUMBS:END -->
+	
+    <!-- SHOPING-CART-AREA   -->
+    {% if cart %}
+    <div class="section-padding">
+        <div class="container-fluid pad-8 pad-0">
+             <div class="inner-card">
+            <div class="row ">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+               
+                    <div class="headline">
+                        <h2>SHOPPING CART</h2>
+                    </div>
+                    <div class="pad-t">
+                      <table class="table table-bordered table-responsive hidden-xs">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;">Product(s)</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align: right;">Price</th>
+                                        <th style="text-align: center;">Quantity</th>                                        
+                                        <th style="text-align: right;">Total</th>
+                                        <!-- <th></th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if cart and cart['items'] %}
+                                    {% for item in cart['items'] %}
+                                    <tr data-id="{{item.name}}" data-item="{{item.item_code}}">
+                                        <td>
+                                            <img data-src="{% if item.image %}{{item.image}}{% else %}/assets/erpnext_ecommerce/images/no-image-800x511.png{% endif %}" class="lazyload img-responsive" />
+                                        </td>
+                                        <td style=" width: 40%;">{{item.item_name}}</td>
+                                        <td class="icons" style="text-align: right;width:50px">
+                                            <a onclick="deleteItem1(this)"><span class="fa fa-trash btn btn-danger"></span></a>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            {{item.get_formatted('rate')}}
+                                        </td>
+                                        <!-- <td style="text-align: right;">{{frappe.utils.fmt_money(item.rate, 2, Currency)}}</td> -->
+                                        <td style="width: 10%;text-align: center">
+                                            <div class="qty-box" style="float: right !important;">
+                                                <div class="btn" onclick="decrQty(this)"><span class="fa fa-minus"></span></div>
+                                                <div class="btn" id="cartQty">{{item.qty | int}}</div>
+                                                <div class="btn" onclick="incrQty(this)"><span class="fa fa-plus"></span></div>
+                                            </div>                                            
+                                        </td>
+                                        <td style="text-align: right;"> 
+                                       {{item.get_formatted('amount')}}
+                                       
+                                    <!-- {{frappe.utils.fmt_money(item.amount,precision=None,currency=Currency)}}   </td> -->
+                                        <!-- <td class="icons">
+                                            <a onclick="deleteItem1(this)"><span class="fa fa-trash btn btn-danger"></span></a>
+                                        </td> -->
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr class="no-data">
+                                        <td colspan="6">No records found</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <div class="mobile-cart">
+                                {% if cart and cart['items'] %}
+                                {% for item in cart['items'] %}
+                                <div style="margin-top:5px;border : 1px solid #ddd; padding: 10px;background-color: white;">
+                                    <div class="row" data-id="{{item.name}}" data-product="{{item.item_code}}" data-price="{{item.price}}"  data-item="{{item.item_code}}">
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
+                                            <img data-src="{% if item.image %}{{item.image}}{% else %}/assets/erpnext_ecommerce/images/no-img-120.jpg{% endif %}" class="lazyload img-responsive"/>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="product-title">
+                                                {{item.item_name}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3 col-xs-3" data-id="{{item.name}}" data-product="{{item.item_code}}" data-price="{{item.price}}"  data-item="{{item.item_code}}">
+                                            <div class="icons" style="text-align: right;width:50px" data-id="{{item.name}}" data-product="{{item.item_code}}" data-price="{{item.price}}"  data-item="{{item.item_code}}">
+                                            <a onclick="deleteItem1(this)"><span class="fa fa-trash btn btn-danger"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-id="{{item.name}}" data-product="{{item.item_code}}" data-price="{{item.price}}"  data-item="{{item.item_code}}" style="margin-top: 15px;">
+                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                            <div>Price</div>
+                                            <div class="product-price">
+                                                {{item.get_formatted('rate')}}
+                                              <!--   {% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.rate | float}} -->
+                                               <!-- {{frappe.utils.fmt_money(item.rate,currency=Currency)}} -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                            <div class="qty-box">
+                                                <div class="btn" onclick="decrQty(this)"><span class="fa fa-minus"></span></div>
+                                                <div class="btn" id="cartQty">{{item.qty | int}}</div>
+                                                <div class="btn" onclick="incrQty(this)"><span class="fa fa-plus"></span></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: right">
+                                            <div>Total</div>
+                                            <div class="product-price">
+                                                {{item.get_formatted('amount')}}
+                                                 <!-- {{frappe.utils.fmt_money(item.amount,currency=Currency)}} -->
+                                                <!-- {% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.2f" % item.amount | float}} -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="no-record">
+                                    No records found
+                                </div>
+                                {% endif %}
+                            </div>
+                    </div>
+    
+                </div>
+            </div>
+
+              <div class="row pad-c">
+              
+                <div class="col-md-12 col-sm-12 col-xs-12 pad-0">
+                    <div class="col-md-6 col-sm-6"></div>
+                    <div class="col-md-6 col-sm-6">                        
+                        <table style="width: 100%;" class="checkout">
+                            <tr>
+                                <td><p class="sub-total-title">SubTotal</p></td>
+                                <td class="subtotal text-right"></td>
+                            </tr>
+                            <tr>
+                                <td><h4 class="grand-total-title">Grand Total</h4></td>
+                                <td class="total text-right"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="/checkout" class="btn btn-primary float-right m-15">Proceed to checkout</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+             </div>
+        </div>
+    </div>
+   
+    {% else %}
+    <div class="container-fluid">
+        <div class="no-cart-item" style="margin-top: 30px;">
+       
+                <img src="/assets/erpnext_ecommerce/images/empty-cart.png"/>
+                <span class="no-item-title">Your cart is empty!</span>
+                <span class="no-item-sub-title">Add items to it now.!</span>
+ <p>
+                                <a class="btn btn-primary" href="/" style="
+    margin-top: 20px;
+    min-width: 200px;
+">Shop Now</a>
+                            </p>
+            
+        </div>
+    </div>    
+    {% endif %}
+    <style type="text/css">
+.headline{border-bottom:1px solid rgba(0,0,0,.1);display:block;margin:0 15px 10px 15px;margin-top:20px;position:relative;text-align:left;padding:10px 0}.table{margin-top:20px;margin-bottom:10px}.table img{max-height:100px;margin:auto}thead{background:#fff;color:#000}.table-bordered>tbody>tr>td{vertical-align:middle}.table-bordered>tbody>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-left:none!important;border-right:none!important;background:#fff!important}.wi-50{width:50%}.inner-card{display:block;padding:0;padding-bottom:0;border-radius:2px}.pad-c{padding:15px}.pad-t{padding:0 10px}.null-padding{padding-left:0;padding-right:0}.mar-10{margin:10px}.pad-8{padding:8px}.table .icons{width:10%;text-align:center}.no-cart-item{min-height:400px;background-color:#fff;text-align:center;padding:50px;margin-bottom:30px}.no-cart-item img{max-width:225px}span.no-item-title{float:left;width:100%;font-size:20px;margin-top:20px;margin-bottom:20px}span.no-item-sub-title{float:left;width:100%}.bttn{background:#7da435;color:#fff;border-radius:0;padding:10px 20px}.mobile-cart{display:none}.no-record{padding:50px 0;text-align:center}.checkout td{color:#828282}.checkout .total{font-size:16px}.checkout .text-right{padding-right:10px}@media screen and (max-width:767px){.mobile-cart{display:block;margin-top:2px;float:left;width:100%}.checkout{margin-top:5px;width:calc(100% + 10px)!important;float:left;width:100%;background-color:#fff;border-bottom:: 1px solid #ddd;border:1px solid #ddd;margin-left:-5px}.pad-c{padding:0 15px}.checkout h4{width:50%}.btn-primary{margin:7px;padding:5px 10px}.qty-box{width:100%;height:30px;text-align:center;margin-top:10px;padding-top:3px;position:relative}.qty-box .btn{padding:3px;font-size:12px}.qty-box .btn:last-child{position:absolute;right:0}.qty-box .btn:first-child{position:absolute;left:0}.headline{margin-top:0}.mobile-cart .product-price{font-size:12px;margin-top:0;font-weight:600;color:#222}.sub-total-title{margin-top:10px;float:left;padding-left:10px!important;margin-bottom:0;margin-left:0;text-align:left!important}span.fa.fa-trash.btn.btn-danger{padding:5px 10px;font-size:12px;line-height:1.5;margin-right:5px}.product-title{min-height:auto;font-size:13px;color:#222;font-weight:600;margin-top:-5px}.grand-total-title{font-size:15px!important;text-transform:capitalize!important}}
+    </style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+     function deleteItem1(e) {
+        var id=$(e).parent().attr('data-id')
+        var user=$('#hdnUser').val();
+        var customer=getCookie('customer_id');
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/salespurchase.sales_and_purchase.api.deleteCartItems',
+            data: { 'user':user,'name':id,'customer':customer},
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data){
+                if(data.message){
+                    $(e).parent().parent().remove();
+                    if($('.table tbody tr').length==0){
+                        var html='<tr class="no-data"><td colspan="6">No records found</td></tr>';
+                        $('.table tbody').append(html)
+                    }
+                    var html='Product is deleted'
+                    $('#message_modal .modal-title').text('Success')
+                    $('#message_modal .modal-body').html(html)
+                    $('#message_modal').modal('show')
+                    construct_carthtml(data.message.cart)
+                    construct_wishlisthtml(data.message.wishlist)   
+                }
+            }
+        })
+    }
+    $(document).ready(function(){
+        var subtotal=$('#cartSlide #shoppingCart #subtotal').text()
+        $('.checkout .subtotal').text(subtotal)
+        $('.checkout .total').text(subtotal)
+    })
+    function incrQty(e){
+        var current_qty=$(e).parent().find('#cartQty').text();
+        var new_qty=parseInt(current_qty)+1;
+        var cart_name=$(e).parent().parent().parent().attr('data-id');
+        update_cart(e,cart_name,1,new_qty,'add')
+    }
+    function decrQty(e){
+        var current_qty=$(e).parent().find('#cartQty').text();
+        var new_qty=parseInt(current_qty)-1;
+        var cart_name=$(e).parent().parent().parent().attr('data-id');
+        if(new_qty>0)
+            update_cart(e,cart_name,1,new_qty,'sub')
+        else{
+            delete_items(cart_name)
+        }
+    }
+    function update_cart(e,cart_name,qty,updated_qty,qty_type){
+        var item_code=$(e).parent().parent().parent().attr('data-item');
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.update_cart',
+            data: { 'item_code': item_code,'qty':updated_qty,'qty_type':qty_type },
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data){
+            if (data.message) {
+                    if (data.message.status == 'failed') {
+                        $('#message_modal .modal-title').text('Failed');
+                        $('#message_modal .modal-body').html(data.message.message)
+                        $('#message_modal').modal('show');
+                    } else {
+                        location.reload();                                 
+                    }
+                }
+            }
+        })
+    }
+    function deleteItem1(e){
+        var name=$(e).parent().parent().attr('data-id');
+        var item_code=$(e).parent().parent().attr('data-item');
+        $('#message_modal .modal-title').text('Confirm');
+        let html='<div>Are you sure to delete this item from your cart?</div><div style="text-align:right;"><button class="btn btn-warning" data-id="'+name+'" data-item="'+item_code+'" onclick="delete_cartItem(this)">Delete</button></div>'
+        $('#message_modal .modal-body').html(html)
+        $('#message_modal').modal('show');
+    }
+    function delete_cartItem(e){
+        var name=$(e).attr('data-id');
+        var item_code = $(e).attr('data-item');
+        delete_items(name, item_code)
+    }
+    function delete_items(name, item_code){
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.update_cart',
+            data: { 'item_code': item_code, 'qty': 0 },
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data){
+                if (data.message) {
+                   location.reload();
+                }
+            }
+        })
+    }
+</script>
+{% endblock %}

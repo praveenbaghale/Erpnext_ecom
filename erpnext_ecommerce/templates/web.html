@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if lt IE 6 ]> <html lang="en" class="ie6">    <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7">    <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8">    <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9">    <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {{ title | striptags }} {% endblock %}</title>
+    
+    <!-- Font css  -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="/assets/erpnext_ecommerce/fonts/fonts.css">
+    
+    <!-- Fontawesome css      -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/erpnext_ecommerce/css/normalize.css">
+    
+    <!-- Bootstrap css      -->
+    <link rel="stylesheet" href="/assets/erpnext_ecommerce/css/bootstrap.css">
+    
+   
+    <!-- CSS STYLE-->
+  
+    <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+    <link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/extralayers.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/rs-plugin/css/settings.css" media="screen" />
+    
+    <!-- Main css   -->
+    <link rel="stylesheet" href="/assets/erpnext_ecommerce/main.css">
+    <link rel="stylesheet" href="/assets/erpnext_ecommerce/css/responsive.css">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" href="/assets/erpnext_ecommerce/images/apple-touch-icon-precomposed.png">
+    <link rel="shortcut icon" type="image/png" href="/assets/erpnext_ecommerce/images/favicon.ico"/>
+   
+    {%- for link in custom_web_include_css %}
+    <link type="text/css" rel="stylesheet" href="{{ link|abs_url }}"> {%- endfor -%} {%- block head_include %}{{ head_include or "" }}{% endblock -%} {%- block style %}{%- endblock -%} 
+    <script>
+    window.frappe = {};
+    frappe.ready_events = [];
+    frappe.ready = function(fn) {
+        frappe.ready_events.push(fn);
+    }
+    window.dev_server =  {{ dev_server }};
+    </script>
+</head>
+
+<body data-path="{{ path }}">
+   
+    {% include "templates/layout/customnavbar.html" %}
+    <!-- Header-AREA END -->
+    <input type="hidden" name="hdnCurrency" id="hdnCurrency" value="{% if Currency %}{{Currency}}{% else %}${% endif %}">
+    <input type="hidden" name="hdnUser" id="hdnUser" value="{{frappe.session.user}}">
+    {% block loader %}{% endblock %}<div class="page-section">{% block content %} {% endblock %}{% block page_content %} {% endblock %}</div>
+    <!-- Entire FOOTER START -->
+    {% include "templates/layout/footer.html" %}
+    <div id="overlay" onclick="closeCart()">
+        <input type="hidden" name="sliderName" id="sliderName" value="#cartlist">
+    </div>
+    <div id="message_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="z-index: 1050">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    
+                </div>                     
+            </div>
+        </div>
+    </div>
+    <!-- Entire FOOTER END -->
+    {% block base_scripts %}
+    <!-- jQuery latest -->
+     <!-- <script type="text/javascript" src="/assets/erpnext_ecommerce/js/jQuery.2.1.4.js"></script> -->
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <script type="text/javascript" src="/assets/erpnext_ecommerce/js/jquery-ui_f4f5bf63c99e760f7053ac9b9e1327ab.js"></script>
+    
+    <!-- js Modernizr -->
+    <script src="/assets/erpnext_ecommerce/js/modernizr-2.6.2.min.js"></script>
+    
+    
+    <!-- js Modernizr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+    
+    <!-- js CounterUp -->
+    <script src="/assets/erpnext_ecommerce/js/jquery.counterup.min.js"></script>
+          <script src="/assets/erpnext_ecommerce/js/modernizr.custom.js"></script>
+
+        <script src="/assets/erpnext_ecommerce/js/jquery.dlmenu.js"></script>
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+    <div class="menu-hover">
+    </div>
+    {%- if js_globals is defined %}
+    <script>
+    { % - for key, value in js_globals.iteritems() % }
+    window. { { key } } = "{{ value[0] }}"; { % -endfor - % }
+    </script>
+    {% endif -%}    
+    <script type="text/javascript">
+        jQuery(document).ready(function($){             //counter up
+            // $('.counter').counterUp({
+            //    delay: 10,
+            //    time: 1000
+            // });
+            getCartData()
+            $('.search-button').click(function(){
+                var searchTxt=$('.search-field').val();
+                var category=$('#search-key').val();
+            })
+            $('#cartSlide .cartitems').slimScroll({
+                height: ($(window).height() - 120)
+            })
+            // var $preloader = $('#page-preloader'),
+            // $spinner   = $preloader.find('.spinner-loader');
+            // $spinner.fadeOut();
+            // $preloader.delay(500).fadeOut('slow');
+            $('.loader').delay(800).fadeOut('slow')
+            $('.page-section').show();            
+            setTimeout(function(){
+                $('.entire_footer').show();
+                $('body').css('overflow-y','scroll')
+            },1200)
+            
+        });
+        function showCartSlider() {
+            $('#overlay').show();
+            $('body').addClass('modal-open')
+            $("#cartlist").animate({
+                width: "toggle"
+            }, 500);
+        }
+
+        function closeCart() {
+           $('#overlay').hide()
+    var id = $('#overlay #sliderName').val();
+    if (id == '.megamenu') {
+        $('#overlay').css('top', '0')
+        $(id).hide();
+        $('.megamenu .menu').slimScroll({
+            destroy: true
+        })
+    } else {
+        var leftv = '-100%'
+        var slide = $(id).attr('data-slide')
+        if (slide == 'right')
+            leftv = '100%'
+        $(id).animate({
+            left: leftv
+        }, 500, 'linear')
+        $('body').removeClass('modal-open')
+    }
+    $('body').css('overflow-y', 'scroll');
+        }
+
+        function getCartData(){
+            var cart=JSON.parse(localStorage.getItem('productscart'))
+            var currency=$('#hdnCurrency').val();
+            if(cart!=''&&cart!=undefined&&cart!=null){
+                var html=''
+                var total=0; 
+                var qty=0;              
+                $(cart.items).each(function(k,v){
+                    html+='<div style="margin-top:15px;">'
+                    if(v.image_view!=''&&v.image_view!='None'){
+                        html+='<div class="row"><div class="col-md-3 col-sm-3 col-xs-3"><img src="'+v.image_view+'" class="img-responsive"/></div><div class="col-md-9 col-sm-9 col-xs-9">'
+                    }else{
+                        html+='<div class="row"><div class="col-md-12 col-xs-12 col-sm-12">'
+                    }
+                    html+='<div class="product-title">'+v.item_name+'</div></div></div>';
+                    html+='<div class="row" data-product="'+v.item_code+'" data-price="'+v.rate+'"><div class="col-md-3 col-sm-4 col-xs-4"><div class="product-qty"><span class="fa fa-minus" onclick="decreaseQty(this)"></span> <span class="qty">'+v.qty+'</span> <span class="fa fa-plus" onclick="increaseQty(this)"></span></div></div>';
+                    html+='<div class="col-md-3 col-sm-4 col-xs-4"><div class="product-price">'+currency+''+parseFloat(v.rate).toFixed(2)+'</div></div>';
+                    html+='<div class="col-md-6 col-sm-4 col-xs-4"><div class="product-delete"><span class="fa fa-trash" onclick="deleteItem(this)"></span></div></div></div>';
+                    total+=parseFloat(v.net_rate)
+                    html+='</div>';
+                    qty+=v.qty;
+                })
+                $('#cartSlide .cartitems').html(html);
+                $('#cartSlide .sub-div').attr('data-subtotal',total);
+                $('#cartSlide #subtotal').text(currency+''+parseFloat(total).toFixed(2))
+                $('.cartCount').text(qty)
+            }else{
+                var html="<div class='emptyCart'><h4>Cart Empty</h4><p>You haven't added any product to your cart.</p></div>";
+                $('#cartSlide .sub-div').attr('data-subtotal',0);
+                $('#cartSlide #subtotal').text(currency+''+parseFloat(0).toFixed(2))
+                $('#cartSlide .cartitems').html(html);
+                $('.cartCount').text(0)               
+            }
+        }
+
+        function increaseQty(e){
+            var productId=$(e).parent().parent().parent().attr('data-product')
+            var currentQty=$(e).parent().find('.qty').text();
+            var qty=parseInt(currentQty)+1;
+            var price=$(e).parent().parent().parent().attr('data-price')
+            var subtotal=$('#cartSlide .sub-div').attr('data-subtotal');            
+            $(e).parent().find('.qty').text(qty);
+            updateCartItems(productId,qty)
+        }
+
+        function decreaseQty(e){
+            var productId=$(e).parent().parent().parent().attr('data-product')
+            var currentQty=$(e).parent().find('.qty').text();
+            var qty=parseInt(currentQty)-1;
+            var price=$(e).parent().parent().parent().attr('data-price')
+            var subtotal=$('#cartSlide .sub-div').attr('data-subtotal');
+            if(qty>0){
+                $(e).parent().find('.qty').text(qty);
+                updateCartItems(productId,qty)
+            }            
+        }
+
+        function updateCartItems(productId,qty){
+            var cart=JSON.parse(localStorage.getItem('productscart'));
+            var total=0;
+            var o_qty=0;
+            var currency=$('#hdnCurrency').val();
+            $(cart.items).each(function(k,v){
+                if(v.item_code==productId){
+                    v.qty=qty;
+                    v.net_rate=parseInt(qty)*parseFloat(v.rate);
+                }
+                o_qty+=v.qty;
+                total+=v.net_rate;
+            })
+            cart.order_total_amount=total;
+            cart.total_price=total;
+            $('.cartCount').text(o_qty)
+            $('#cartSlide #subtotal').text(currency+''+parseFloat(total).toFixed(2))
+            localStorage.setItem('productscart',JSON.stringify(cart));
+        }
+
+        function deleteItem(e){
+            var productId=$(e).parent().parent().parent().attr('data-product');
+            var cart=JSON.parse(localStorage.getItem('productscart'));
+            var total=0;
+            var currency=$('#hdnCurrency').val();
+            var items=[];
+            $(cart.items).each(function(k,v){
+                if(v.item_code!=productId){
+                    total+=v.total_amount;
+                    items.push(v)
+                }                
+            })
+            cart.items=items;
+            cart.order_total_amount=total;
+            cart.total_price=total;
+            if(cart.items.length>0)
+                localStorage.setItem('productscart',JSON.stringify(cart));
+            else
+                localStorage.removeItem('productscart')
+            getCartData()
+        }
+
+        function selectSearchCategory(e){
+            var category=$(e).text();
+            if(category=='All Categories')
+                $('#search-key').val('');
+            else
+                $('#search-key').val(category);
+            $('#search-key').parent().find('a.dropdown-toggle').html(category+' <b class="caret"></b>')
+        }
+        function logout_user(){
+            $.ajax({
+                type:'POST',
+                Accept: 'application/json',
+                ContentType: 'application/json;charset=utf-8',
+                url: window.location.origin+'/api/method/logout',
+                dataType: "json",
+                async: false,
+                success:function(data){
+                    console.log('-')
+            let url='/checkout'
+            // window.location.href = url;
+            window.location.replace(window.location.origin);
+                }
+            })
+        }
+    </script>
+
+    <!-- Revolution slider -->
+    <script type="text/javascript" src="/assets/erpnext_ecommerce/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="/assets/erpnext_ecommerce/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    
+    <!-- Bootsrap js -->
+    <script src="/assets/erpnext_ecommerce/js/bootstrap.min.js"></script>
+    
+    <!-- Plugins js -->
+    <script src="/assets/erpnext_ecommerce/js/plugins.js"></script>
+    
+    <!-- Owl js -->
+    <script src="/assets/erpnext_ecommerce/js/owl.carousel.min.js"></script>
+    
+    <!-- Custom js -->
+    
+
+    <!-- Slimscroll -->
+    <script src="/assets/erpnext_ecommerce/js/jquery.slimscroll.min.js"></script>
+    <script src="/assets/frappe/js/lib/socket.io.min.js"></script>
+    <script type="text/javascript" src="/assets/js/frappe-web.min.js"></script>
+
+
+
+<script type="text/javascript">
+    function openMobileSearch()
+{
+    $(".mobile-search-section").show();
+}
+function HideMobileSearch() {
+    $(".mobile-search-section").hide();
+    
+}
+
+
+ $(document).ready(function () {
+            $('#showhidetarget').hide();
+
+            $('a#showhidetrigger').click(function () {
+                $('#showhidetarget').toggle(400);
+            });
+        });
+
+
+jQuery(function(){
+         jQuery('#showall').click(function(){
+               jQuery('.targetDiv').show();
+        });
+        jQuery('.showSingle').click(function(){
+              jQuery('.targetDiv').hide();
+              jQuery('#div'+$(this).attr('target')).show();
+        });
+});
+</script>
+
+
+
+  <script>
+      $(function() {
+        // $( '#dl-menu' ).dlmenu({
+        //   animationClasses : { classin : 'dl-animate-in-2', classout : 'dl-animate-out-2' }
+        // });
+        // $( '#dl-menu' ).dlmenu();
+
+      });
+    </script>
+
+
+<script type="text/javascript">
+    var activeCategory="";
+      var timer;
+  $(document).ready(function(){
+    $("body").mouseover(function(event){
+        if(!$(event.target).hasClass("dropdown-toggle") || !$(event.target).hasClass("dropdown"))
+        {
+// $(".dropdown").removeClass('menu-active');  
+           // $(".menu-hover").hide(); 
+         // clearTimeout(timer);
+        }
+});
+    $(".mega-dropdown-menu").css("height",($(window).height()-125)+"px")
+    $(".megamenu-sub-content-left .tab").css("height",($(window).height()-125)+"px");
+    $(".megamenu-sub-content").css("height",($(window).height()-125)+"px");
+    $("#bs-megadropdown-tabs .tabcontent").css("height",($(window).height()-125)+"px");
+   
+   $(".logo_area").hover(            
+        function() {
+             activeCategory="";
+        });
+   $(".mega-dropdown").hover(            
+        function() {
+            var current=this;
+            if(!$(current).hasClass("dropdown"))
+            {
+                   activeCategory="";
+            }
+        });
+$(".page-section").hover(            
+        function() {
+             activeCategory="";
+        });
+    $("#bs-megadropdown-tabs .dropdown").hover(            
+        function() {
+        
+        if(activeCategory=="")
+        {
+            var current=this;
+             timer = setTimeout(function(){
+            $(".menu-hover").show();     
+        $(current).addClass("menu-active");
+    
+     activeCategory="menu-active";
+    }, 1000);
+        }
+        else{
+               var current=this;
+                $(".menu-hover").show(); 
+             $(current).addClass("menu-active");
+    
+     activeCategory="menu-active";
+        }   
+           
+        },
+        function() {
+           //  // $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+          $(".dropdown").removeClass('menu-active');  
+          $(".dropdown").removeClass('open');  
+           $(".menu-hover").hide(); 
+         clearTimeout(timer);
+         // activeCategory="";
+        }
+    );
+    $(".tab-content-sub-scroll").slimScroll({    height : ($(window).height()-125)+"px"});
+    $(".tab").slimScroll({    height : ($(window).height()-125)+"px"});
+    $("#mobile-search-text").click(function(){
+openMobileSearch();
+    });
+    $(".dropdown a").click(function(){
+        window.location.href=$(this).attr("href");
+    });
+});
+
+
+
+function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the link that opened the tab
+  document.getElementById(cityName).style.display = "flex";
+  evt.currentTarget.className += " active";
+ // $('.tab').hide(); 
+
+
+   // document.addEventListener(
+   //    "DOMContentLoaded", () => {
+   //       const menu = mmlight( document.querySelector( "#my-menu" ) );
+   //       menu.create( "(max-width: 500px)" );
+   //       menu.init( "selected" );
+   //    }
+   // );
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+</script>
+
+<script type="text/javascript">
+  
+$(document).ready(function()
+{  
+  var url=window.location.pathname;
+  $('.profile-menu #menu-content').find('a[href="'+url+'"]').css('color','rgb(117, 158, 46)')
+  url=url.split('/')[1];
+  console.log(url)
+  $('.profile-menu #menu-content').find('a[href="/'+url+'"]').css('color','rgb(117, 158, 46)') ;
+  $('.profile-menu #menu-content').find('a[href="/'+url+'"]').parent().css('background-color','#f5faff') 
+  
+}) 
+function Logout(){
+  frappe.call({
+    method:'logout',
+    args:{
+
+    },
+    callback:function(data){
+      window.location.href='/'
+    }
+  })
+}
+</script>
+   
+    <script>
+        {% include "templates/includes/layoutcommon.js" %}
+        {% include "templates/includes/productsearch.js" %}        
+    </script>    
+<script type="text/javascript">
+    $(document).click(function(){
+        $("#recent_orders .table tbody tr").click(function(){
+            window.location.href="/order-detail?id="+$(this).find("td:eq(0)").text();
+        })
+    })
+</script>
+    {%- block script %}{%- endblock %}
+</body>
+
+</html>
+
+<style type="text/css">
+	body{
+		display: block;
+	}
+    .product-wid-price ins{
+            margin-bottom: 1opx !important;
+    }
+    .size-cart{
+            margin-left: 0px; 
+                /*margin-top: 10px;*/
+    }
+    .loader{
+        margin: 50px 0;
+    }
+</style>
+
+<style type="text/css">
+    .menu-hover {
+        background-color: #000;
+        opacity: 0.5;
+        position: fixed;
+        top: 175px !important;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        display: none;
+    }
+
+    .list-inline{
+            display: inline-flex;
+    }
+    .product-wid-price ins{
+            margin-bottom: 1opx !important;
+    }
+    .size-cart{
+        margin-left: 0px; 
+        /*margin-top: 10px;*/
+    }
+    #map{
+        height: 300px;
+        margin-bottom: 15px;
+    }
+    .loacte-now{
+        position: absolute;
+        z-index: 2;
+        right: 4%;
+        top: 6%;
+        font-size: 16px;
+        color: #222;
+    }
+    #map_modal .submit-btn{
+        margin-top: 10px;
+        text-align: center;
+    }
+    .locationPicker{
+        margin-top: 3%;
+        cursor: pointer;
+    }
+    .locationPicker span{
+        color: #7da435;
+        font-size: 20px;
+        padding: 10px 16px;
+    }
+    .modal-open{
+        overflow-y: hidden !important;
+    }
+    .locationPicker .addr{
+        color: #222;
+        font-size: 14px;
+        padding: 10px 0px;
+    }
+    .map_div{
+        position: relative;
+        margin-top: 15px;
+    }
+
+
+
+.inner-card h3{
+    font-size: 17px;
+}
+
+
+
+
+
+
+
+
+    @media screen and (max-width: 767px){
+        .locationPicker{
+            margin-top: 0;
+        }
+        .rpadding {
+    padding: 0px 25px;
+    margin-top: 10px;
+}
+.rpadding .col-xs-12
+{
+padding: 0;
+}
+.dashboard h3 {
+    padding: 15px 17px !important;
+    font-size: 17px;
+    display: none;
+}
+.dashboard hr
+{
+     display: none; 
+}
+
+.inner-card
+{
+    margin:10px;
+}
+    }
+    .menu-hover
+    {
+           background-color: #000;
+    opacity: 0.5;
+    position: fixed;
+    top: 129px;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: none;
+    }
+    .alert-success:before, .validation-summary-valid:before {
+    background-color: #4caf50;
+}
+.alert-info:before, .alert-danger:before, .validation-summary-errors:before, .alert-success:before, .validation-summary-valid:before, .alert-warning:before {
+    display: block;
+    position: absolute;
+    content: ' ';
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 65px;
+    z-index: 1;
+    /* height: 80px; */
+}
+.alert-success:after, .validation-summary-valid:after {
+    content: "\f00c";
+    color: #dbefdc;
+}
+.alert-info:after, .alert-danger:after, .validation-summary-errors:after, .alert-success:after, .validation-summary-valid:after, .alert-warning:after {
+    display: block;
+    position: absolute;
+    color: #fff;
+    font-family: FontAwesome;
+    left: 16px;
+    top: 50%;
+    font-size: 26px;
+    width: 3rem;
+    text-align: center;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 2;
+}
+#shoppingCart, #shoppingCart .alert-success, #wishlist, #wishlist .alert-success {
+    position: relative;
+}
+#shoppingCart .alert-success span, #wishlist .alert-success span {
+    padding-left: 62px;
+    position: relative;
+    display: inherit;
+    font-size: 13px;
+}
+.cart-slider-loading,.wishlist-slider-loading
+{
+     position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+.cart-slider-loading img,.wishlist-slider-loading img
+{
+     height: 32px !important;
+    margin-left: -15px;
+}
+#bs-megadropdown-tabs .tab button.active{
+    position: relative;
+}
+#bs-megadropdown-tabs .tab button.active:before
+{
+    content: "";
+    border-left: 3px solid #af1a31;
+    position: absolute;
+    left: 0;
+    height: 44px;
+    top: 0;
+}
+th {
+    font-weight: 600;
+
+    font-size: 16px;
+    padding: 15px !important;
+}
+.mob-sort ul li a .lnr {
+    font-size: 11px;
+    margin-right: 5px;
+}
+@media screen and (min-width: 767px) and (max-width: 992px){
+    .page-section{
+    margin: 0px auto;
+    max-width: 1366px;
+    padding: 14px 20px 0;
+}
+}
+@media screen and (min-width: 992px){
+.page-section
+{
+    margin: 0px auto;
+    max-width: 1366px;
+    padding: 14px 64px 0;
+}
+.pad-left-5 {
+    padding-left: 5px;
+}
+.pad-right-5 {
+    padding-right: 5px;
+}
+.web-form-page {
+    padding: 10px 0px;
+    /* padding-right: 25px; */
+}
+ 
+}
+.dashboard .profile-menu {
+    margin-top: 0px !important;
+}
+.web-form-page .section {
+    padding: 0;
+    background: #fff;
+        margin-bottom: 0;
+    border: none;
+    border-radius: 4px;
+}
+@media screen and (max-width: 991px) and (min-width: 768px){
+    .search-area{
+        width: 100%;
+    }
+    .search-area .search-button{
+        top: 0;
+        padding: 6px 17px 9px;
+    }
+}
+</style>

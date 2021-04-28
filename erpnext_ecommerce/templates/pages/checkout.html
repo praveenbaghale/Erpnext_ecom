@@ -1,0 +1,565 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+    <input type="hidden" name="hdnBillingAddress" id="hdnBillingAddress" />
+    <input type="hidden" name="hdnShippingAddress" id="hdnShippingAddress" />
+    <input type="hidden" name="hdnCustomerId" id="hdnCustomerId" value="{% if customer %}{{customer.name}}{% endif %}"> 
+    <input type="hidden" name="hdnCustomerName" id="hdnCustomerName" value="{% if customer %}{{customer.full_name}}{% endif %}">
+    <input type="hidden" name="hdnContact" id="hdnContact" value="{% if customer %}{{customer.customer_contact.name}}{% endif %}">
+    <input type="hidden" name="hdnShippingMethod" id="hdnShippingMethod" value="">
+    <input type="hidden" name="hdnPaymentMethod" id="hdnPaymentMethod" value="">
+   
+	<script type="text/javascript">
+     if('{{isCartEmpty}}'==1)
+     {
+        window.location.href="/cart";
+     }
+ </script>
+    <!-- CHECK-CONTACT-AREA -->
+    <section class="check-contact section-padding" style="margin-bottom: 20px;">
+        <div class="container-fluid pad-8 pad-0">
+            <div class="inner-card">
+            <div class="row pad-10 pad-52">
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="checkout-proccess">
+                        <div class="checkout-step {% if frappe.session.user=='Guest' or not customer%}active{%endif%}">
+                            <div class="head">
+                            <h3><span class="step-no">1</span>Login / Register
+                                {% if not frappe.session.user=="Guest" or  customer %}
+                                <i class="fa fa-check proccess-status"></i>
+                                {%else%}
+                                 <i class="fa fa-check proccess-status" style="display: none"></i>
+                                {%endif%}
+                            </h3>
+                        </div>
+                            
+                                {% if frappe.session.user=="Guest" or not customer %}
+                                <div class="check-step-content">
+                                 <div class="login-form clearfix">
+                             
+                                <form>
+                                <div class="col-md-6" style="padding:0" id="existingUserLogin">
+                                    <div class="form-group">
+                                        <label for="LoginEmail" style="font-weight:normal;float: left;">Email</label>
+                                        <input id="LoginEmail" type="email" value="" class="form-control" placeholder="Enter Email" required>
+                                        <span class="error usrErr">Please enter username.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LoginPassword" style="font-weight:normal;float: left;">Password</label>
+                                        <input id="LoginPassword" type="password" value="" class="form-control" placeholder="Enter Password" required>
+                                        <span class="error usrErr">Please enter password.</span>
+                                    </div>
+                                </div>
+                                <div class="" id="newUserRegistration">
+                                  <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="RegisterFirstname" style="font-weight:normal;float: left;">First name</label>
+                                        <input id="RegisterFirstname" type="text" value="" class="form-control" placeholder="Enter First Name" required>
+                                        <span class="error usrErr">Please enter first name.</span>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                          <label for="RegisterLastname" style="font-weight:normal;float: left;">Last name</label>
+                                          <input id="RegisterLastname" type="text" value="" class="form-control" placeholder="Enter Last Name" required>
+                                          <span class="error usrErr">Please enter Last name.</span>
+                                      </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label for="RegisterEmail" style="font-weight:normal;float: left;">Email</label>
+                                          <input id="RegisterEmail" type="email" value="" class="form-control" placeholder="Enter Email" required>
+                                          <span class="error usrErr">Please enter email.</span>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                      <div class="form-group">
+                                          <label for="Registermobile" style="font-weight:normal;float: left;">Phone</label>
+                                          <input id="Registermobile" type="text" value="+973-" class="form-control" placeholder="Enter Phone Number" required>
+                                          <span class="error usrErr">Please enter phone number.</span>
+                                      </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label for="RegisterPassword" style="font-weight:normal;float: left;">Password</label>
+                                          <input id="RegisterPassword" type="password" value="" class="form-control" placeholder="Enter Password" required>
+                                          <span class="error usrErr">Please enter password.</span>
+                                             <span class="error invalid-pwd">Include symbols, numbers and capital letters in the password and must be minimum 8 characters length.</span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label for="SignupcnfrmPwd" style="font-weight:normal;float: left;">Confirm Password</label>
+                                          <input id="SignupcnfrmPwd" type="password" value="" class="form-control" placeholder="Confirm password" autocomplete="off" required >
+                                          <span class="error pwd-fill-err">Please enter your password.</span>
+                                              <span class="error pwd-cnfrm-err">Your password didn't match with your confirm password.</span>    
+                                      </div>
+                                            
+                                    </div>
+
+                                    </div>
+                                  </div>
+
+                                  
+                                <!-- </div> -->
+                                <div class="col-md-12" style="padding:0" id="existingUserLoginBtns">
+                                      <button type="button" onclick="loginUser()" class="buy-now-btn-desktop">Sign In</button>
+                                      <!-- <a class="signin buy-now-btn-desktop" href="/register?return=checkout">Sign Up</a> -->
+                                      <a class="signin buy-now-btn-desktop" onclick="newUser()" href="#">Sign Up</a>
+                                </div>
+                                <div class="col-md-12" style="padding:0" id="newUserRegistrationBtns">
+                                    <span class="error" id="RegisterError"> </span>
+                                     <a class="signin buy-now-btn-desktop" onclick="registerUser()" href="#" id="UserRegisterBtn">Submit</a>
+                                       <a class="signin buy-now-btn-desktop" onclick="backlogin()" href="#">Back</a>
+                                </div>
+                            </form>
+                          </div>
+                            </div>
+                             <!-- </div> -->
+                              <div class="content-info">
+                                   </div>
+                            {%else%}
+                            <div class="content-info">
+                               {{customer.customer_name}}
+                               <br/>{{customer.email_id}}
+                               <br/>{% if customer.mobile_no %}{{customer.mobile_no}}{% endif %}
+                            </div>
+
+                                {%endif%}
+                           
+                        </div>
+                        <div class="checkout-step {% if frappe.session.user!='Guest' or  customer%}active{%endif%}">
+                             <div class="head">
+                            <h3><span class="step-no">2</span>Billing Address
+                                 <i class="fa fa-check proccess-status" style="display:none"></i>
+                                 <button class="change-address-btn" onclick="ChangeBillingAddress()">Change</button>
+                            </h3>
+                        </div>
+                            <div class="check-step-content">
+                                 <div class="customer-address">
+                                {% if frappe.session.user!='Guest' or  customer%}
+                                  {% if customer.customer_address %}{% for item in customer.customer_address %}
+                                 
+                                     <label class="radio-container">
+                                            <input type="radio" name="customer_billing_address" value="{{item.name}}" data-text="{{item.address_line1}}, {% if item.address_line2 %}{{item.address_line2}}, {% endif %} {{item.city}}, {% if item.state %}{{item.state}}, {% endif %}{{item.country}} {% if item.pincode %} - {{item.pincode}}{% endif %}" {%if loop.index==1%}checked{%endif%}> {{item.address_title}}<br/>  {{item.address_line1}}, {% if item.address_line2 %}{{item.address_line2}}, {% endif %} {{item.city}}, {% if item.state %}{{item.state}}, {% endif %}{{item.country}} {% if item.pincode %} - {{item.pincode}}{% endif %}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        
+                                       
+                                  
+                                  {%endfor%}
+                                  {%endif%}
+                                     {%endif%}
+                                       </div>
+                                  <div class="address-btns">
+                                      <button type="button" class="buy-now-btn-desktop width-45" onclick="showAddrPopup('Billing')"><i class="fa fa-plus" style="margin-right:5px" ></i>Add New Address</button>
+
+                                     <a class="buy-now-btn-desktop procceed-btn width-45" onclick="BillingToAddress()" id="btnBillingAddress">Bill to this address</a>
+                                     <div style="float: right;padding: 10px 20px;"><input type="checkbox" name="shipto-same-address" value="shipto-same-address" id="shipto-same-address" checked>Ship to the same address</div>
+                                
+                                  </div>
+                            </div>
+                             <div class="content-info" id="billingaddress">
+                             </div>
+                        </div>
+                        <div class="checkout-step">
+                             <div class="head">
+                            <h3><span class="step-no">3</span>Shipping Address
+                            <i class="fa fa-check proccess-status" style="display:none"></i>
+                            <button class="change-address-btn" onclick="ChangeShippingAddress()">Change</button>
+                            </h3>
+                        </div>
+                            <div class="check-step-content">
+                                  <div class="customer-address">
+                                 {% if frappe.session.user!='Guest' or  customer%}
+                                 {% if customer.customer_address %}{% for item in customer.customer_address %}
+                                
+                                      <label class="radio-container">
+                                            <input type="radio" name="customer_shipping_address" value="{{item.name}}" data-text="{{item.address_line1}}, {% if item.address_line2 %}{{item.address_line2}}, {% endif %} {{item.city}}, {% if item.state %}{{item.state}}, {% endif %}{{item.country}} {% if item.pincode %} - {{item.pincode}}{% endif %}" {%if loop.index==1%}checked{%endif%}> {{item.address_title}}<br/>  {{item.address_line1}}, {% if item.address_line2 %}{{item.address_line2}}, {% endif %} {{item.city}}, {% if item.state %}{{item.state}}, {% endif %}{{item.country}} {% if item.pincode %} - {{item.pincode}}{% endif %}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        
+                                       
+                                  {%endfor%}
+                                  {%endif%}
+                                   {%endif%}
+                                     </div>
+                                  
+                                  <div class="address-btns">
+                                      <button type="button" class="buy-now-btn-desktop width-45" onclick="showAddrPopup('Shipping')"><i class="fa fa-plus" style="margin-right:5px;" ></i>Add New Address</button>
+                                     <a class="buy-now-btn-desktop procceed-btn width-45" onclick="ShippngToAddress()">Ship to this address</a>
+                                  </div>
+                            </div>
+                            <div class="content-info" id="shippingaddress">
+                             </div>
+                        </div>
+
+                        <div class="checkout-step">
+                            <div class="head">
+                                <h3>
+                                    <span class="step-no">4</span>
+                                    
+                            Shipping Method
+                                    <i class="fa fa-check proccess-status" style="display:none"></i>
+                                    <button class="change-address-btn" onclick="ChangeShippingMethod(true)">Change</button>
+                                </h3>
+                            </div>
+                            
+                            <div class="check-step-content">
+                                <div class="customer-address">
+                                {% if shipping_methods %}
+                                {% for item in shipping_methods %}
+                                <label class="radio-container">
+                                    <input type="radio" name="shipping_method" value="{{item.name}}" data-text="{{item.name}}" {%if loop.index==1%}checked{%endif%}> {{item.name}}
+                                    <span class="checkmark"></span>
+                                </label>
+                                {%endfor%}
+                                {%endif%}
+                                </div>                                  
+                                <div class="address-btns">                                    
+                                    <a class="buy-now-btn-desktop procceed-btn width-45" onclick="ShippingMethod()">Continue</a>
+                                </div>
+                            </div>
+                            <div class="content-info" id="shippingmethod">
+                             </div>
+                        </div>
+
+                        <div class="checkout-step" id="paymentmethodsDiv">
+                            <div class="head">
+                                <h3>
+                                    <span class="step-no">5</span>
+                                    Payment Method
+                                    <i class="fa fa-check proccess-status" style="display:none"></i>
+                                    <button class="change-address-btn" onclick="ChangePaymentMethod()">Change</button>
+                                </h3>
+                            </div>
+                            <div class="check-step-content">
+                                <div class="customer-address">
+
+ 
+                                {% if payment_methods %}
+                                <div id="paymentmethods">
+                                    {% for item in payment_methods %}
+                                    <label class="radio-container">
+                                        <input type="radio" name="payment_method" value="{{item.name}}" data-charges="{{item.payment_charges}}" data-text="{{item.payment_method}}" {%if loop.index==1%}checked{%endif%}>{{item.payment_method}} {%if item.payment_charges>0%} ({{Currency}}
+                                        {{frappe.utils.fmt_money("%0.3f" % item.payment_charges | float)}}){%endif%}
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    {%endfor%}
+                                </div>
+                                {%endif%}
+                                </div>                                  
+                                <div class="address-btns">                                    
+                                    <a class="buy-now-btn-desktop procceed-btn width-45" onclick="PaymentMethod()">Continue</a>
+                                </div>
+                            </div>
+                            <div class="content-info" id="paymentmethod">
+                             </div>
+                        </div>
+
+                        <div class="checkout-step" id="checkoutdiv" style="padding-bottom: 0;margin-bottom: 20px; position: relative;">
+                             <div class="head" style="margin-bottom:20px;">
+                            <h3><span class="step-no">6</span>Order Summary</h3>
+                        </div>
+                        <div class="cart-slider-loading" style=" min-height: 300px; background: white; left: 0;position: relative;top: 36px; margin-bottom: 71px;">
+                            <div style="position: absolute; top: 45%; left: 45%"><img src="/assets/cmswebsite/images/cart-loading.gif" ><br>Loading...</div>
+                        </div>
+                            <div class="check-step-content" id="loaderhide">
+                              <br>
+                              <div class="summary2" style="float: left;width: calc(100% + 48px);margin-left: -24px;}">
+                              <table class="table table-bordered table-responsive hidden-xs mob-hide" style="border-bottom : none;border-top : 1px solid #ddd; border-left: none; border-right: none">
+                                <thead style="border: none">
+                                    <tr>
+                                        <th style="width: 10%;">Product(s)</th>
+                                        <th></th>
+                                        <th style="text-align: right;">Price</th>
+                                        <th style="text-align: center;">Quantity</th>                                        
+                                        <th style="text-align: right;">Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                              </table>
+                            </div>
+                                 
+                                 <div class="summary web-hide">
+                                 <table class="table" style="margin-bottom: 0px !important">                                      
+                                      <tbody></tbody>
+                                     
+                                  </table>
+                              </div>
+                     <div class="address-btns mob-hide" style="border-bottom: none;">
+                                      <button type="button" class="buy-now-btn-desktop" onclick="insertOrder()" id="checkout-confirm-btn" style="float: right">Confirm Order</button>                             
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                   <!--  <div class="headline">
+                        <h2>Account</h2>
+                    </div> -->
+                              
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">                    
+                
+                     <div class="checkout-right-panel" id="pricediv">
+                        <div class="checkout-right-panel-heading">
+                            Price Details
+                        </div>
+                        <div class="checkout-right-panel-content">
+                            <div class="cart-items-no-price">
+                                <span id="cart-items-count"> </span>
+                                <span id="cart-items-subtotal"> </span>
+                            </div>
+                            <div class="cart-items-no-price">
+                                <span> Delivery Charges</span>
+                                <span id="cart-delivery-charges"> {{Currency}}0.00</span>    
+                            </div>
+                        <div class="checkout-total-div">
+                             <span>Amount Payable</span>
+                             <span id="cart-total-amount"> Rs.0.00</span>
+                        </div>
+                        </div>
+                     </div>
+                </div>
+              </div>
+            </div>
+            </div>
+        <!-- </div> -->
+        <div class="address-btns web-hide" style="border: none;padding: 0px; position: fixed;bottom: 0px; left:0px" id="footer-btn">
+            <a href="/" class="buy-now-btn-desktop shopmore-btn"  ><span class="lnr lnr-pointer-left" style="margin-right:5px"></span>Shop More </a>
+            <button type="button" class="buy-now-btn-desktop confirm-btn" onclick="insertOrder()" style="color: white !important; font-size: 16px!important"><span class="lnr lnr-pointer-right" style="margin-right:5px"></span>Confirm Order</button>   
+             <!-- id="checkout-confirm-btn" -->
+        </div>
+    </section>
+    <!-- CHECK-CONTACT-AREA:END   -->
+    
+   
+    <!-- PAYMENT-AREA:END   -->
+    <div id="message_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    
+                </div>              
+            </div>
+        </div>
+    </div>
+    <div id="address_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Address</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Addr1" style="font-weight:normal;float: left;">Flat/House No, Building Number<span class="frm-reqd">*</span></label>
+                                <input id="Addr1" type="text" value="" class="form-control"  required>
+                                <span class="error addr1-err">Please enter Flat/House No, Building Number.</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Addr2" style="font-weight:normal;float: left;">Road No, Road Name, Block No</label>
+                                <input id="Addr2" type="text" value="" class="form-control" required/>
+                                <span class="error addr2-err">Please enter Road No, Road Name, Block No.</span>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="City" style="font-weight:normal;float: left;">Area<span class="frm-reqd">*</span></label>
+                                <input id="City" type="text" value="" class="form-control"  required>
+                                <span class="error city-err">Please enter Area.</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="State" style="font-weight:normal;float: left;">Governorate</label>
+                                <input id="State" type="text" value="" class="form-control" required/>
+                                <span class="error state-err">Please enter Governorate.</span>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Country" style="font-weight:normal;float: left;">Country <span class="frm-reqd">*</span></label>
+
+                                <select id="Country" class="form-control">
+                                    {% if country %}{% for item in country %}
+                                    <option value="{{item.name}}" {% if item.name == default_country %}selected{% endif %}>{{item.name}}</option>
+                                    {% endfor %}{% endif %}
+                                </select>
+                                <span class="error country-err">Please select country.</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PostalCode" style="font-weight:normal;float: left;">Postal Code <span class="frm-reqd">*</span></label>
+                                <input id="PostalCode" type="text" value="" class="form-control"  required>
+                                <span class="error pin-err">Please enter postal code.</span>
+                            </div>                               
+                        </div>-->
+                        </div>
+                        <input type="hidden" name="hdnAddrType" id="hdnAddrType" />                      
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="saveAddress2()">Submit</button>
+                </div>             
+            </div>
+        </div>
+    </div>
+    
+<link href="/assets/erpnext_ecommerce/css/checkout.css" rel="stylesheet">
+{% endblock %}
+{% block script %}
+<script>
+    {% include "templates/includes/cartpage.js" %}
+</script>
+<script type="text/javascript">
+  (function($) {
+  $.fn.inputFilter = function(inputFilter) {
+    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  };
+}(jQuery));
+  $(document).ready(function() {
+    $("#Registermobile").inputFilter(function(value) {
+      return /^\+?\d*$/.test(value);    // Allow digits only and '+'in only first index , using a RegExp
+    });
+  });
+  function saveAddress2() {
+      var formData = {};
+      formData.addr1 = $('#Addr1').val();
+      formData.addr2 = $('#Addr2').val();
+      formData.city = $('#City').val();
+      formData.state = $("#State").val();
+      formData.country = $('#Country').val();
+      var links = [];
+      var link = {};
+      link.link_doctype = "Customer";
+      link.link_name = $('#hdnCustomerId').val();
+      links.push(link)
+      formData.links = links;
+      clear_address_error2();
+      if (formData.addr1 != '' && formData.city != '' && formData.country != '' && formData.addr2 != '' && formData.state != '') {
+          $.ajax({
+              type: 'POST',
+              Accept: 'application/json',
+              ContentType: 'application/json;charset=utf-8',
+              url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.insert_address',
+              dataType: "json",
+              data: { 'data': JSON.stringify(formData) },
+              async: false,
+              headers: {
+                  'X-Frappe-CSRF-Token': '{{csrf_token}}'
+              },
+              success: function(data) {
+                  if (data.message) {
+                      var addr_html = '<p>' + data.message.address_line1 + ',';
+                      if (data.message.address_line2)
+                          addr_html += '<br>' + data.message.address_line2 + ','
+                      addr_html += '<br>' + data.message.city + ', '
+                      if (data.message.state)
+                          addr_html += data.message.state
+                      addr_html += '<br>' + data.message.pincode + '<br>' + data.message.country + '</p>'
+                      var bill_addr = '<div class="col-md-6 col-sm-6 col-xs-12"><div data-address="' + data.message.name + '"\
+                          class="addr-box"><div><div class="addr-btn" onclick="selectBillingAddress(this)">Bill \
+                          to this address</div></div><div class="addr">' + addr_html + '</div></div></div>';
+                      var ship_addr = '<div class="col-md-6 col-sm-6 col-xs-12"><div data-address="' + data.message.name + '"\
+                          class="addr-box"><div><div class="addr-btn" onclick="selectShippingAddress(this)">Ship \
+                          to this address</div></div><div class="addr">' + addr_html + '</div></div></div>';
+                      $('#selectBillAddr .adr').append(bill_addr)
+                      $('#selectShipAddr .adr').append(ship_addr)
+                      if (data.message.address_type == 'Billing') {
+                          $('#selectBillAddr').hide();
+                          $('#BillAddr').show();
+                          $('#BillAddr .addr').html(addr_html);
+                          $('#hdnBillingAddress').val(data.message.name)
+                      } else {
+                          $('#selectShipAddr').hide();
+                          $('#ShipAddr').show();
+                          $('#ShipAddr .addr').html(addr_html);
+                          $('#hdnShippingAddress').val(data.message.name)
+                      }
+                      $('#address_modal').modal('hide');
+                      var billingaddressHtml = '';
+                      var shippingaddressHtml = '';
+                      var ischecked = "";
+                      let full_address = data.message.address_line1 + ', ';
+                      if(data.message.address_line2)
+                          full_address += data.message.address_line2 + ', ';
+                      full_address += data.message.city + ',';
+                      if(data.message.state)
+                          full_address += data.message.state + ', ';
+                      full_address += data.message.country;
+                      if(data.message.pincode)
+                          full_address += ' - ' + data.message.pincode;
+                      billingaddressHtml += '<label class="radio-container"><input type="radio" name="customer_billing_address" value="' + data.message.name + '" data-text="' + full_address + '"" ' + ischecked + '>' + data.message.address_title + '<br/>' + full_address + '<span class="checkmark"></span></label>';
+                      shippingaddressHtml += '<label class="radio-container"><input type="radio" name="customer_shipping_address" value="' + data.message.name + '" data-text="' + full_address + '" ' + ischecked + '> ' + data.message.address_title + '<br/>' + full_address + '<span class="checkmark"></span></label>';
+                      $(".checkout-step:eq(1)").find(".customer-address").append(billingaddressHtml);
+                      $(".checkout-step:eq(2)").find(".customer-address").append(shippingaddressHtml);
+                      $(".checkout-step:eq(1)").find(".procceed-btn").show();
+                      $(".checkout-step:eq(2)").find(".procceed-btn").show();
+                      clear_addressModal_fields()
+                      clear_address_error2()
+                  }
+              },
+              error: function(xhr, text, data) {
+                  var html = xhr.responseJSON.message;
+                  $('#message_modal .modal-title').text('Alert');
+                  $('#message_modal .modal-body').html(html)
+                  $('#message_modal').modal('show');
+              }
+          })
+      } else {
+          if (formData.addr1 == '')
+              $('.addr1-err').show();
+          if (formData.city == '')
+              $('.town-err').show();
+          if (formData.country == '')
+              $('.country-err').show();
+          if (formData.state == '')
+              $('.state-err').show();
+          if (formData.addr2 == '')
+              $('.addr2-err').show();
+      }
+  }
+  function clear_address_error2() {
+    $('.addr1-err,.town-err,.district-err,.pin-err,.country-err,.state-err,.city-err,.addr2-err').hide();
+  }
+</script>
+
+{% endblock %}

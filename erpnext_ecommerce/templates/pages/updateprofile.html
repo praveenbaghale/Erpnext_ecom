@@ -1,0 +1,447 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+<section class="dashboard pad-8">
+   
+        <div class="row">
+            <div class="col-md-3 col-xs-12 col-sm-3 pad-right-5">
+
+                {% include "templates/layout/sidebar.html" %}
+            </div>
+            <div class="col-md-9 col-xs-12 col-sm-9 content-data pad-left-5">
+                   <div class="inner-card">
+                <div class="pad-a">
+                    <h3 style="padding-left: 10px;">Update Profile</h3>
+                    <a class="btn btn-primary add-btn" onclick="updateCustomer()">Save</a>
+                </div>
+                <hr style="margin-bottom: 5px;">
+                <div class="detail_box">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="addr-box">
+                                {% if customer %}
+                                {% for item in customer %}
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Customer Name<span class="mandatory">*</span></label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="customer_name" id="customer_name" value="{{item.customer_name}}"></div>
+                                    </div>
+                                    <ul class="errorlist erlist_user_username" id="customer-err">
+                                        <li><a href="">Please enter customer name</a></li>
+                                    </ul>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Customer Email</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="email" id="email" value="{{item.email_id}}" readonly="" style="background-color: #efefef;cursor: auto;"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Customer Phone</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="phone" id="phone" value="{% if item.customer_phone and item.customer_phone !='None' %}{{item.customer_phone}}{% endif %}"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Mobile</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="mobile" id="mobile" value="{% if item.mobile and item.mobile !='None' %}{{item.mobile}}{% endif %}"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Mobile 2</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="mobile2" id="mobile2" value="{% if item.mobile_2 and item.mobile_2 !='None' %}{{item.mobile_2}}{% endif %}"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Home</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="home" id="home" value="{% if item.home and item.home !='None' %}{{item.home}}{% endif %}"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Office</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input data-field-caption="Name" type="text" name="office" id="office" value="{% if item.office and item.office !='None' %}{{item.office}}{% endif %}"></div>
+                                    </div>
+                                </div>
+                                <div class="field-set">
+                                    <div class="caption-wraper"><label class="field_label">Update Password</label></div>
+                                    <div class="field-wraper">
+                                        <div class="field_cover"><input id="UpdatePassword" type="password" value="" class="form-control" placeholder="Enter Password" required=""></div>
+                                         <span class="error invalid-pwd" style="display: none;"><span class="icon">!</span>Include symbols, numbers and capital letters in the password and must be minimum 8 characters length.</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+   
+</section>
+<style type="text/css">
+.list-contain-a {
+    font-size: 18px !important;
+}
+.pad-a{
+    padding: 0 10px;
+}
+.pad-left-5{
+    padding-left: 5px;
+}   
+.pad-right-5{
+    padding-right: 5px;
+}
+.inner-card{
+    display: block;
+    background: #fff;
+    padding: 0px;
+    padding-bottom: 0px;
+    border: 1px solid #dedfe3 !important;
+    /* padding-bottom: 15px; */
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+    margin-bottom: 25px;
+}
+.dashboard .profile-menu{
+    margin-top: 11px;
+}
+.mar-8{
+    margin: 8px; 
+}
+
+.table tbody tr td {
+    border-top: 0;
+}
+
+.list-box {
+    padding: 10px;
+}
+
+.box-style {
+    margin-right: 0;
+    margin-left: 0;
+    border: 1px solid #ddd;
+    background: #e6e3e3;
+}
+
+/*.btn {
+    margin-top: 30px;
+}
+*/
+.detail_box {
+    /*background: #f5f5f5;*/
+    /*float: left;*/
+    width: 100%;
+    /*padding-top: 70px;*/
+    padding-bottom: 50px;
+    /*margin-top: 15px;*/
+}
+
+.detail_box .box_item {
+    width: 600px;
+    background: #fff;
+    text-align: left;
+}
+
+.detail_box .box_item1 {
+    padding: 48px;
+}
+
+.detail_box .table_design {
+    margin-top: 15px;
+    border-collapse: collapse;
+    background: #fff;
+    color: #737373;
+}
+
+.table_design .title {
+    color: #915048;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.table_design .txt_design {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.table_design .td_style {
+    font-weight: bold;
+    border-left: 1px solid #c3c3c3;
+    border-bottom: 1px solid #c3c3c3;
+    border-top: 1px solid #c3c3c3;
+    padding: 10px !important;
+}
+
+.addr-box {
+    /*border: 1px solid #ddd;*/
+    padding: 10px 15px;
+    background: #fff;
+    color: #000;
+    margin-top: 10px;
+    min-height: 180px;
+}
+
+.addr-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.options {
+   background: #fff;
+    border: 1px solid #ddd;
+    border-top: 0;
+    padding: 10px;
+    padding-left: 5px;
+    border-left: 1px solid #ddd;
+}
+
+.options a {
+    color: #000;
+       padding: 10px 15px;
+}
+
+.options .edit:hover {
+    color: white;
+    background: #7da435;
+}
+.options .edit
+{
+    color: white;
+    background: #7da435;
+}
+.options .delete:hover {
+    color: #fff;
+    background: #ab3c2d;
+    cursor: pointer;
+}
+.options .delete
+{
+   color: #fff;
+    background: #ab3c2d;
+    cursor: pointer;
+}
+.add-btn{
+   position: absolute;
+    top: 10px;
+    /*top: 7%;*/
+    right: 30px;
+}
+
+.field-set {
+    /*width: 100%;
+    display: inline-block;
+    margin: 0 0 20px;*/
+    width: calc(50% - 2px);
+    display: inline-block;
+    margin: 0 0 20px;
+    padding: 0 15px;
+}
+
+.field_label {
+    font-weight: normal !important;
+}
+
+.errorlist {
+    display: none;
+}
+
+.errorlist {
+    margin: 0;
+    list-style: none;
+    padding: 2px 10px 4px;
+    position: relative;
+    background: #fdf7f6;
+    clear: both;
+    display: none;
+}
+
+.errorlist li {
+    font-size: 12px;
+    position: relative;
+}
+
+.errorlist li:last-child {
+    padding-bottom: 0;
+}
+
+.errorlist li a {
+    color: #f44336;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+input[type="text"], input[type="email"], input[type="phone"], input[type="search"], input[type="password"], textarea, select, input[type="number"], input[type="file"] {
+    background-color: #fff;
+    border: 1px solid #dcdcdc;
+    height: 40px;
+    padding: 0 10px;
+    width: 100%;
+    color: var(--txt-color);
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: normal;
+    border-radius: 2px;
+}
+.form input[type="submit"], .form input[type="button"] {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0 10px;
+    border: none;
+    border-radius: 2px;
+    padding: 0 40px;
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    text-overflow: ellipsis;
+    color: #fff;
+    background: #ee9B00;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    font-size: 1em;
+    font-weight: 500;
+    line-height: 40px;
+    overflow: hidden;
+    outline: none;
+    cursor: pointer;
+    -webkit-transition: -webkit-box-shadow 0.2s;
+    transition: -webkit-box-shadow 0.2s;
+    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
+}
+
+@media screen and (min-width: 992px){
+    .page-section {
+        margin: 0px auto;
+        max-width: 1366px;
+        padding: 14px 64px 14px !important;
+    }
+}
+@media screen and (max-width: 767px) and (min-width: 320px) {
+    .detail_box .box_item {
+        width: auto;
+    }
+
+    .detail_box .box_item1 {
+        padding: 20px;
+    }
+
+    .table_design .txt_design {
+        font-size: 13px;
+    }
+
+    .table_design .title {
+        font-size: 17px;
+    }
+    
+    .float-right{
+            float: none;
+    }
+   .add-btn {
+    right: 5px;
+    position: relative;
+    float: right;
+    margin-top: 10px;
+}
+    .pad-left-5{
+            padding-left: 15px !important;
+            padding-right: 15px;
+    }
+}
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+function validatepwd(pwd){
+    if(pwd.length<8){
+    return false;
+  }
+  var up_case=/[A-Z]+/;
+  if(!up_case.test(pwd)){
+    return false;
+  }
+  var l_case=/[a-z]+/;
+  if(!l_case.test(pwd)){
+    return false;
+  }
+  var special=/([!,%,&,@,#,$,^,*,?,_,~])/;
+  if(!special.test(pwd)){
+    return false;
+  }
+  var num=/[0-9]+/;
+  if(!num.test(pwd)){
+    return false;
+  }
+  return true;
+}
+function updateCustomer() {
+    let check = true;
+    if ($('#UpdatePassword').val()!="")
+      {
+        let pwd=$("#UpdatePassword").val();
+        let check_pwd=validatepwd(pwd)
+        if(check_pwd!=true)
+        {
+         
+            $('#UpdatePassword').parent().parent().find('.invalid-pwd').show();
+          setTimeout(function(){ $('#UpdatePassword').parent().parent().find('.invalid-pwd').hide(); }, 5000);
+
+          check = false;
+        }      
+      }
+    var formData = {};
+    var url ='';
+    formData.cus_name = $('#customer_name').val();
+    formData.update_pswrd = $('#UpdatePassword').val();
+    formData.name = "{{customer_id}}";
+    formData.customer_phone = $('#phone').val();
+    formData.mobile = $('#mobile').val();
+    formData.mobile_2 = $('#moble2').val();
+    formData.home = $('#home').val(); 
+    formData.office = $('#office').val();
+    url = '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.update_customer'
+
+    
+    if (formData.cus_name != '' && check == true) {
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + url,
+            dataType: "json",
+            data: { 'data': JSON.stringify(formData) },
+            async: false,
+            headers: {
+                'X-Frappe-CSRF-Token': '{{csrf_token}}'
+            },
+            success: function(data) {
+                if (data.message) {
+                    window.location.href = window.location.origin +'/myprofile';
+                }
+            },
+            error: function(xhr, text, data) {
+                var html = xhr.responseJSON.message;
+            }
+        })
+    } else {
+            if (formData.cus_name == '')
+                $('#customer-err').show();
+            else
+                $('#customer-err').hide();
+    }
+}
+
+</script>
+{% endblock %}

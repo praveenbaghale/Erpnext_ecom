@@ -1,0 +1,46 @@
+<article>
+    <div class="simpleLens-gallery-container" id="product-gallery" style="border-left: none;">
+        
+        <div class="simpleLens-thumbnails-container" style="{% if product_images|length<=1 %}width: 0%;display: none;{% endif %}">
+            
+            <ul id="content-slider" class="content-slider">
+            {% if product_images %}
+                {% if product_images %}
+                    {% for item in product_images %}
+                    <li>
+                        <a href="#" class="simpleLens-thumbnail-wrapper" data-type="Image" data-lens-image="{{item.image}}" data-big-image="{{item.image}}">
+                            <img src="{{item.image}}" class="item">
+                        </a>
+                    </li>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+            <li>
+                    <a href="#" class="simpleLens-thumbnail-wrapper" data-lens-image="/assets/erpnext_ecommerce/images/no-image-800x511.png" class="img-responsive" data-big-image="/assets/erpnext_ecommerce/images/no-image-800x511.png" class="img-responsive" class="img-responsive">
+                        <img src="/assets/erpnext_ecommerce/images/no-image-800x511.png" class="img-responsive" class="item">
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        
+        <div class="simpleLens-container" style="text-align: center;{% if product_images|length<=1 %}width: 100%;{% endif %}">
+            <div class="simpleLens-big-image-container">
+                {% if product_images %}
+                    <a class="simpleLens-lens-image" data-lens-image="
+                                                    {%- if product_images[0] %}{{product_images[0].image}}{%endif%}">
+                        <img src="{%if product_images[0]%}{{product_images[0].image}}{%endif%}" class="simpleLens-big-image">
+                    </a>
+                {% else %}
+                <a class="simpleLens-lens-image" data-lens-image="/assets/cmswebsite/images/no-image-800x511.png">
+                    <img src="/assets/erpnext_ecommerce/images/no-image-800x511.png" class="simpleLens-big-image">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+</article>
+<div id="light-gallery" style="display:none"></div>
+<div id="videos-gallery" style="display:none"></div>
+<div id="image-canvas" style="display: none;"></div>

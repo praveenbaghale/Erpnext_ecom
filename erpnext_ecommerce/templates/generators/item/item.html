@@ -1,0 +1,1102 @@
+{% extends "templates/layout/customweb.html" %}
+
+{% block loader %}
+{% include "/templates/pages/detailpageloader.html" %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/slick.css"/>
+<link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/slick-theme.css"/>
+<link type="text/css" rel="stylesheet" href="/assets/erpnext_ecommerce/css/jquery.fancybox.min.css" />
+<link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/slick-lightbox.css">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.0/css/lightgallery.min.css" rel="stylesheet">
+<link rel="stylesheet"  href="/assets/erpnext_ecommerce/css/lightslider.css"/>
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.css" />
+<link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/jquery.simpleLens.css">
+<link rel="stylesheet" type="text/css" href="/assets/erpnext_ecommerce/css/jquery.simpleGallery.css">
+<!-- <link rel="stylesheet" type="text/css" href="/assets/css/glasscase.css"> -->
+    <input type="hidden" name="hdnProductId" id="hdnProductId" value="{{ variant and variant.name or name }}" />
+    <input type="hidden" name="hdnProductName" id="hdnProductName" value="{{ variant and variant.item_name or item_name }}" />        
+    <input type="hidden" name="hdnProductRate" id="hdnProductRate" value="{{ item_price }}" />        
+    <input type="hidden" name="hdnProductImage" id="hdnProductImage" value="{{ variant and variant.image or image }}" />
+    <input type="hidden" name="hdnProductRoute" id="hdnProductRoute" value="{{route}}">
+    <input type="hidden" name="hdnStockUom" id="hdnStockUom" value="{{variant and variant.stock_uom or stock_uom}}">
+    <input type="hidden" name="hdnDiscount" id="hdnDiscount" value="{{variant and variant.max_discount or max_discount}}" />
+    <input type="hidden" name="hdnItemId" id="hdnItemId" value="{{name}}" />
+    <input type="hidden" name="hdnItemAttrId" id="hdnItemAttrId" value="{% if variant %}{{variant.name}}{% endif %}" />    
+    <div class="title-breadcrumb">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ol class="breadcrumb">
+                        {% if parents %}{% for item in parents %}
+                        {% if item.name=="Home"%}
+                        <li><a href="/"><span class="lnr lnr-home"></span></i></a></li>
+                        {% else %}
+                        <li><a href="/{{item.route}}">{{item.name}}</a></li>
+                        {% endif %}
+                        {% endfor %}{% endif %}
+                        <li><a href="#">{{ variant and variant.item_name or item_name }}</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="single-product-area section-padding">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12" style="display: none;">
+                    <div class="brands">
+                        <h3>CATEGORIES <i class="fa fa-bars"></i></h3>
+                          <ul>
+                            {% if Categories %}{% for category in Categories %}
+                            <li class="{% if category.name==product.category %}active{% endif %}">
+                                <a href="/{{category.route}}">{{category.category_name}} 
+                                <span>({{category.products_count}})</span></a>
+                            </li>
+                            {% endfor %}{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                     <h3 class="item-name">{{ variant and variant.item_name or item_name }}</h3>
+                     <div class="product-wid-price clearfix product-detail-price">
+                                            
+                                            <ins> </ins>
+                                           
+                                          <del> </del> 
+                                            <input type="hidden" id="hdnProductRate" value=" " />
+                                             
+                                        </div>
+                     <div class=" product-wid-price">
+                            {% if pricing_rule %}
+                                    <div>
+                                        <ins></ins>  
+                                    </div>
+                                    {% elif pricing_rule %}
+                                    <div>
+                                         <ins></ins>  
+                                    </div>
+                                    {% endif %}
+                                   
+                     </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0">
+                    <div class="single-product-details">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pad-l-r-5 desk-border" >
+                                <div class="product-img-detail mobile_hide"  >
+                                   
+                                      <!-- <img id="ezimage" src="{% if image %}{{image}}{% else %}/assets/erpnext_ecommerce/images/no-image-800x511.png{% endif %}" class="img-responsive" /> -->
+                                      {% include "/templates/generators/item/productimages.html" %}
+                                     
+                                </div>
+                                <!-- Mobile View Product Image -->
+                                <div class="main-slider">
+                                  
+                                  {%if product_images%}
+                                    {%for item in product_images%}
+                                      <a href="{{item.image}}" data-fancybox="images">
+                                        <img src="{{item.image}}" />
+                                      </a>
+                                    {%endfor%}
+                                  {%else%}
+                                     <img class="xzoom5" src="/assets/erpnext_ecommerce/images/no-image-800x511.png" class="img-responsive"/>
+                                  {%endif %}
+                                </div>
+                                 <!-- Mobile View Product Image End-->
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pad-l-r-5">
+                             
+                                <div class="single-product-content">
+                  
+                                   
+                                    {% if allow_product_edit %}<a class="product-edit" href="/desk#Form/Item/{{name}}" target="_blank"><span><i class="fa fa-cog"></i> Edit Product</span></a>{% endif %}
+                                    {% if has_variants %}
+                                    {% if variant.brand %}<span class="brand-name">{{variant.brand}}</span>{% endif %}
+                                    {% else %}
+                                    {% if brand %}<span>{{brand}}</span>{% endif %}
+                                    {% endif %}
+                                    <div class="product-desc">
+					 <p>Item Code: {{ name }}</p>
+                                        <h3 class="overview-title">Overview</h3>
+                                    {{ variant and variant.description or description }}                     
+                                    </div>               
+                                    <div>                                        
+                                        <p class="stockAvail"></p>
+                                        <input type="hidden" name="hdnAvailableStock" id="hdnAvailableStock" />
+                                        <input type="hidden" name="hdnInStock" id="hdnInStock" value="" />
+                                        <input type="hidden" name="hdnIsStockItem" id="hdnIsStockItem" value="" />
+                                    </div>                        
+                                   
+
+                                    {% if pricing_rule %}
+                                    <div>
+                                        <span class="priceRule">{{pricing_rule.title}}</span>
+                                    </div>
+                                    {% elif pricing_rule %}
+                                    <div>
+                                        <span class="priceRule">{{pricing_rule.title}}</span>
+                                    </div>
+                                    {% endif %}
+                                   
+                                    <div class="cart-buttons-mobile">
+                                         <a onclick="addtocart()">
+                                            <span class="lnr lnr-cart det-icons"></span>
+                                                    Add to cart</a>
+                                         <a onclick="buy_now()"  class="buy-now-btn" >  <i class="fa fa-bolt" style="margin-right:5px"></i>Buy Now</a>
+
+                                    </div>
+                                    <div class="cartButtons">
+                                        <hr>
+                                        <div class="single-color last-color-child row "> 
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                 <div class="qty-box">
+                                                <div class="btn" onclick="decrQty(this)"><span class="fa fa-minus"></span></div>
+                                                <div class="btn" id="cartQty">1</div>
+                                                <div class="btn" onclick="incrQty(this)"><span class="fa fa-plus"></span></div>
+                                            </div>  
+                                             <div class="size-cart2">
+                                                    <a onclick="addtocart()" > 
+                                                        <!-- <i class="fa fa-shopping-cart" style="margin-right:5px"></i> -->
+                                                        <span class="lnr lnr-cart det-icons"></span>
+                                                    Add to cart</a>
+                                                </div>
+                                                <div class="size-cart">
+                                                    <a onclick="buy_now()"  class="buy-now-btn-desktop">  <!-- <i class="fa fa-arrow-right" style="margin-right:5px"></i> -->
+                                                   
+                                                     <span class="fa fa-bolt det-icons"></span>
+                                                    Buy Now</a>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="size-cart1">
+                                                    <a onclick="addtowishlist1()">
+                                                   
+                                                     <span class="fa fa-heart det-icons"></span>
+                                                    Add to wishlist</a>
+                                                </div>
+                                            </div>
+                                    </div>  
+                                      
+                                    </div>
+                                    <span class="error qtyErr">Quantity should be greater than 0</span>                                    
+                                    <div class="share-product">
+                                        <hr>
+                                        <div>Share with friends</div>
+                                        <div class="share-icons">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{currenturl}}" class="fb-share"><span class="fa fa-facebook"></span></a>
+                                            <a href="https://twitter.com/share"data-size="large" data-text="{{ variant and variant.item_name or item_name }}" target="_blank"  data-url="{{currenturl}}" class="tw-share"><span class="fa fa-twitter"></span></a>
+                                            <span class="web-hide" style="float: left; padding: 0px 10px">
+                                            <a href="whatsapp://send?text={{currenturl}}" id="whatsappShare" data-text="Schedule for @Model.name" class="wa_btn wa_btn_l share-btn w-share" onClick="ga('send', 'event', { eventCategory: 'Social', eventAction: 'Share', eventLabel: 'WhatsAppShare', eventValue: 0});" ><span class="fa fa-whatsapp"></span></a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="display: none">
+                            <div class="product-tab product-tab-single">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active description"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a>
+                            </li>
+                            <li role="presentation" class="specification"><a href="#spec" aria-controls="spec" role="tab" data-toggle="tab">Specification</a>
+                            </li>
+                            <!-- <li role="presentation" class="review"><a href="#review" aria-controls="spec" role="tab" data-toggle="tab">Reviews</a>
+                            </li> -->                                                 
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active item-description" id="home"> 
+                                {{ variant and variant.description or description }}
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="spec">
+                                {% if has_variants %}
+                                {% if variant.website_specifications %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table borderless" style="width: 100%">
+                                        {% for d in variant.website_specifications -%}
+                                            <tr>
+                                                <td class="text-muted" style="width: 30%;">{{ d.label }}</td>
+                                                <td>{{ d.description }}</td>
+                                            </tr>
+                                        {%- endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% else %}
+                                {% if website_specifications %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table borderless" style="width: 100%">
+                                        {% for d in website_specifications -%}
+                                            <tr>
+                                                <td class="text-muted" style="width: 30%;">{{ d.label }}</td>
+                                                <td>{{ d.description }}</td>
+                                            </tr>
+                                        {%- endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="review">
+                                <div>
+                                    <button class="btn btn-success" onclick="showReviewModal()">Write a review</button>
+                                </div>
+                                {% if Reviews %}
+                                <div style="position: relative;">
+                                    <h4>Review for <span class="item-name">{{ item_name }}</span></h4>
+                                    <div class="overall_rating"></div><hr>
+                                    <input type="hidden" name="hdnOverallRating" id="hdnOverallRating" value="{{overall_rating}}">
+                                    {% if rating_ranges %}
+                                    <div class="section-rating">
+                                    {% for section in rating_ranges %}
+                                        <input type="hidden" name="hdnRatingType" id="{{section.score_value}}" value="{{section.rating}}">
+                                        <div id="{{section.score_value}}"></div>
+                                    {% endfor %}
+                                    </div><hr>
+                                    {% endif %}
+                                </div>
+                                <div class="row" id="ReviewList">
+                                    {% for review in Reviews %}
+                                    <div class="col-md-12 col-sm-12 col-xs-12 r-box">
+                                        <div class="r-title">
+                                            <h5>{{review.title}}</h5>
+                                            <input type="hidden" name="hdnRating" id="hdnRating" value="{{review.overall__rating}}">
+                                            <div class="rating"></div>
+                                        </div>
+                                        {% if review.message %}
+                                        <div>{{review.message}}</div>
+                                        {% endif %}
+                                        <div>
+                                            <div>Posted by <i>{{review.user_name}}</i>{% if review.date %} on <i>{{review.date.strftime("%b %d, %Y")}}</i>{% endif %}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% if MoreReview %}
+                                <button class="btn btn-warning" id="loadMoreReview" onclick="loadMoreReview()">Load More</button>
+                                {% endif %}
+                                {% else %}
+                                <div>No product review yet. Be the first to review this product.</div>
+                                {% endif %}
+                            </div>                                                    
+                        </div>
+                        </div>
+                    </div>
+                     
+                    </div>
+                    </div>
+                    
+                    {% if RelatedProducts %}
+                    <div class="product-latest">
+                    
+                         <div class="row"  >
+            <div class="col-md-12 col-sm-12 col-xs-12" style="padding :0">
+                <div class="home-card">
+                <div class="headline">
+                    <h2>Related products</h2>
+                </div>
+                <div class="related-products" style="border:none">
+                    {% for item in RelatedProducts %}
+                    {% include "/templates/pages/homeproducts.html" %}
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        </div>
+                    </div>
+                    {% endif %}
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div id="message_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="z-index: 9999;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    
+                </div>              
+            </div>
+        </div>
+    </div>
+    <div id="review_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="z-index: 9999;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Write a review</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label>Name <span class="mandatory">*</span></label>
+                                <input type="text" name="CustomerName" id="CustomerName" placeholder="Enter your name" class="form-control" />
+                                <span class="error uname-err">Please enter your name</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label>Email <span class="mandatory">*</span></label>
+                                <input type="email" name="CustomerEmail" id="CustomerEmail" placeholder="Enter your email" class="form-control" />
+                                <span class="error email-err">Please enter valid email</span>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Title <span class="mandatory">*</span></label>
+                                <input type="text" name="Title" id="Title" placeholder="Enter title of the review" class="form-control" />
+                                <span class="error title-err">Please enter title</span>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea id="Message" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    {% if score_values %}
+                    <div class="row">
+                        {% for item in score_values %}
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div>{{item.score_value}}</div>                            
+                            <div class="rate-stars" data-value="{{item.score_value}}">
+                                <span class="fa fa-star" data-count="1"></span>
+                                <span class="fa fa-star" data-count="2"></span>
+                                <span class="fa fa-star" data-count="3"></span>
+                                <span class="fa fa-star" data-count="4"></span>
+                                <span class="fa fa-star" data-count="5"></span>
+                                <input type="hidden" name="hdnRatedValue" id="hdnRatedValue" value="0" />
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="submitReview()">Submit</button>
+                </div>           
+            </div>
+        </div>
+    </div>
+<div id="light-gallery" style="display:none">
+
+</div>
+
+    <style type="text/css">
+     .zoomWindow{border:none!important;top:0!important;left:103%!important;width:104%!important;height:95%!important}.product-img-detail{background:#fff;text-align:center;padding:10px}#gallery_01 img{height:90px}div#gallery_01{text-align:left}#gallery_01 img{border:2px solid #fff}#zoom_03{max-height:350px}#gallery_01 .active img{border:2px solid #759e2e!important;padding:2px}.home-card{display:block;background:#fff;padding:0 20px;padding-bottom:0;padding-bottom:15px;border-radius:2px;float:left;width:100%}.owl-theme{padding:0 10px!important}.table>tbody>tr>td{border:0}.size-cart{margin-top:0;cursor:pointer;float:left;width:auto;margin-left:15px!important;min-width:150px;min-height:50px}.size-down input[type=number]{height:44px}#review .btn{margin-bottom:20px}.fa-star-half-o.active,.fa-star.active{color:#ffc107}.rating-section{display:flex}.rating-section .rating-heading{width:20%}#review{position:relative}.r-title{display:flex}.r-title .rating{margin-left:5%}.r-title h5{margin-top:5px;margin-bottom:10px}.r-box{margin-bottom:10px}.rate-stars{float:right;margin-top:-4%;margin-right:5%}#review_modal .form-control{border-radius:0!important}#review_modal .form-control:focus{border-color:#ccc}.cart-link{color:#fff!important;padding:6px 12px;font-size:15px;background:#7da435;cursor:pointer}.hot-wid-rating h4{font-size:14px;min-height:30px}.no-pad{padding-left:0;padding-right:0}.single-color.last-color-child{margin-top:0}.single-color{margin-bottom:0}.detail-icons .wish-btn{position:inherit}.share-icons a{padding:5px 10px;background:#ddd;border-radius:50%;color:#fff}.share-icons{margin:6px 0}.priceRule{background:#e65341;color:#fff;padding:3px 10px;font-size:13px}.disabled{background:#7da435a3!important;cursor:not-allowed}@media screen and (min-width:992px){.wi-20{width:20%}}@media screen and (max-width:991px) and (min-width:768px){.size-cart{width:auto}}@media screen and (max-width:767px){.size-cart{width:auto}.size-cart a{font-size:13px}.page-section{margin-top:49px}}.pad-5{padding-right:0;padding-left:0}.error{display:none}.single-product-content .product-wid-price ins{margin-bottom:1opx!important;font-size:22px}.product-single-right{padding:0 10px;float:left;width:100%}.gc-icon{font-family:linea-arrows-10!important;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;position:absolute;z-index:1020;cursor:pointer;cursor:hand;color:#fff!important;opacity:.7;-ms-filter:"alpha(Opacity=70)";-moz-opacity:.7;-khtml-opacity:.7;height:1em;width:1em;line-height:0;background:#ccc;background:#fff!important;border:1px solid #fff!important}.glass-case ul li.gc-active,.glass-case ul li.gc-active:hover{border:2px solid #759e2e!important}.gc-display-area{padding:20px!important;width:84.5%!important}.gc-zoom{position:absolute;overflow:hidden;width:100%;height:auto;z-index:1040!important;border:none;padding:0;background-color:#fff;left:102%!important;width:100.2%!important;top:0!important}.gc-icon-enlarge{position:relative;float:right;margin-right:.25em;font-size:2em;right:10px!important;margin-right:0}.gc-icon-close{position:relative;font-size:2em;float:right;right:0}.gc-icon-compress{position:relative;float:right;margin-right:.25em;font-size:2em;right:10px;margin-right:0}.glass-case{width:100%!important}%else% @media screen and (min-width:768px){padding:20px}.gc-zoom{position:absolute;overflow:hidden;width:100%;height:auto;z-index:1040!important;border:none;padding:0;background:0 0;left:101%!important;width:100%!important;top:0!important}.glass-case{position:relative;width:100%!important;margin-left:0!important;background-color:#f1f3f6!important}.product-tab.product-tab-single{margin-left:5px;margin-right:5px}.glass-case{position:relative;margin-left:0!important;background-color:#f1f3f6!important;margin-top:9px}.product-latest .col-xs-12{padding:5px!important;margin-bottom:60px}.product-tab-single.product-tab .nav-tabs>li.active>a:focus:after,.product-tab-single.product-tab .nav-tabs>li.active>a:hover:after{border-bottom:2px solid #e65341;content:"";height:2px;width:100%;position:absolute;bottom:-2px;left:0}.overall_rating1{color:#828282;font-size:18px;margin-bottom:10px}@media screen and (min-width:767px){.desk-border{padding-left:0}}#gallery_01 img{height:90px;float:left;width:25%}#gallery_01{text-align:left;background:#f1f3f6;margin-left:-15px;width:calc(100% + 30px);margin-top:25px;padding:15px 0}.stockAvail{font-size:18px}.gc-li-display-container img{margin-top:0!important;margin-left:0!important;top:0!important;left:0!important;height:100%}.product-edit{position:absolute;right:5%;background:#ddd;padding:2px 8px;font-size:13px}#ezimage{display:inline-block;width:100%}.zoomLens{cursor:move!important}#gal1 img{border:2px solid #fff;max-width:96px;max-height:95px;width:auto}#gallery_09 img{border:2px solid #fff;width:96px}.zoomGalleryActive img{border:2px solid #333!important}.title-breadcrumb{background-color:#f5f5f5!important}.single-product-area.section-padding{background:#fff}.single-product-content{border:none!important}.item-name{margin-top:10px;margin-bottom:10px;width:calc(100% - 250px);float:left}.product-detail-price{float:left;width:250px;text-align:right;font-size:24px;margin-top:10px;color:#0f1426;font-weight:600}h3.overview-title{font-weight:600;color:#222;font-size:20px}a.fb-share{background:#506da8}a.tw-share{background-color:#32bfea;padding:5px 8px}a.g-share{background-color:#f22b33;padding:5px 8px}a.w-share{background-color:#40c351;padding:5px 8px}@media screen and (max-width:767px){.item-name{width:100%;font-size:16px;line-height:25px;margin-bottom:0}}.product-wid-price ins{float:right;font-size:20px}.product-wid-price del{margin-right:10px}.owl-item .product-wid-price ins{float: none;
+    font-size: 15px;}
+    .product-wid-price2 ins{margin-bottom:10px!important;font-size:22px}
+    .product-wid-price2 ins{float:right;font-size:20px}.product-wid-price2 del{margin-right:10px}.owl-item .product-wid-price2 ins{float: none;
+    font-size: 15px;
+    text-decoration: none;
+    color: #d4201c;}
+         .web-hide,.main-slider {
+             display: none; 
+         }
+         .size-cart1{
+            margin-top: 0;
+            cursor: pointer;
+            margin: 0 auto;
+            min-width: 150px;
+            float: left;
+            width: 100%;
+         }
+         .size-cart1 a {
+            color: #af1a31;
+            display: inline-block;
+            font-size: 15px;
+            padding: 0px 5px;
+            text-align: center;
+            text-transform: capitalize;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .size-cart2{
+            margin-top:0;
+            cursor:pointer;
+            float:left;
+            width:auto;
+            margin-left:15px!important;
+            min-width:150px;
+            min-height:50px
+        }
+         .size-cart2 a {
+                color: #af1a31;
+                display: block;
+                font-size: 16px;
+                padding: 12px 10px;
+                text-align: center;
+                text-transform: capitalize;
+                border: 1px solid #af1a31;
+                font-family: inherit;
+                width: 100%;
+            }
+         @media screen and (max-width:767px){
+            .mobile_hide{
+                display: none;
+            }
+            .web-hide{
+                display: block;   
+            }
+            .owl-carousel .owl-stage-outer{
+                margin: 0px 10px;
+            }
+         }
+         @media screen and (max-width: 767px){
+            .main-slider{
+              background: #fff !important;
+              margin-bottom: 0 !important;
+            }
+            .slick-dots{
+                position: initial !important;
+              }
+              
+              .slick-dots li.slick-active button:before{
+                color: green !important;
+              }
+              .slick-dots li button:before {
+                font-size: 30px !important;
+              }
+               .main-slider{
+                display: block !important;
+              }
+              .slick-slide img {
+                max-height: 250px;
+                   display: inline-block;
+              }
+              .slick-initialized .slick-slide{
+                text-align: center;
+              }
+              .item-slick{
+                max-width: 57px !important;
+              }
+                margin-top: -7px !important;
+              }
+              .slick-next{
+                margin-top: -7px!important;
+              }
+              .slick-dots li{
+                  margin:0
+                }
+                .fancybox-button--play,.fancybox-button--fullscreen,.fancybox-button--share,.fancybox-button--thumbs
+                {
+                  display:none !important;
+                }
+                .fancybox-is-open .fancybox-bg {
+    opacity: 1;
+    transition-timing-function: cubic-bezier(.22,.61,.36,1);
+}
+.fancybox-bg {
+    background: #fff;
+    opacity: 0;
+    transition-duration: inherit;
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(.47,0,.74,.71);
+}
+.fancybox-thumbs {
+    top: auto;
+    width: auto;
+    bottom: 0;
+    left: 0;
+    right : 0;
+    height: 95px;
+    padding: 10px 10px 5px 10px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .fancybox-show-thumbs .fancybox-inner {
+    right: 0;
+    bottom: 95px;
+  }
+  .fancybox-thumbs {
+    top: auto;
+    width: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    background: #fff;
+}
+.fancybox-thumbs>ul>li>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 50px;
+    max-width: none;
+    max-height: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 50px !important;
+    width: 50px !important;
+    margin-top: 0 !important;
+}
+.fancybox-thumbs>ul>li {
+    float: left;
+    overflow: hidden;
+    padding: 0;
+    margin: 2px;
+    width: 50px;
+    height: 50px;
+    max-width: calc(50% - 4px);
+    max-height: calc(100% - 8px);
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    box-sizing: border-box;
+}
+.fancybox-thumbs>ul>li:before{
+    border: 2px solid;
+    border-color: green !important;
+   
+  }
+
+.fancybox-show-thumbs .fancybox-thumbs {
+    display: block;
+    border-top: 1px solid #d3d3d3;
+}
+.fancybox-show-thumbs .fancybox-thumbs {
+    display: block;
+    border-top: 1px solid #d3d3d3;
+}
+.fancybox-caption-wrap {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0px 2vw 0;
+    background: #fff;
+    pointer-events: none;
+}
+.fancybox-caption-wrap {
+    display:none
+}
+.fancybox-show-thumbs .fancybox-inner {
+    right: 0;
+    bottom: 0;
+}
+.fancybox-button {
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    width: 35px;
+    height: 35px;
+    margin: 0;
+    padding: 10px;
+    border: 0;
+    border-radius: 0;
+    background: rgba(30,30,30,.6);
+    color: #fff;
+    transition: color .3s ease;
+    cursor: pointer;
+}
+
+         }
+
+.simpleLens-container {
+    display: table;
+    position: relative;
+    border: 1px solid #f0f0f0;
+    margin-left: -1px;
+    float: left;
+    /*width:calc(100% - 64px);*/
+}
+    .simpleLens-thumbnails-container a.simpleLens-thumbnail-wrapper {
+  display: inline-block;
+    border: 1px solid #f0f0f0;
+    padding: 2px;
+    background: #fff;
+    float: left;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.simpleLens-thumbnails-container a.simpleLens-thumbnail-wrapper img {
+   display: block;
+    max-width: 90%;
+    /* position: absolute; */
+    height: auto !important;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    margin: auto;
+    max-height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.simpleLens-thumbnails-container a.simpleLens-thumbnail-wrapper video {
+   display: block;
+    max-width: 90%;
+    /* position: absolute; */
+    height: auto !important;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    margin: auto;
+    max-height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+ul.lSPager.lSpg{display: none}
+.simpleLens-big-image-container{height: 500px;width:100%;}
+.content-slider li{margin-bottom: -1px !important}
+.simpleLens-lens-element {
+    background-color: #FFFFFF;
+    box-shadow: none;
+    height: 100%;
+    left: 90%;
+    overflow: hidden;
+    position: absolute;
+    top: -2px;
+    width: 115%;
+    z-index: 9999;
+    text-align: center;border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);
+}
+.simpleLens-lens-image{width:auto}
+div#glass-div-2 {
+    margin-top: 20px;
+}
+.single-product-content .item_name {
+    margin: 0px !important;
+    margin-top: -5px !important;
+    line-height: 25px;
+    color: #111;
+}
+.simpleLens-big-image {
+    max-width: 100%;
+    max-height: 350px;
+    /*max-height: 100%;*/
+}
+.lSNext:before {
+    padding: 0 25px;
+    color: #fff;
+    content: "\e874";
+    font-size: 14px;
+    font-weight: 900;
+    font-family: Linearicons-Free;
+}
+.lSPrev:before {
+    padding: 0 25px;
+    color: #fff;
+    content: "\e873";
+    font-size: 14px;
+    font-weight: 900;
+    font-family: Linearicons-Free;
+}
+.simpleLens-big-image-container {
+    height: 450px;
+    width: 100%;
+}
+
+
+/*.page-section{
+    min-height: 650px;
+}*/
+
+.simpleLens-thumbnails-container a.simpleLens-thumbnail-wrapper{width:100%}
+
+
+.simpleLens-thumbnails-container a.simpleLens-thumbnail-wrapper{border: 1px solid #f0f0f0;}
+
+.simpleLens-thumbnails-container{
+    float: left;
+    width: 100px;
+}
+.simpleLens-container{
+    width:calc(100% - 100px);
+}
+.lSSlideWrapper {
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+    overflow-y: hidden;
+    max-height: 432px;
+    height: 448px !important;
+}
+.lSSlideOuter.vertical .lSAction > .lSNext {
+    bottom: 0;
+}
+.lSSlideOuter.vertical .lightSlider > * {
+    max-height: 100px;
+    min-height: 100px;
+}
+.lSSlideOuter.vertical .lSAction > .lSPrev {
+    background-position: 0 -31px;
+    bottom: auto;
+    top: 0px;
+    width: 100%;
+    left: 14px;
+}
+.lSSlideOuter.vertical .lSAction > .lSNext {
+    bottom: 0;
+    left: 14px;
+    width: 100%;
+    background-image: unset;}
+.lSSlideOuter .lightSlider, .lSSlideOuter .lSPager{min-height:432px}
+.owl-theme{padding:0 !Important}
+</style>
+{% endblock %}
+{% block script %}
+<script>
+    {% include "templates/includes/productsdetail.js" %}    
+</script>
+ 
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/jquery.ez-plus.js"></script>
+<link href="/assets/erpnext_ecommerce/css/jquery.ez-plus.css" rel="stylesheet">
+<link href="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lightgallery.css" rel="stylesheet">
+ 
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/picturefill.min.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lightgallery.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-fullscreen.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-thumbnail.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-video.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-autoplay.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-zoom.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-hash.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/lg-pager.js"></script>
+<script src="/assets/erpnext_ecommerce/rs-plugin/LightGallery/jquery.mousewheel.min.js"></script>
+
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/jquery.simpleGallery.js"></script>
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/jquery.simpleLens.js"></script>
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/lightslider.js"></script>
+
+ <script type="text/javascript">
+
+ 
+// $('#ezimage').ezPlus({ easing: true,
+//     scrollZoom: true,
+//     responsive : true,
+
+// });
+// $('#ezimage').bind('click', function (e) {
+//     light_gallery()
+// });
+// function light_gallery(){
+//      var ez = $('#ezimage').data('ezPlus');
+//      var gallerylist=ez.getGalleryList();
+//      var galleryHtml='';
+//      for(var k=0;k<gallerylist.length;k++)
+//      {
+//         galleryHtml+='<a href="'+gallerylist[k].href+'"><img src="'+gallerylist[k].href+'" /></a>'
+//       }
+//       if(galleryHtml!='')
+//       {
+//         $("#light-gallery").html(galleryHtml);
+//         $('#light-gallery').lightGallery({
+//             thumbnail:true
+//         }); 
+//         $("#light-gallery a:first-child > img").trigger("click");
+//         $("#light-gallery").on('onCloseAfter.lg',function(event){
+//                 $("#light-gallery").data("lightGallery").destroy(true);
+//         });     
+//       }
+// }
+ $(document).ready(function(){
+    console.log("---------------------document ready 1 called")
+    initialize_gallery()
+    // Init fancyBox
+$().fancybox({
+  selector : '.slick-slide:not(.slick-cloned)',
+  hash : false,
+  thumbs : {
+    autoStart : true,
+    axis      : 'x'
+  }
+});
+// // Init Slick
+$(".main-slider").slick({
+  slidesToShow   : 1,
+  slidesToScroll : 1,
+  infinite : true,
+  dots     : true,
+  swipeToSlide: true,
+  adaptiveHeight: true,
+  speed: 300,
+  arrows   : false,
+  cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
+  touchThreshold: 100,
+  responsive : [
+    {
+      breakpoint : 960,
+      settings : {
+        slidesToShow   : 1,
+        slidesToScroll : 1
+      }
+    }
+  ]
+});
+    check_price()
+  $('.related-products').owlCarousel({
+                loop:true,
+                nav:true,
+                margin:10,  
+                navText:['<span class="lnr lnr-chevron-left"></span>','<span class="lnr lnr-chevron-right"></span>'], 
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:2,
+                    },
+                    600:{
+                        items:3,
+                    },
+                    1000:{
+                        items:5,
+                    }
+                }
+            }); 
+ });
+ function check_price() {
+    $('.men-single').each(function(){
+        var me=this;
+        var variant=$(me).find('#hdnIsVariant').val();
+        if(variant=="1"){
+            var selected_variant=$(me).find('#variant').val();
+            $(me).find('div[data-variant="'+selected_variant+'"]').show();
+            if($(me).find('div[data-variant="'+selected_variant+'"]').attr('data-priceRule')){
+                var div=$(me).find('div[data-variant="'+selected_variant+'"]');
+                var price_type=$(div).attr('data-priceType');
+                var discount_percent=$(div).attr('data-discountPercent');
+                var discount_amount=$(div).attr('data-discountAmount');
+                var html=''
+                var pricerule=$(div).attr('data-priceRule')
+                if(price_type=='Price'){
+                    var actual=$(div).attr('data-standardRate')
+                    var diff=parseFloat(actual)-parseFloat(discount_amount)
+                    html='Flat '+currency+' '+parseFloat(diff).toFixed(2)+' Off';
+                }else{
+                    html=parseInt(discount_percent)+'% Off'
+                }
+                $(me).find('.itemTag').text(html);
+            }
+        }
+    })
+}
+function selectVariant(e) {
+    var variant = $(e).val();
+    $(e).parent().find('.product-wid-price').hide();
+    $(e).parent().find('div[data-variant="' + variant + '"]').show()
+    // let stock=$(e)
+}
+function addtocart1(e) {
+    var isVariant = $(e).parent().parent().parent().find('#hdnIsVariant').val();
+    var disabled = $(e).find('a').attr('disabled')
+    if (disabled != "disabled") {
+        var item = {};
+        var current_qty = '';
+        if (isVariant == "1") {
+            item.item_code = $(e).parent().parent().find('#variant').val();
+            item.rate = parseFloat($(e).parent().parent().find('div[data-variant="' + item.item_code + '"] #hdnProductRate').val());
+            item.uom = $(e).parent().parent().find('#variant option:selected').attr('data-uom');
+            item.item_name = $(e).parent().parent().find('#variant option:selected').attr('data-name');
+            current_qty = $(e).parent().parent().find('#variant option:selected').attr('data-qty');
+            // item.image_view = $(e).parent().parent().parent().find('div[data-variant="' + item.item_code + '"] #hdnImage').val()
+            // window.location.href=$(e).parent().parent().parent().find('a:eq(0)').attr('href')
+            // return;
+        } else {
+            item.item_code = $(e).parent().parent().parent().find('.hot-wid-rating').attr('data-item')
+            item.rate = parseFloat($(e).parent().parent().parent().find('#hdnProductRate').val())
+            item.item_name = $(e).parent().parent().parent().attr('data-item-name')
+            current_qty = $(e).parent().parent().parent().find('#availStock').val();
+            item.uom = $(e).parent().parent().parent().find('#stockUom').val();
+            item.image_view = $(e).parent().parent().parent().find('#hdnImage').val()
+        }
+        // item.qty = parseFloat($(e).parent().parent().find('#cartQty').val())
+        item.qty=1;
+        item.stock_uom = item.uom;
+        var qty = 0;
+        $('.qtyErr').hide();
+        if (parseInt(current_qty) >= parseInt(item.qty)) {
+            if (item.qty > 0) {
+                var productscart = JSON.parse(localStorage.getItem('productscart'));
+                var cartdata = {};
+                var total_price = 0;
+                cartdata.reference = 'Item';
+                var items = [];
+                var added = false;
+                var qtyErr = false;
+                if (qtyErr) {
+                    var html = 'Sorry! Only ' + parseInt(current_qty) + ' is available.';
+                    $('#message_modal .modal-title').text('Alert');
+                    $('#message_modal .modal-body').html(html)
+                    $('#message_modal').modal('show');
+                } else {
+                    item.amount = item.qty * item.rate;
+                    item.price_list_rate = item.rate;
+                    item.base_price_list_rate = item.rate;
+                    item.base_rate = item.rate;
+                    item.net_rate = item.rate;
+                    item.base_net_rate = item.rate;
+                    item.base_amount = item.amount;
+                    item.net_amount = item.amount;
+                    item.base_net_amount = item.amount;
+                    item.description = item.item_name;
+                    item.warehouse = "Reserved Warehouse - S";
+                    total_price += item.amount;
+                    if (!added)
+                        items.push(item);
+                    cartdata.items = items;
+                    cartdata.total_price = total_price;
+                    cartdata.sales_tax = 0;
+                    cartdata.order_total_amount = total_price;
+                    insert_cartitem(item.item_code,parseInt(item.qty),parseFloat(item.rate),'Cart')
+                }
+            } else {
+                $('.qtyErr').show();
+            }
+        } else {
+            var html = 'Sorry! Only ' + current_qty + ' is available.';
+            $('#message_modal .modal-title').text('Alert');
+            $('#message_modal .modal-body').html(html)
+            $('#message_modal').modal('show');
+        }
+    }
+}
+function insert_cartitem(item_code, qty, rate, cartType, redirect) {
+    let qty_type='';
+    // if(cartType!='Wishlist')
+    //     qty_type='add'
+    $.ajax({
+        type: 'POST',
+        Accept: 'application/json',
+        ContentType: 'application/json;charset=utf-8',
+        url: window.location.origin + '/api/method/salespurchase.sales_and_purchase.api.insert_cartItems',
+        data: { 'item_code': item_code, 'cartType': cartType, 'qty': qty, 'rate': rate, 'qty_type': qty_type },
+        dataType: "json",
+        async: false,
+        headers:{
+            'X-Frappe-CSRF-Token':'{{csrf_token}}'
+        },
+        success: function(data) {
+            if (data.message) {
+                if (data.message.status == 'failed') {
+                    $('#message_modal .modal-title').text('Success');
+                    $('#message_modal .modal-body').html(data.message.message)
+                    $('#message_modal').modal('show');
+                } else {
+                    if(redirect==true){
+                        window.location.href='/cart';
+                        return;
+                    }
+                    $('.cartCount').text(qty);
+                    getAdminCartData();                
+                    if(cartType=='Wishlist')
+                        showCartSlider('wish')
+                    else
+                        showCartSlider('cart')                    
+                }
+            }
+        }
+    })
+}
+function initialize_gallery() {
+    console.log("------------initialize_gallery called")
+    var galleryHtml = '';
+    var videoHtml = '';
+    var canvasHtml = '';
+    var i = 0;
+    $(".simpleLens-thumbnail-wrapper").each(function() {
+        // Commented by shankar on 23-1-2020
+        // galleryHtml += '<a href="' + $(this).attr("data-lens-image") + '"><img src="' + $(this).attr("data-big-image") + '" /></a>'
+        //Code inserted by shankaron 23-1-2020
+        i++;
+        var attr = $(this).attr('data-lens-image');
+        var video_id = $(this).attr('data-youtube-id');
+        // For some browsers, `attr` is undefined; for others,
+        // `attr` is false.  Check for both.
+        if (typeof attr !== typeof undefined && attr !== false) {
+            galleryHtml += '<a href="' + $(this).attr("data-lens-image") + '"><img src="' + $(this).attr("data-big-image") + '" /></a>'
+        }
+    });
+    $('video').css('width:100%')
+    $("#light-gallery").html(galleryHtml);
+    $("#videos-gallery").html(videoHtml);
+    $("#image-canvas").html(canvasHtml);
+    $('#light-gallery').lightGallery({
+        thumbnail: false,
+        videojs: true
+    });
+    // $('#product-gallery .simpleLens-thumbnails-container img').simpleGallery({
+    $('#product-gallery .simpleLens-thumbnails-container img').simpleGallery({
+        loading_image: '/assets/erpnext_ecommerce/images/loading.gif'
+    });
+
+    $('#product-gallery .simpleLens-big-image').simpleLens({
+        loading_image: '/assets/erpnext_ecommerce/images/loading.gif'
+    });
+
+    // var slider = $("#content-slider").lightSlider({
+    //     loop: false,
+    //     keyPress: true,
+    //     vertical: false,
+    //     item:6,
+    //     controls:true,
+    //     thumbItem: 3,
+    //     galleryMargin:2
+    // });
+    //  $('.lSAction .lSPrev').click(function () {
+    //     slider.goToPrevSlide();
+    // });
+    // $('.lSAction .lSNext').click(function () {
+    //     slider.goToNextSlide();
+    // });
+    // setTimeout(function() {
+    //     var count_of = document.querySelectorAll("#content-slider li").length;
+    //     var lenth_item = count_of * 70 * 20;
+    //     var thumb_width = $('.simpleLens-container').width();
+    //     console.log($('.simpleLens-container').width())
+    //     $('#image-gallery-list .lSSlideWrapper').css('max-width',thumb_width + 'px')
+    //     $('#image-gallery-list #content-slider').css('width',lenth_item + 'px')
+    //     console.log(lenth_item)
+    //     console.log(thumb_width)
+    // }, 3000);
+
+    $("#content-slider").lightSlider({
+            loop: false,
+            keyPress: true,
+            vertical: true,
+            item: 4
+        });
+
+    $(".simpleLens-lens-image").click(function() {
+        $(".simpleLens-lens-element").hide()
+        light_gallery(this)
+    })
+}
+function light_gallery(element) {
+    var imgurl = $(element).attr("data-lens-image");
+    $(".simpleLens-lens-element").hide()
+    $("#light-gallery a[href='" + imgurl + "'] > img").trigger("click");
+}
+</script>
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/slick.min.js"></script>
+<script type="text/javascript" src="/assets/erpnext_ecommerce/js/slick-lightbox.min.js"></script>
+{% endblock %}

@@ -1,1 +1,7 @@
-# Erpnext_ecom
+## Erpnext Ecommerce
+
+Ecommerce website using ERPNext
+
+#### License
+
+MIT

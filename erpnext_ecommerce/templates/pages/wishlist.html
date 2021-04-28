@@ -1,0 +1,302 @@
+{% extends "templates/layout/customweb.html" %}
+{% block loader %}
+{% include "/templates/pages/defaultpageloader.html" %}
+{% endblock %}
+{% block content %}
+	<div class="title-breadcrumb">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <ol class="breadcrumb">                        
+                        <li><a href="/"><span class="lnr lnr-home"></span></a></li>
+                        <li><a href="#">Wishlist</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-list-area section-padding">
+        <div class="container-fluid pad-8 pad-0">
+            <div class="inner-card">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="headline">
+                        <h2>Wishlist</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pad-t">
+                            <table class="table table-bordered table-responsive hidden-xs">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;">Product</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align: right;">Price</th>
+                                        <!-- <th style="text-align: right;">Quantity</th>                                         -->
+                                        <th style="text-align: right;">Total</th>                                                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if wishlist and wishlist['items'] %}
+                                    {% for item in wishlist['items'] %}
+                                    <tr>
+                                        <td>
+                                            <img data-src="{% if item.image %}{{item.image}}{% else %}/assets/erpnext_ecommerce/images/no-image-800x511.png{% endif %}" class="lazyload img-responsive" />
+                                        </td>
+                                        <td>{{item.item_name}}</td>
+                                        <td class="icons" data-id="{{item.name}}" style="text-align: right;">
+                                            <a onclick="movetocart1(this)"><span class="fa fa-cart-arrow-down btn btn-success" style="margin-bottom: 10px"></span></a><br>
+                                            <a onclick="deleteItem1(this)"><span class="fa fa-trash btn btn-danger"></span></a>
+                                        </td>
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}} {% else %}${% endif %}{{"%0.3f" % item.rate}}</td>
+                                        <!-- <td style="text-align: right;">{{item.qty}}</td> -->
+                                        <td style="text-align: right;">{% if Currency %}{{Currency}} {% else %}${% endif %}{{"%0.3f" % item.amount}}</td>
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr class="no-data">
+                                        <td colspan="6">No records found</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <div class="mobile-cart">
+                                {% if wishlist and wishlist['items'] %}
+                                {% for item in wishlist['items'] %}
+                                <div style="margin-top:5px;border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;padding: 5px;background-color: white">
+                                    <div class="row" data-id="{{item.name}}">
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
+                                            <img data-src="{% if item.image %}{{item.image}}{% else %}/assets/erpnext_ecommerce/images/no-image-800x511.png{% endif %}" class="lazyload img-responsive"/>
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 col-xs-9">
+                                            <div class="product-title">
+                                                {{item.item_name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-id="{{item.name}}" data-product="{{item.item_code}}" data-price="{{item.price}}" style="margin-top: 15px;">
+                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                            <div>Price</div>
+                                            <div class="product-price">
+                                                {% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.3f" % item.rate | float}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4" data-id="{{item.name}}">
+                                            <a onclick="movetocart1(this)" data-id="{{item.name}}"><span class="fa fa-cart-arrow-down btn btn-success"></span></a>
+                                            <a onclick="deleteItem1(this)" data-id="{{item.name}}"><span class="fa fa-trash btn btn-danger"></span></a>
+                                            <!-- <div class="qty-box">
+                                                <div class="btn" onclick="decrQty(this)"><span class="fa fa-minus"></span></div>
+                                                <div class="btn" id="cartQty">{{item.qty | int}}</div>
+                                                <div class="btn" onclick="incrQty(this)"><span class="fa fa-plus"></span></div>
+                                            </div> -->
+                                        </div>
+                                        
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
+                                            <div>Total</div>
+                                            <div class="product-price">
+                                                {% if Currency %}{{Currency}}{% else %}${% endif %} {{"%0.3f" % item.amount | float}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="no-record">
+                                    No records found
+                                </div>
+                                {% endif %}
+                            </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+
+        .headline {
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            display: block;
+            margin: 0px 15px 10px 15px;
+            margin-top: 20px;
+            position: relative;
+            text-align: left;
+            padding: 10px 0px;
+        }
+
+        .inner-card{
+            display: block;
+            /*background: #fff;*/
+            padding: 0px;
+            padding-bottom: 0px;
+            /*border: 1px solid #dedfe3 !important;*/
+         /*   padding-bottom: 15px;*/
+            border-radius: 2px;
+            /*box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);*/
+        }
+      
+  /*      .null-padding{
+            padding-left: 0;
+            padding-right: 0;
+        }*/
+        .pad-t{
+
+            padding: 0px 10px;
+        }
+        .pad-10{
+                padding: 10px;
+        }
+        .pad-8{
+            padding:8px;
+        }
+        thead{
+            /*background: #759e2e;*/
+                /*color: #Ffff;*/
+                background: white;
+                color: black;
+
+        }
+        .table-bordered > tbody > tr > td{
+                vertical-align: middle;
+           
+        }
+        .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{
+            border-left: none !important;
+            border-right: none !important;
+            background: white !important;
+        }
+    	.table{
+            margin-top: 20px;
+        }
+        .table img{
+            height: 100px;
+            margin: auto;
+        }
+        .table .icons{
+            width: 10%;
+            text-align: center;
+        }
+        .product-list-area.section-padding{
+            padding: 0;
+           /* padding-bottom: 20px;*/
+        }
+        .mobile-cart{
+            display: none;
+        }
+        .no-record{
+            padding: 50px 0;
+            text-align: center;
+        }
+        .fa-trash:before {
+            content: "\f1f8";
+            padding: 0px 1.5px;
+        }
+        @media screen and (max-width: 767px){
+            .mobile-cart{
+                display: block;
+            }
+            .qty-box{
+                width: 83px;
+                height: 34px;
+                padding-top: 0px;
+            }
+            .qty-box .btn{
+                padding: 6px 6px;
+                font-size: 13px;
+            }
+            .pad-0{
+                padding: 0px;
+            }
+            .pad-t {
+                 padding: 0px; 
+            }
+            .headline{
+                display: none;
+            }
+        }
+    </style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+    function deleteItem1(e) {
+        var id=$(e).parent().attr('data-id')
+        var user=$('#hdnUser').val();
+        var customer=getCookie('customer_id');
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.deleteWishlistItems',
+            // data: { 'user':user,'name':id,'customer':customer},
+            data: {'name':id,},
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data){
+                if(data){
+                    $(e).parent().parent().remove();
+                    if($('.table tbody tr').length==0){
+                        var html='<tr class="no-data"><td colspan="6">No records found</td></tr>';
+                        $('.table tbody').append(html)
+                    }
+                    var html='Product is deleted'
+                    $('#message_modal .modal-title').text('Success')
+                    $('#message_modal .modal-body').html(html)
+                    $('#message_modal').modal('show')
+                    construct_carthtml(data.message.cart)
+                    construct_wishlisthtml(data.message.wishlist)
+                    location.reload();   
+                }
+            }
+        })
+    }
+    function movetocart1(e){
+        var id=$(e).parent().attr('data-id')
+        var user=$('#hdnUser').val();
+        var customer=getCookie('customer_id')
+        $.ajax({
+            type: 'POST',
+            Accept: 'application/json',
+            ContentType: 'application/json;charset=utf-8',
+            url: window.location.origin + '/api/method/erpnext_ecommerce.erpnext_ecommerce.api.movetocart',
+            data: { 'user':user,'name':id,'customer':customer},
+            dataType: "json",
+            async: false,
+            headers:{
+                'X-Frappe-CSRF-Token':'{{csrf_token}}'
+            },
+            success: function(data){
+                if(data.message){
+                    if(data.message.error){
+                        var html='Currently, no stock is available for this product.'
+                        $('#message_modal .modal-title').text('Alert')
+                        $('#message_modal .modal-body').html(html)
+                        $('#message_modal').modal('show')
+                    }else{
+                        $(e).parent().parent().remove();
+                        if($('.table tbody tr').length==0){
+                            var html='<tr class="no-data"><td colspan="6">No records found</td></tr>';
+                            $('.table tbody').append(html)
+                        }
+                        var html='Your product has been moved to cart'
+                        $('#message_modal .modal-title').text('Success')
+                        $('#message_modal .modal-body').html(html)
+                        $('#message_modal').modal('show')
+                        // construct_carthtml(data.message.cart)
+                        // construct_wishlisthtml(data.message.wishlist)
+                        getAdminCartData()
+                        getAdminWishlstData()
+                        location.reload(); 
+                    }                         
+                }
+            }
+        })
+    }
+</script>
+{% endblock %}
